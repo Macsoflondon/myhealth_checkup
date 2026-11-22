@@ -142,11 +142,17 @@ const TotalVsFreeTestosteroneGuidePage = () => {
 
       <article className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 lg:py-16 text-[#081129]">
         <nav className="text-sm text-slate-600 mb-6" aria-label="Breadcrumb">
-          <Link to="/" className="hover:text-[#081129]">
+          <Link
+            to="/"
+            className="inline-flex min-h-6 items-center hover:text-[#081129]"
+          >
             Home
           </Link>
           <span className="mx-2">/</span>
-          <Link to="/blog" className="hover:text-[#081129]">
+          <Link
+            to="/blog"
+            className="inline-flex min-h-6 items-center hover:text-[#081129]"
+          >
             Health Resource Hub
           </Link>
           <span className="mx-2">/</span>

@@ -1,5 +1,14 @@
 # Roadmap
 
+## 22 November screening, part 5
+- [x] Shared complete entity decoding, parity tests, app aggregation/public article read and bounded repair/EDGE article helpers implemented. Deno tests and prepared entry-point handoff pass.
+- [ ] Restore and deploy blog-aggregate — sandbox refused adding the missing function entry point. Updated standalone source is prepared; daily production EDGE handling and stored-row repair remain unapplied. Documentation accurately retains outside-repository status.
+- [x] Responsive Shopify images and build-generated 480/768px illustrative variants implemented; exact dimensions verified for all ten variants, mobile images/fallbacks render and retain lazy/async/dimensions.
+- [x] Showcase prose removed from pool projection and read from prefetched details. SSR article text unchanged (15,842 characters); homepage HTML 536,766 → 518,987 bytes. Animation-owned attribute race removed; final browser run has zero hydration warnings or page errors.
+- [x] Three blog breadcrumb trails measured 24px link heights with unchanged 14px text; mobile screenshots inspected.
+- [x] Final 1,348 unit tests, 28 type-checked Deno tests, changed-file lint, lockfile check and automatic compilation passed. No publishing, migrations or cron changes; details in docs/SCREENING_PART_5.md.
+- [ ] Production build/artefact verification — manual builds are prohibited by the sandbox workflow; build-hook image tests and automatic compilation are verified, not a production artefact.
+
 ## 22 November security screening, part 4
 - [x] Replace forwarded-address reads with validated Cloudflare/gateway helpers and repository guard tests; two additional sibling functions and existing nullable-helper consumers covered.
 - [ ] Restore landing-signup and deploy its address fix — blocked by the sandbox's explicit prohibition on adding absent Edge-function source. Upload SHA-256 matches; existing verify_jwt=false setting recorded, production signup unchanged.

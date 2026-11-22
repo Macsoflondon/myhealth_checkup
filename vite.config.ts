@@ -8,6 +8,7 @@ import { defineConfig } from "@lovable.dev/vite-tanstack-config";
 import { mcpPlugin } from "@lovable.dev/mcp-js/stacks/supabase/vite";
 import type { IncomingMessage } from "node:http";
 import type { Plugin } from "vite";
+import { articleImageVariants } from "./plugins/article-image-variants";
 
 const isClientAbortError = (error: unknown): boolean =>
   error instanceof Error &&
@@ -48,6 +49,7 @@ export default defineConfig({
   },
   vite: {
     plugins: [
+      articleImageVariants(),
       clientAbortBoundary(),
       mcpPlugin(),
       // Anonymous, read-only catalogue server: supabase/functions/mcp-public

@@ -8,7 +8,7 @@ const TARGETS: ReadonlyArray<readonly [string, string]> = [
 ];
 
 /**
- * Applies the shared data-reveal animation to headings and sections that
+ * Applies the shared reveal animation to headings and sections that
  * start below the fold. Server HTML is untouched, so crawlers and no-JS
  * visitors always see full content; elements already on screen never hide.
  */
@@ -16,12 +16,31 @@ export function AutoReveal() {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
 
   useEffect(() => {
-    if (typeof IntersectionObserver === "undefined") return;
+    if (
+      typeof IntersectionObserver === "undefined" ||
+      typeof Element.prototype.animate !== "function" ||
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    )
+      return;
+    // Animation effects do not mutate React-owned attributes. Deferred sections
+    // can therefore hydrate without seeing reveal attributes absent from SSR.
+    const animations = new Map<HTMLElement, Animation>();
+    const pending = new Set<HTMLElement>();
+    const theme = getComputedStyle(document.documentElement);
+    const durationToken = theme.getPropertyValue("--duration-reveal").trim();
+    const duration =
+      Number.parseFloat(durationToken) *
+        (durationToken.endsWith("ms") ? 1 : 1000) || 600;
+    const easing = theme.getPropertyValue("--ease-emphasized").trim() || "ease";
+    const reveal = (element: HTMLElement) => {
+      pending.delete(element);
+      animations.get(element)?.play();
+    };
     const observer = new IntersectionObserver(
       (entries) => {
         for (const entry of entries) {
           if (!entry.isIntersecting) continue;
-          entry.target.setAttribute("data-reveal", "visible");
+          reveal(entry.target as HTMLElement);
           observer.unobserve(entry.target);
         }
       },
@@ -42,9 +61,29 @@ export function AutoReveal() {
             el.closest("[data-reveal], [role=dialog], nav, header")
           )
             return;
+          for (const ancestor of pending) {
+            if (ancestor.contains(el)) return;
+          }
           if (el.getBoundingClientRect().top < fold) return;
-          el.setAttribute("data-reveal-variant", variant);
-          el.setAttribute("data-reveal", "hidden");
+          const animation = el.animate(
+            [
+              {
+                opacity: 0,
+                transform:
+                  variant === "rise" ? "translate3d(0, 16px, 0)" : "none",
+              },
+              { opacity: 1, transform: "none" },
+            ],
+            { duration, easing, fill: "both" },
+          );
+          animation.pause();
+          animation.currentTime = 0;
+          animation.onfinish = () => {
+            animation.cancel();
+            animations.delete(el);
+          };
+          animations.set(el, animation);
+          pending.add(el);
           observer.observe(el);
         });
       }
@@ -56,14 +95,9 @@ export function AutoReveal() {
     const sweep = () => {
       ticking = false;
       const limit = window.innerHeight;
-      document
-        .querySelectorAll<HTMLElement>(
-          '[data-reveal="hidden"][data-reveal-variant]',
-        )
-        .forEach((el) => {
-          if (el.getBoundingClientRect().top < limit)
-            el.setAttribute("data-reveal", "visible");
-        });
+      pending.forEach((el) => {
+        if (el.getBoundingClientRect().top < limit) reveal(el);
+      });
     };
     const onScroll = () => {
       if (ticking) return;
@@ -86,9 +120,7 @@ export function AutoReveal() {
       window.removeEventListener("scroll", onScroll);
       observer.disconnect();
       // Never leave content stranded hidden when this observer goes away.
-      document
-        .querySelectorAll('[data-reveal="hidden"][data-reveal-variant]')
-        .forEach((el) => el.setAttribute("data-reveal", "visible"));
+      animations.forEach((animation) => animation.cancel());
     };
   }, [pathname]);
 

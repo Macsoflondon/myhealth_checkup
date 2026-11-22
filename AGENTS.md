@@ -1,5 +1,9 @@
 # Architecture decisions
 
+- Provider article text uses parity-tested app/Edge decoding; bounded repairs change text only. Why: encoded source text must display identically without rewriting publication dates.
+- Article illustration width-query imports are resized by a build-only image plugin; homepage prose comes from the prefetched details map. Why: smaller transfers must preserve artwork and SSR card text.
+- AutoReveal uses animation effects, not React-owned attributes. Why: deferred section hydration must not encounter DOM attributes absent from server HTML.
+
 - Site and Edge address helpers validate infrastructure-overwritten Cloudflare/gateway IP literals; callers retain their null/unknown fallback. Why: forwarded lists are caller-controlled and cannot key rate limits or consent evidence.
 
 - Medical Diagnosis interprets offset/limit as one of five batch positions and partitions normalised-path-sorted sitemap matches dynamically. Why: unchanged cron jobs must cover growing catalogues without stale-tail delisting.

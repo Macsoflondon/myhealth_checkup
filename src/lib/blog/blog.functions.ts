@@ -2,6 +2,7 @@ import { createServerFn } from "@tanstack/react-start";
 import { createClient } from "@supabase/supabase-js";
 import type { Database } from "@/integrations/supabase/types";
 import type { BlogArticle } from "@/types/blog.types";
+import { decodeEntities } from "./decode-entities";
 
 /**
  * Public read of aggregated provider blog posts. Uses the publishable key so
@@ -43,8 +44,8 @@ export const getAggregatedBlogArticles = createServerFn({
   if (error || !data) return [];
 
   return data.map((row) => ({
-    title: row.title,
-    excerpt: row.excerpt,
+    title: decodeEntities(row.title),
+    excerpt: decodeEntities(row.excerpt),
     url: row.url,
     image: row.image_url ?? "",
     provider: row.provider_name,

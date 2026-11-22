@@ -4,6 +4,7 @@
  */
 import { BLOG_SOURCES, categoriseArticle, type BlogSource } from "./sources";
 import { edgeLinks, edgePublicationDate } from "../edge-source";
+import { decodeEntities } from "./decode-entities";
 
 const USER_AGENT =
   "Mozilla/5.0 (compatible; myhealthcheckup-aggregator/1.0; +https://myhealthcheckup.co.uk)";
@@ -26,17 +27,6 @@ export interface ProviderRunResult {
   found: number;
   error?: string;
 }
-
-const decodeEntities = (input: string): string =>
-  input
-    .replace(/&lt;/g, "<")
-    .replace(/&gt;/g, ">")
-    .replace(/&quot;/g, '"')
-    .replace(/&#39;/g, "'")
-    .replace(/&#x27;/g, "'")
-    .replace(/&#8217;/g, "\u2019")
-    .replace(/&nbsp;/g, " ")
-    .replace(/&amp;/g, "&");
 
 const stripHtml = (input: string): string =>
   decodeEntities(input.replace(/<[^>]+>/g, " "))

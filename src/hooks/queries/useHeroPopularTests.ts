@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import type { CollectionFeeType } from "@/lib/comparisonFormat";
 import { mergeActiveRows, toViewPricing } from "@/lib/viewPricing";
 import { homepageShowcaseQueryOptions } from "@/services/homepage-test-showcase";
+import { useTestDetailsByIds } from "./useTestDetailsByIds";
 
 export interface HeroPopularTest {
   id: string;
@@ -76,7 +77,7 @@ function parseBiomarkersList(raw: unknown): string[] {
 }
 
 export function useHeroPopularTests() {
-  return useQuery({
+  const query = useQuery({
     ...homepageShowcaseQueryOptions,
     select: (tests): HeroPopularTest[] =>
       mapHeroRows(
@@ -84,6 +85,22 @@ export function useHeroPopularTests() {
         new Map(tests.map((test) => [test.id, toViewPricing(test)])),
       ),
   });
+  const details = useTestDetailsByIds(query.data?.map((test) => test.id) ?? []);
+  return {
+    ...query,
+    data: query.data?.map((test) => {
+      const detail = details[test.id];
+      return detail
+        ? {
+            ...test,
+            description: detail.description ?? test.description,
+            biomarkersList: parseBiomarkersList(detail.biomarkersList),
+            collectionOptions:
+              detail.collectionOptions ?? test.collectionOptions,
+          }
+        : test;
+    }),
+  };
 }
 
 /**

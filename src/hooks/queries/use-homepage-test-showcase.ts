@@ -21,12 +21,7 @@ export function useHomepagePopularShowcase() {
         collection_method: test.collection_method ?? undefined,
         url: test.url ?? "",
         url_verified: test.url_verified,
-        description: test.description ?? undefined,
-        markers: Array.isArray(test.biomarkers_list)
-          ? test.biomarkers_list.filter(
-              (marker): marker is string => typeof marker === "string",
-            )
-          : [],
+        markers: [],
         image_url: test.image_url ?? undefined,
         total_expected_cost: test.total_expected_cost,
         collection_fee_type:
