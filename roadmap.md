@@ -1,5 +1,10 @@
 # Roadmap
 
+## 22 November screening, part 8
+- [x] Return 202 and retain link verification with EdgeRuntime.waitUntil.
+- [x] Prioritise never/oldest-checked URLs and stop starting work after 330 seconds, retaining provider pools, Lola and 429/redirect handling.
+- [x] Deployed v195; 10 Deno and 1,355 platform tests, changed-file lint and automatic compilation pass. Live scheduled-auth path returned 202 in 701ms; background log finalised partial after 330.25s: 748 URLs, 728 checked, 301 OK, 0 broken, 427 rate-limited, 20 not reached. Counts reconcile; provider rate limits remain unchanged. Details in docs/SCREENING_PART_8.md; no publishing, migrations or cron changes.
+
 ## 22 November screening, part 7
 - [x] Parse Medical Diagnosis WooCommerce prices; reject unpriced/non-product pages without refreshing fields.
 - [x] Union sitemap matches, active stored URLs and recent automatic delist URLs before five-way batching; preserve manual delists.

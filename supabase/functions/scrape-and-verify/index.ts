@@ -13,14 +13,25 @@
 // domain never receives more than PROVIDER_CONCURRENCY simultaneous
 // requests, and request starts within a pool are staggered to stay under
 // provider rate limits. On HTTP 429 a row is retried once after the
-// Retry-After delay (capped) before being marked broken.
+// Retry-After delay (capped); a repeated 429 stays inconclusive.
 //
 // Invocation: manual / ad-hoc POST with the service-role bearer.
 // Optional `?provider=<provider_id>` scopes the run to one provider.
 // pg_cron url-verification-daily calls this function at 05:15 UTC daily.
-import "https://deno.land/std@0.224.0/dotenv/load.ts";
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.0";
+import {
+  createClient,
+  type SupabaseClient,
+} from "https://esm.sh/@supabase/supabase-js@2.45.0";
 import { productRedirectIssue } from "../_shared/scrape/product-url.ts";
+import { getErrorMessage, internalErrorResponse } from "../_shared/errors.ts";
+import {
+  CHECK_START_BUDGET_MS,
+  oldestFirst,
+  finalRunDetails,
+  runBudgetedPool,
+} from "./run-budget.ts";
+
+declare const EdgeRuntime: { waitUntil: (task: Promise<unknown>) => void };
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -53,6 +64,7 @@ interface TestRow {
   provider_id: string;
   test_name: string | null;
   url: string | null;
+  url_verified_at: string | null;
 }
 
 interface CheckResult {
@@ -144,188 +156,199 @@ async function checkUrl(url: string): Promise<CheckResult> {
       };
     return { ok: true, httpStatus: res.status, hit429 };
   } catch (e) {
-    return { ok: false, issue: (e as Error).message };
+    return { ok: false, issue: getErrorMessage(e) };
+  }
+}
+
+export async function runVerification(
+  supabase: SupabaseClient,
+  runId: string,
+  providerFilter: string | null,
+  deadline: number,
+) {
+  const rows: TestRow[] = [];
+  const summary: Record<
+    string,
+    { total: number; ok: number; broken: number; rateLimited: number }
+  > = {};
+  const counts = { checked: 0, ok: 0, broken: 0, rateLimited: 0 };
+  const errors: string[] = [];
+  let failed = false;
+  try {
+    // Stable oldest-first paging; no verification writes begin until discovery finishes.
+    const pageSize = 1000;
+    for (let from = 0; ; from += pageSize) {
+      if (Date.now() >= deadline) {
+        failed = true;
+        break;
+      }
+      let q = supabase
+        .from("provider_tests")
+        .select("id, provider_id, test_name, url, url_verified_at")
+        .eq("is_active", true)
+        .not("url", "is", null)
+        .order("url_verified_at", { ascending: true, nullsFirst: true })
+        .order("id", { ascending: true })
+        .range(from, from + pageSize - 1);
+      if (providerFilter) q = q.eq("provider_id", providerFilter);
+      const { data, error } = await q.abortSignal(
+        AbortSignal.timeout(TIMEOUT_MS),
+      );
+      if (error) throw new Error("Catalogue discovery failed");
+      rows.push(...((data ?? []) as TestRow[]));
+      if (!data || data.length < pageSize) break;
+    }
+
+    async function processRow(row: TestRow): Promise<{ hit429: boolean }> {
+      if (!row.url) return { hit429: false };
+      const result = await checkUrl(row.url);
+      summary[row.provider_id] ??= {
+        total: 0,
+        ok: 0,
+        broken: 0,
+        rateLimited: 0,
+      };
+      const provider = summary[row.provider_id];
+      provider.total++;
+      counts.checked++;
+      if (result.rateLimited) {
+        // Inconclusive: no alert and neither verification field changes.
+        provider.rateLimited++;
+        counts.rateLimited++;
+        return { hit429: result.hit429 ?? false };
+      }
+      if (result.ok) {
+        provider.ok++;
+        counts.ok++;
+      } else {
+        provider.broken++;
+        counts.broken++;
+        const { error } = await supabase
+          .from("scraper_alerts")
+          .insert({
+            provider_id: row.provider_id,
+            alert_type: "broken_url",
+            severity: "warning",
+            message: `URL check failed (${result.issue ?? "unknown error"}) for ${row.test_name ?? row.id}`,
+          })
+          .abortSignal(AbortSignal.timeout(TIMEOUT_MS));
+        if (error) {
+          failed = true;
+          errors.push("Broken-link alert write failed");
+        }
+      }
+      const { error } = await supabase
+        .from("provider_tests")
+        .update({
+          url_verified: result.ok,
+          url_verified_at: new Date().toISOString(),
+        })
+        .eq("id", row.id)
+        .abortSignal(AbortSignal.timeout(TIMEOUT_MS));
+      if (error) {
+        failed = true;
+        errors.push("URL verification write failed");
+      }
+      return { hit429: result.hit429 ?? false };
+    }
+
+    // Keep independent provider pools and their existing concurrency/adaptive staggering.
+    const byProvider = new Map<string, TestRow[]>();
+    for (const row of oldestFirst(rows)) {
+      const group = byProvider.get(row.provider_id);
+      if (group) group.push(row);
+      else byProvider.set(row.provider_id, [row]);
+    }
+    const settled = await Promise.allSettled(
+      Array.from(byProvider.entries(), ([providerId, providerRows]) => {
+        const config = PROVIDER_CONFIG[providerId] ?? {};
+        return runBudgetedPool(providerRows, {
+          concurrency: config.concurrency ?? PROVIDER_CONCURRENCY,
+          staggerStartMs: config.staggerStartMs ?? STAGGER_START_MS,
+          staggerMaxMs: STAGGER_MAX_MS,
+          deadline,
+          process: processRow,
+          now: Date.now,
+          sleep,
+        });
+      }),
+    );
+    if (settled.some((result) => result.status === "rejected")) {
+      failed = true;
+      errors.push("Provider pool failed");
+    }
+  } catch {
+    failed = true;
+    errors.push("Verification run failed before all links were reached");
+  } finally {
+    const details = finalRunDetails(rows.length, counts, failed);
+    const { error } = await supabase
+      .from("scrape_run_log")
+      .update({
+        completed_at: new Date().toISOString(),
+        status: details.status,
+        providers_run: Object.keys(summary).length,
+        verification_failures: counts.broken,
+        details: {
+          ...details,
+          total: rows.length,
+          summary,
+          errors: errors.slice(0, 20),
+          budget_ms: CHECK_START_BUDGET_MS,
+        },
+      })
+      .eq("id", runId)
+      .abortSignal(AbortSignal.timeout(TIMEOUT_MS));
+    if (error) console.error("[scrape-and-verify] run log finalisation failed");
   }
 }
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS")
     return new Response("ok", { headers: corsHeaders });
-
-  const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
-  const serviceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
-
-  // Auth: service-role bearer only.
-  const authHeader = req.headers.get("Authorization") ?? "";
-  if (authHeader !== `Bearer ${serviceKey}`) {
-    return new Response(JSON.stringify({ error: "Unauthorized" }), {
-      status: 401,
-      headers: { ...corsHeaders, "Content-Type": "application/json" },
-    });
+  const supabaseUrl = Deno.env.get("SUPABASE_URL");
+  const serviceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
+  if (!supabaseUrl || !serviceKey)
+    return new Response("service unavailable", { status: 503 });
+  if (req.headers.get("Authorization") !== `Bearer ${serviceKey}`) {
+    return Response.json(
+      { error: "Unauthorized" },
+      { status: 401, headers: corsHeaders },
+    );
   }
-
+  if (typeof EdgeRuntime === "undefined")
+    return new Response("background runtime unavailable", { status: 503 });
   const supabase = createClient(supabaseUrl, serviceKey, {
     auth: { persistSession: false },
   });
-
-  const reqUrl = new URL(req.url);
-  const providerFilter = reqUrl.searchParams.get("provider");
-
-  const started = new Date().toISOString();
-  const { data: runRow } = await supabase
-    .from("scrape_run_log")
-    .insert({
-      status: "running",
-      trigger_source: "url-verification",
-      started_at: started,
-    })
-    .select("id")
-    .single();
-  const runId = runRow?.id as string | undefined;
-
-  // Page through every active row with a URL.
-  const rows: TestRow[] = [];
-  const pageSize = 1000;
-  for (let from = 0; ; from += pageSize) {
-    let q = supabase
-      .from("provider_tests")
-      .select("id, provider_id, test_name, url")
-      .eq("is_active", true)
-      .not("url", "is", null)
-      .order("id", { ascending: true })
-      .range(from, from + pageSize - 1);
-    if (providerFilter) q = q.eq("provider_id", providerFilter);
-
-    const { data, error } = await q;
-    if (error) {
-      return new Response(JSON.stringify({ error: error.message }), {
-        status: 500,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
-    }
-    rows.push(...((data ?? []) as TestRow[]));
-    if (!data || data.length < pageSize) break;
-  }
-
-  const summary: Record<
-    string,
-    { total: number; ok: number; broken: number; rateLimited: number }
-  > = {};
-  const verifiedAt = new Date().toISOString();
-
-  async function processRow(
-    row: TestRow,
-  ): Promise<{ ok: boolean; hit429: boolean }> {
-    const result = await checkUrl(row.url as string);
-
-    summary[row.provider_id] ??= { total: 0, ok: 0, broken: 0, rateLimited: 0 };
-    summary[row.provider_id].total++;
-
-    let ok: boolean;
-    if (result.rateLimited) {
-      // 429 after retry = inconclusive, not broken. No alert, and do not
-      // flip url_verified — the last known verification state stands.
-      ok = true;
-      summary[row.provider_id].rateLimited++;
-      return { ok, hit429: result.hit429 ?? false };
-    }
-    if (result.ok) {
-      ok = true;
-      summary[row.provider_id].ok++;
-    } else {
-      ok = false;
-      summary[row.provider_id].broken++;
-
-      await supabase.from("scraper_alerts").insert({
-        provider_id: row.provider_id,
-        alert_type: "broken_url",
-        severity: "warning",
-        message: `URL check failed (${result.issue ?? "unknown error"}) for ${row.test_name ?? row.id}`,
-      });
-    }
-
-    await supabase
-      .from("provider_tests")
-      .update({ url_verified: result.ok, url_verified_at: verifiedAt })
-      .eq("id", row.id);
-    return { ok, hit429: result.hit429 ?? false };
-  }
-
-  // Group rows by provider, then run each provider's rows through its own
-  // worker pool. Providers run in parallel with each other, but a single
-  // provider's domain never sees more than its configured concurrency at once,
-  // with an adaptive stagger between request starts within the pool.
-  const byProvider = new Map<string, TestRow[]>();
-  for (const row of rows) {
-    const group = byProvider.get(row.provider_id);
-    if (group) group.push(row);
-    else byProvider.set(row.provider_id, [row]);
-  }
-
-  let okCount = 0;
-  let brokenCount = 0;
-
-  async function runProviderPool(providerRows: TestRow[]) {
-    const providerId = providerRows[0]?.provider_id ?? "";
-    const config = PROVIDER_CONFIG[providerId] ?? {};
-    const poolSize = config.concurrency ?? PROVIDER_CONCURRENCY;
-
-    let cursor = 0;
-    let lastStart = 0;
-    // Adaptive per-provider stagger: starts at the provider-specific initial
-    // stagger and doubles on every 429 this pool sees (capped at STAGGER_MAX_MS).
-    // Providers that never hit a 429 stay at their starting pace for the whole run.
-    let staggerMs = config.staggerStartMs ?? STAGGER_START_MS;
-    async function worker() {
-      while (cursor < providerRows.length) {
-        const row = providerRows[cursor++];
-        // Stagger successive request starts within this provider's pool.
-        const wait = staggerMs - (Date.now() - lastStart);
-        if (wait > 0) await sleep(wait);
-        lastStart = Date.now();
-        const result = await processRow(row);
-        if (result.hit429 && staggerMs < STAGGER_MAX_MS) {
-          staggerMs = Math.min(staggerMs * 2, STAGGER_MAX_MS);
-        }
-        if (result.ok) okCount++;
-        else brokenCount++;
-      }
-    }
-    await Promise.all(Array.from({ length: poolSize }, worker));
-  }
-
-  await Promise.all(Array.from(byProvider.values(), runProviderPool));
-
-  if (runId) {
-    await supabase
+  const deadline = Date.now() + CHECK_START_BUDGET_MS;
+  const providerFilter = new URL(req.url).searchParams.get("provider");
+  try {
+    const { data: runRow, error } = await supabase
       .from("scrape_run_log")
-      .update({
-        completed_at: new Date().toISOString(),
-        status: "completed",
-        providers_run: Object.keys(summary).length,
-        verification_failures: brokenCount,
-        details: {
-          checked: rows.length,
-          ok: okCount,
-          broken: brokenCount,
-          summary,
-        },
+      .insert({
+        status: "running",
+        trigger_source: "url-verification",
+        started_at: new Date().toISOString(),
       })
-      .eq("id", runId);
+      .select("id")
+      .abortSignal(AbortSignal.timeout(TIMEOUT_MS))
+      .single();
+    const runId: unknown = runRow?.id;
+    if (error || typeof runId !== "string")
+      throw new Error("Unable to start verification run");
+    EdgeRuntime.waitUntil(
+      runVerification(supabase, runId, providerFilter, deadline).catch(() => {
+        console.error(
+          "[scrape-and-verify] background run log finalisation failed",
+        );
+      }),
+    );
+    return Response.json(
+      { run_id: runId, status: "accepted" },
+      { status: 202, headers: corsHeaders },
+    );
+  } catch (error) {
+    return internalErrorResponse("scrape-and-verify start", error, corsHeaders);
   }
-
-  return new Response(
-    JSON.stringify(
-      {
-        run_id: runId,
-        checked: rows.length,
-        ok: okCount,
-        broken: brokenCount,
-        summary,
-      },
-      null,
-      2,
-    ),
-    { headers: { ...corsHeaders, "Content-Type": "application/json" } },
-  );
 });

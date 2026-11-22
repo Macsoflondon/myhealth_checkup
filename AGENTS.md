@@ -1,5 +1,7 @@
 # Architecture decisions
 
+- Link checks use bounded waitUntil pools; local rules apply. Why: foreground runs exceed request limits.
+
 - App/Edge article decoders have parity; repairs preserve dates.
 - Build-only illustration resizing and prefetched details preserve artwork and SSR text.
 - AutoReveal avoids React-owned DOM mutation to preserve hydration.
