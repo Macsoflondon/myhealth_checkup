@@ -58,7 +58,7 @@ export const CategoryGuides: React.FC<CategoryGuidesProps> = ({
             <ArticleImage article={article} className="h-40" />
             <div className="flex flex-col flex-1 p-5">
               <div className="flex items-center gap-2 mb-3">
-                <span className="text-xs font-semibold uppercase tracking-wider text-[#22c0d4]">
+                <span className="text-xs font-semibold uppercase tracking-wider text-brand-turquoise-text">
                   {article.category}
                 </span>
                 <span className="text-xs text-[#081129]/50">
@@ -79,7 +79,7 @@ export const CategoryGuides: React.FC<CategoryGuidesProps> = ({
                   href={article.url}
                   target="_blank"
                   rel="noopener noreferrer nofollow"
-                  className="inline-flex min-h-11 items-center text-sm font-semibold text-[#e70d69] hover:text-[#22c0d4] transition-colors"
+                  className="inline-flex min-h-11 items-center text-sm font-semibold text-[#e70d69] hover:text-brand-turquoise-text transition-colors"
                 >
                   Read article →
                 </a>
@@ -92,7 +92,7 @@ export const CategoryGuides: React.FC<CategoryGuidesProps> = ({
       <div className="text-center mt-6">
         <Link
           to="/blog"
-          className="inline-flex min-h-11 items-center text-sm font-semibold text-[#081129] underline underline-offset-4 hover:text-[#22c0d4] transition-colors"
+          className="inline-flex min-h-11 items-center text-sm font-semibold text-[#081129] underline underline-offset-4 hover:text-brand-turquoise-text transition-colors"
         >
           View all articles
         </Link>

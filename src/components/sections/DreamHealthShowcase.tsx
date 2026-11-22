@@ -178,7 +178,7 @@ const DreamHealthShowcase = () => {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <div className="flex items-center justify-center gap-3 mb-4">
           <div className="h-px w-8 sm:w-12 bg-brand-pink" />
-          <span className="text-brand-turquoise text-base sm:text-lg font-semibold uppercase tracking-[0.25em]">
+          <span className="text-brand-turquoise-text text-base sm:text-lg font-semibold uppercase tracking-[0.25em]">
             Our nine-provider catalogue
           </span>
           <div className="h-px w-8 sm:w-12 bg-brand-pink" />
@@ -290,13 +290,13 @@ const DreamHealthShowcase = () => {
                       />
                     </button>
                     <div className="p-5 flex flex-col flex-1">
-                      <p className="text-xs font-semibold tracking-wide uppercase text-[#22c0d4]">
+                      <p className="text-xs font-semibold tracking-wide uppercase text-brand-turquoise-text">
                         {t.provider_name}
                       </p>
                       <button
                         type="button"
                         onClick={open}
-                        className="mt-1 text-left text-lg font-heading font-bold text-[#081129] leading-snug hover:text-[#22c0d4] transition-colors line-clamp-2 min-h-[3.25rem]"
+                        className="mt-1 text-left text-lg font-heading font-bold text-[#081129] leading-snug hover:text-brand-turquoise-text transition-colors line-clamp-2 min-h-[3.25rem]"
                       >
                         {cleanName(t.test_name)}
                       </button>

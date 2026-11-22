@@ -17,9 +17,10 @@
 //
 // Invocation: manual / ad-hoc POST with the service-role bearer.
 // Optional `?provider=<provider_id>` scopes the run to one provider.
-// No pg_cron schedule currently calls this function.
+// pg_cron url-verification-daily calls this function at 05:15 UTC daily.
 import "https://deno.land/std@0.224.0/dotenv/load.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.0";
+import { productRedirectIssue } from "../_shared/scrape/product-url.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -131,6 +132,14 @@ async function checkUrl(url: string): Promise<CheckResult> {
         ok: false,
         httpStatus: res.status,
         issue: `HTTP ${res.status}`,
+        hit429,
+      };
+    const redirectIssue = productRedirectIssue(url, res.url);
+    if (redirectIssue)
+      return {
+        ok: false,
+        httpStatus: res.status,
+        issue: redirectIssue,
         hit429,
       };
     return { ok: true, httpStatus: res.status, hit429 };

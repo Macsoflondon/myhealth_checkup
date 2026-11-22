@@ -1,5 +1,9 @@
 # Architecture decisions
 
+- Scraper identity matching prefers stored product URLs before name fallbacks; URL verification rejects homepage/non-product redirects. Why: provider renames must not freeze prices or send booking clicks to unrelated pages.
+- Auth throttle accepts only email and check/failure, with bounded strict validation and no password verification. Why: a caller-scoped failure bucket must not become a password oracle.
+
+
 - Public catalogue loaders and rendering hooks share query factories; router dehydration restores successful query data once. Why: listing cards must render in initial HTML without duplicate hydration fetches.
 - Public catalogue DTO reads use a bounded five-minute isolate-local memo, never authenticated or clinical data; HTML cache headers remain unchanged until hosting behaviour is verified. Why: repeated public reads should avoid redundant queries without sharing user responses.
 - Product-image sizing uses allowlisted public Storage/Shopify transforms and explicit bundled variants; marquees use measured compositor animation gated by viewport, visibility and reduced motion. Why: source artwork and motion speed must stay unchanged while bandwidth and idle work fall.

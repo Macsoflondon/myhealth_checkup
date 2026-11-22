@@ -218,7 +218,7 @@ const Auth = () => {
             recordFailedAttempt();
           try {
             await supabase.functions.invoke("auth-throttle", {
-              body: { email, password, outcome: "failure" },
+              body: { email, outcome: "failure" },
             });
           } catch {
             /* ignore */

@@ -8,6 +8,7 @@
 // mhc_sync_secret, the value the cron jobs send, read through public.mhc_sync_secret().
 // MHC_SYNC_SECRET is only a fallback for when that read fails. No secret is committed here.
 import { createClient } from "npm:@supabase/supabase-js@2";
+import { shopifyProductHandle } from "../_shared/scrape/product-url.ts";
 import { htmlToText } from "../_shared/scrape/html.ts";
 import { checkMhcSyncSecret } from "../_shared/mhc-auth.ts";
 import { turnaroundColumns } from "../_shared/scrape/parseTurnaround.ts";
@@ -16,23 +17,32 @@ import {
   shopifyFeedUrl,
 } from "../_shared/scrape/shopify-feed.ts";
 
-const PROVIDERS: Record<string, { domain: string; junk: (p: any) => boolean }> =
-  {
-    "goodbody-clinic": {
-      domain: "https://goodbodyclinic.com",
-      junk: (p) =>
-        /gift card|deposit|consultation|membership|cancellation|appointment|recharge test product|tube and|lancets/i.test(
-          p.title || "",
-        ),
-    },
-    "london-health-company": {
-      domain: "https://londonhealthcompany.co.uk",
-      junk: (p) =>
-        /gift card|deposit|consultation|membership|subscription|tube and|lancets|add-on/i.test(
-          p.title || "",
-        ),
-    },
-  };
+type Variant = { price: string; option1?: string; title?: string };
+type Product = {
+  title: string;
+  handle: string;
+  body_html?: string;
+  variants?: Variant[];
+};
+const PROVIDERS: Record<
+  string,
+  { domain: string; junk: (p: Product) => boolean }
+> = {
+  "goodbody-clinic": {
+    domain: "https://goodbodyclinic.com",
+    junk: (p) =>
+      /gift card|deposit|consultation|membership|cancellation|appointment|recharge test product|tube and|lancets/i.test(
+        p.title || "",
+      ),
+  },
+  "london-health-company": {
+    domain: "https://londonhealthcompany.co.uk",
+    junk: (p) =>
+      /gift card|deposit|consultation|membership|subscription|tube and|lancets|add-on/i.test(
+        p.title || "",
+      ),
+  },
+};
 
 const STOP = new Set([
   "blood",
@@ -124,7 +134,7 @@ function parseTurnaround(html: string): {
     return { text: "Same-day results available", days: 1 };
   return { text: null, days: null };
 }
-function pricing(variants: any[]): {
+function pricing(variants: Variant[]): {
   base: number | null;
   clinicFee: number | null;
   homeFee: number | null;
@@ -178,7 +188,7 @@ Deno.serve(async (req) => {
     );
   const { data: rows, error: rErr } = await supabase
     .from("provider_tests")
-    .select("id, test_name, biomarker_count")
+    .select("id, test_name, biomarker_count, url")
     .eq("provider_id", providerId)
     .eq("is_active", true);
   if (rErr)
@@ -190,18 +200,25 @@ Deno.serve(async (req) => {
   // Falls back to the database's copy when Shopify refuses the edge (429).
   // A page that cannot be read ends the feed; when page 1 cannot be read the
   // run writes nothing and records the reason.
-  const products: any[] = [];
+  const products: Product[] = [];
   const feedSources: string[] = [];
   let feedError: string | null = null;
   for (let page = 1; page <= 6; page++) {
-    let batch: any[];
+    let batch: Product[];
     try {
       const fp = await fetchShopifyFeedPage(
         shopifyFeedUrl(cfg.domain, page),
         supabase,
         { headers: { "User-Agent": "myhealthcheckup-sync/1.0" } },
       );
-      batch = fp.products;
+      batch = fp.products.filter((p: unknown): p is Product => {
+        if (!p || typeof p !== "object") return false;
+        const candidate = p as Record<string, unknown>;
+        return (
+          typeof candidate["title"] === "string" &&
+          typeof candidate["handle"] === "string"
+        );
+      });
       feedSources.push(fp.source);
     } catch (e) {
       if (page === 1) feedError = e instanceof Error ? e.message : String(e);
@@ -230,17 +247,50 @@ Deno.serve(async (req) => {
         descriptionScraped: stripHtml(p.body_html),
       };
     });
-  const feedByKey = new Map<string, any>();
+  type FeedEntry = (typeof feed)[number];
+  const feedByKey = new Map<string, FeedEntry>();
+  const feedByHandle = new Map(feed.map((f) => [f.handle.toLowerCase(), f]));
   for (const f of feed) feedByKey.set(f.key, f);
 
-  const decisions: any[] = [];
+  type Decision = {
+    db_id: string;
+    db_name: string;
+    db_bio: number | null;
+    method: string;
+    score: number;
+    confident: boolean;
+    feed_title: string | null;
+    url: string | null;
+    base_price: number | null;
+    clinic_fee: number | null;
+    home_fee: number | null;
+    feed_bio: number | null;
+    turnaround_text: string | null;
+    turnaround_days: number | null;
+    description_scraped: string | null;
+  };
+  const decisions: Decision[] = [];
   const usedFeed = new Set<string>();
-  for (const r of rows || []) {
+  // Resolve URL owners first, so a name match cannot steal a stable handle.
+  const orderedRows = [...(rows || [])].sort(
+    (a, b) =>
+      Number(feedByHandle.has(shopifyProductHandle(b.url, cfg.domain) ?? "")) -
+      Number(feedByHandle.has(shopifyProductHandle(a.url, cfg.domain) ?? "")),
+  );
+  for (const r of orderedRows) {
     const rk = normKey(r.test_name);
     const rToks = tokens(r.test_name);
-    let best = feedByKey.get(rk) || null;
+    const handle = shopifyProductHandle(r.url, cfg.domain);
+    const urlMatch = handle ? feedByHandle.get(handle) : undefined;
+    const exactMatch = feedByKey.get(rk);
+    let best =
+      urlMatch && !usedFeed.has(urlMatch.handle)
+        ? urlMatch
+        : exactMatch && !usedFeed.has(exactMatch.handle)
+          ? exactMatch
+          : null;
     let score = best ? 1 : 0;
-    let method = best ? "exact" : "";
+    let method = best === urlMatch && best ? "url" : best ? "exact" : "";
     if (!best && fuzzy) {
       for (const f of feed) {
         if (usedFeed.has(f.handle)) continue;
@@ -256,11 +306,12 @@ Deno.serve(async (req) => {
         }
       }
     }
-    const confident =
+    const confident = Boolean(
       best &&
-      (method === "exact" || score >= minScore) &&
+      (method === "url" || method === "exact" || score >= minScore) &&
       best.base != null &&
-      !usedFeed.has(best.handle);
+      !usedFeed.has(best.handle),
+    );
     if (best && confident) usedFeed.add(best.handle);
     decisions.push({
       db_id: r.id,
@@ -286,7 +337,7 @@ Deno.serve(async (req) => {
   if (!dry) {
     for (const d of decisions) {
       if (!d.confident || d.base_price == null) continue;
-      const upd: any = {
+      const upd: Record<string, unknown> = {
         url: d.url,
         base_price: d.base_price,
         total_expected_cost: d.base_price,

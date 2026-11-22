@@ -209,7 +209,7 @@ const LiveComparisonCard = ({
       <div className="p-6 sm:p-8 md:p-10 flex flex-col h-full">
         <div className="flex items-center justify-center gap-3 mb-5">
           <div className="h-px w-8 sm:w-12 bg-brand-pink" />
-          <span className="text-base sm:text-lg font-semibold uppercase tracking-[0.25em] text-brand-turquoise">
+          <span className="text-base sm:text-lg font-semibold uppercase tracking-[0.25em] text-brand-turquoise-text">
             {eyebrow}
           </span>
           <div className="h-px w-8 sm:w-12 bg-brand-pink" />
@@ -226,7 +226,7 @@ const LiveComparisonCard = ({
         >
           <div className="px-5 py-3 border-b border-brand-navy bg-slate-50/70">
             <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
-              <span className="text-xs font-bold uppercase tracking-[0.16em] text-brand-turquoise">
+              <span className="text-xs font-bold uppercase tracking-[0.16em] text-brand-turquoise-text">
                 {test.name}
               </span>
               {test.methodLabel && (
@@ -262,7 +262,7 @@ const LiveComparisonCard = ({
                         {opt.label}
                       </span>
                     )}
-                    <span className="font-heading text-[17px] font-extrabold text-brand-turquoise">
+                    <span className="font-heading text-[17px] font-extrabold text-brand-turquoise-text">
                       {opt.price}
                     </span>
                   </div>

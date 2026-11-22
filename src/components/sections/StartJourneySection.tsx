@@ -40,7 +40,7 @@ const StartJourneySection = () => {
             <div className="flex-1 text-center lg:text-left">
               <div className="flex items-center justify-center lg:justify-start gap-3 mb-4">
                 <div className="h-px w-8 sm:w-12 bg-brand-pink" />
-                <span className="text-base sm:text-lg font-semibold uppercase tracking-[0.25em] text-brand-turquoise">
+                <span className="text-base sm:text-lg font-semibold uppercase tracking-[0.25em] text-brand-turquoise-text">
                   Start Your Journey
                 </span>
                 <div className="h-px w-8 sm:w-12 bg-brand-pink" />

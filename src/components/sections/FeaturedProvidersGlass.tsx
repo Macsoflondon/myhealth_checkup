@@ -20,6 +20,7 @@ interface ProviderEntry {
   tagline: string;
   description: string;
   tags: string[];
+  textColour: string;
   glow?: string; // Provider-specific palette; absent uses platform tokens.
   glowRgb?: string;
 }
@@ -27,6 +28,7 @@ interface ProviderEntry {
 export const PROVIDERS: ProviderEntry[] = [
   {
     id: "medichecks",
+    textColour: "text-quote-pink",
     name: "Medichecks",
     displayName: "Medichecks",
     tagline: "Your health, your way",
@@ -38,6 +40,7 @@ export const PROVIDERS: ProviderEntry[] = [
   },
   {
     id: "goodbody",
+    textColour: "text-quote-teal",
     name: "Goodbody Clinic",
     displayName: "Goodbody Clinic",
     tagline: "Trusted health testing",
@@ -49,6 +52,7 @@ export const PROVIDERS: ProviderEntry[] = [
   },
   {
     id: "randox",
+    textColour: "text-quote-blue",
     name: "Randox Health",
     displayName: "Randox Health",
     tagline: "Excellence in diagnostics",
@@ -60,6 +64,7 @@ export const PROVIDERS: ProviderEntry[] = [
   },
   {
     id: "london-medical-laboratory",
+    textColour: "text-quote-blue",
     name: "London Medical Laboratory",
     displayName: "London Medical Laboratory",
     tagline: "Fast, accurate private blood testing",
@@ -71,6 +76,7 @@ export const PROVIDERS: ProviderEntry[] = [
   },
   {
     id: "lola-health",
+    textColour: "text-quote-coral",
     name: "Lola Health",
     displayName: "Lola Health",
     tagline: "Modern women's wellness",
@@ -82,6 +88,7 @@ export const PROVIDERS: ProviderEntry[] = [
   },
   {
     id: "clinilabs",
+    textColour: "text-quote-green",
     name: "Clinilabs",
     displayName: "Clinilabs",
     tagline: "Clinical precision, trusted results",
@@ -93,6 +100,7 @@ export const PROVIDERS: ProviderEntry[] = [
   },
   {
     id: "london-health-company",
+    textColour: "text-quote-blue",
     name: "London Health Company",
     displayName: "London Health Company",
     tagline: "Accessible private healthcare",
@@ -104,6 +112,7 @@ export const PROVIDERS: ProviderEntry[] = [
   },
   {
     id: "medical-diagnosis",
+    textColour: "text-quote-red",
     name: "Medical Diagnosis",
     displayName: "Medical Diagnosis",
     tagline: "Specialist diagnostics, faster",
@@ -115,6 +124,7 @@ export const PROVIDERS: ProviderEntry[] = [
   },
   {
     id: "sports-blood-tests",
+    textColour: "text-quote-teal",
     name: "EDGE",
     displayName: "EDGE",
     tagline: "Sports blood tests",
@@ -186,11 +196,7 @@ const FeaturedProvidersGlass = () => {
                         {p.displayName}
                       </h2>
                       <p
-                        className="italic text-lg opacity-90 text-brand-navy"
-                        style={{
-                          fontFamily: "'EB Garamond', Garamond, serif",
-                          color: `var(--color-quote-${p.id === "goodbody" || p.id === "sports-blood-tests" ? "teal" : p.id === "lola-health" ? "coral" : p.id === "clinilabs" ? "green" : p.id === "medical-diagnosis" ? "red" : p.id === "medichecks" ? "pink" : "blue"})`,
-                        }}
+                        className={`italic text-lg font-elegant ${p.textColour}`}
                       >
                         {p.tagline}
                       </p>

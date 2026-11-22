@@ -61,7 +61,7 @@ const TestCategoriesSection = () => {
         <div className="text-center max-w-3xl mx-auto mb-8 sm:mb-10">
           <div className="flex items-center justify-center gap-3 mb-3">
             <div className="h-px w-8 sm:w-12 bg-brand-pink" />
-            <span className="text-base sm:text-lg font-semibold uppercase tracking-[0.25em] text-brand-turquoise">
+            <span className="text-base sm:text-lg font-semibold uppercase tracking-[0.25em] text-brand-turquoise-text">
               What We Compare
             </span>
             <div className="h-px w-8 sm:w-12 bg-brand-pink" />
@@ -85,7 +85,9 @@ const TestCategoriesSection = () => {
               className="group relative flex flex-col justify-end min-h-[285px] sm:min-h-[352px] lg:min-h-[390px] rounded-2xl overflow-hidden"
             >
               {/* Background image */}
-              <img width={600} height={400}
+              <img
+                width={600}
+                height={400}
                 src={cat.image}
                 alt=""
                 aria-hidden="true"

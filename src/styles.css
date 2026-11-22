@@ -1660,13 +1660,6 @@ html {
   min-height: 24px;
   min-width: 24px;
 }
-/* Legacy editorial quotes retain their hue with accessible ink. */
-.public-accessibility [style*="color: rgb(233, 37, 120)"] { color: var(--color-quote-pink) !important; }
-.public-accessibility [style*="color: rgb(25, 165, 152)"] { color: var(--color-quote-teal) !important; }
-.public-accessibility [style*="color: rgb(234, 112, 94)"] { color: var(--color-quote-coral) !important; }
-.public-accessibility [style*="color: rgb(67, 138, 71)"] { color: var(--color-quote-green) !important; }
-.public-accessibility [style*="color: rgb(79, 143, 247)"] { color: var(--color-quote-blue) !important; }
-.public-accessibility [style*="color: rgb(232, 77, 73)"] { color: var(--color-quote-red) !important; }
 
 @media (max-width: 639px) {
   .public-accessibility input:not([type="checkbox"]):not([type="radio"]),

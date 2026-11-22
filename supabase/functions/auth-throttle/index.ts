@@ -7,6 +7,7 @@
 // but never lock anyone out of their own account from a different IP).
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { internalErrorResponse } from "../_shared/errors.ts";
+import { readThrottleInput } from "./request.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -22,18 +23,25 @@ Deno.serve(async (req) => {
     return new Response("ok", { headers: corsHeaders });
 
   try {
-    const { email, outcome, password } = await req.json().catch(() => ({}));
-    if (typeof email !== "string" || email.length > 254) {
-      return new Response(JSON.stringify({ error: "bad email" }), {
-        status: 400,
+    if (req.method !== "POST")
+      return new Response("Method not allowed", {
+        status: 405,
+        headers: corsHeaders,
+      });
+    const input = await readThrottleInput(req);
+    if (input.status !== 200) {
+      return new Response(JSON.stringify({ error: "Invalid request" }), {
+        status: input.status,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
+    const { email, outcome } = input.data;
+    const supabaseUrl = Deno.env.get("SUPABASE_URL");
+    const serviceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
+    if (!supabaseUrl || !serviceKey)
+      throw new Error("Throttle configuration unavailable");
 
-    const supabase = createClient(
-      Deno.env.get("SUPABASE_URL")!,
-      Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
-    );
+    const supabase = createClient(supabaseUrl, serviceKey);
 
     const ip = (
       req.headers.get("cf-connecting-ip") ??
@@ -45,38 +53,24 @@ Deno.serve(async (req) => {
       Date.now() - WINDOW_MIN * 60_000,
     ).toISOString();
 
-    // Record a failed attempt only after verifying it here, so callers cannot
-    // fill someone else's bucket by simply claiming a failure.
-    if (
-      outcome === "failure" &&
-      typeof password === "string" &&
-      password.length > 0 &&
-      password.length <= 1024
-    ) {
-      const verifier = createClient(
-        Deno.env.get("SUPABASE_URL")!,
-        Deno.env.get("SUPABASE_ANON_KEY")!,
-        { auth: { persistSession: false, autoRefreshToken: false } },
-      );
-      const { data: signIn, error: signInError } =
-        await verifier.auth.signInWithPassword({ email, password });
-      if (signIn?.session) {
-        await verifier.auth.signOut({ scope: "local" }).catch(() => {});
-      } else if (signInError && signInError.status === 400) {
-        await supabase.from("api_rate_limits").insert({
-          client_key: key,
-          endpoint: "auth:signin",
-          window_start: new Date().toISOString(),
-        });
-      }
+    // A claimed failure affects only this address-plus-email bucket.
+    // Passwords are never accepted and Supabase Auth is never called here.
+    if (outcome === "failure") {
+      const { error } = await supabase.from("api_rate_limits").insert({
+        client_key: key,
+        endpoint: "auth:signin",
+        window_start: new Date().toISOString(),
+      });
+      if (error) throw new Error("Throttle write failed");
     }
 
-    const { count } = await supabase
+    const { count, error: countError } = await supabase
       .from("api_rate_limits")
       .select("id", { count: "exact", head: true })
       .eq("client_key", key)
       .eq("endpoint", "auth:signin")
       .gte("window_start", windowStart);
+    if (countError) throw new Error("Throttle read failed");
 
     const used = count ?? 0;
     const allowed = used < MAX_ATTEMPTS;

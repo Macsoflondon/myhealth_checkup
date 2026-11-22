@@ -8,6 +8,7 @@
 // mhc_sync_secret, the value the cron jobs send, read through public.mhc_sync_secret().
 // MHC_SYNC_SECRET is only a fallback for when that read fails. No secret is committed here.
 import { createClient } from "npm:@supabase/supabase-js@2";
+import { normalisedProductPath } from "../_shared/scrape/product-url.ts";
 import { htmlToText } from "../_shared/scrape/html.ts";
 import { parseMedicalDiagnosisTestsIncluded } from "../_shared/scrape/biomarkerParsers.ts";
 import { checkMhcSyncSecret } from "../_shared/mhc-auth.ts";
@@ -83,7 +84,9 @@ function decodeAttr(s: string): string {
 function extractOgDescription(html: string): string | null {
   const m = html.match(/property="og:description"\s+content="([^"]+)"/i);
   if (!m) return null;
-  const val = decodeAttr(m[1]).replace(/[ \t]+/g, " ").trim();
+  const val = decodeAttr(m[1])
+    .replace(/[ \t]+/g, " ")
+    .trim();
   if (val.length < 40 || GENERIC_COMPANY_BOILERPLATE.test(val)) return null;
   return val.slice(0, 4000);
 }
@@ -207,9 +210,11 @@ function parsePage(html: string) {
   };
 }
 
-async function getUrls(
-  cfg: any,
-): Promise<{ urls: string[]; fetchFailures: number; sitemapsTried: number }> {
+async function getUrls(cfg: {
+  sitemaps: string[];
+  urlMatch: RegExp;
+  urlExclude: RegExp;
+}): Promise<{ urls: string[]; fetchFailures: number; sitemapsTried: number }> {
   const urls: string[] = [];
   let fetchFailures = 0;
   for (const sm of cfg.sitemaps) {
@@ -260,15 +265,29 @@ Deno.serve(async (req) => {
   const { data: rows, error: rowsError } = await supabase
     .from("provider_tests")
     .select(
-      "id, test_name, biomarker_count, biomarkers_list, clinic_phlebotomy_cost, image_url",
+      "id, test_name, biomarker_count, biomarkers_list, clinic_phlebotomy_cost, image_url, url",
     )
     .eq("provider_id", providerId)
     .eq("is_active", true);
   const runErrors: { url?: string; message: string }[] = [];
   if (rowsError)
     runErrors.push({ message: `catalogue read failed: ${rowsError.message}` });
-  const byNorm = new Map<string, any>();
-  for (const r of rows || []) byNorm.set(norm(r.test_name), r);
+  type CatalogueRow = {
+    id: string;
+    test_name: string;
+    biomarker_count: number | null;
+    biomarkers_list: string[] | null;
+    clinic_phlebotomy_cost: number | null;
+    image_url: string | null;
+    url: string | null;
+  };
+  const byNorm = new Map<string, CatalogueRow>();
+  const byPath = new Map<string, CatalogueRow>();
+  for (const r of (rows || []) as CatalogueRow[]) {
+    byNorm.set(norm(r.test_name), r);
+    const path = normalisedProductPath(r.url);
+    if (path) byPath.set(path, r);
+  }
   const keySet = new Set([...byNorm.keys()].filter((k) => k.length > 2));
   const {
     urls: sitemapUrls,
@@ -277,7 +296,10 @@ Deno.serve(async (req) => {
   } = await getUrls(cfg);
   const sitemapFullyFailed =
     sitemapsTried > 0 && fetchFailures === sitemapsTried;
-  const allUrls = sitemapUrls.filter((url) => keySet.has(slugNorm(url)));
+  const allUrls = sitemapUrls.filter(
+    (url) =>
+      byPath.has(normalisedProductPath(url) ?? "") || keySet.has(slugNorm(url)),
+  );
   if (urlsOnly)
     return new Response(
       JSON.stringify(
@@ -294,7 +316,7 @@ Deno.serve(async (req) => {
       { headers: { "content-type": "application/json" } },
     );
   const slice = allUrls.slice(offset, offset + limit);
-  const results: any[] = [];
+  const results: Record<string, unknown>[] = [];
   let written = 0,
     matched = 0,
     nameSkips = 0;
@@ -321,7 +343,10 @@ Deno.serve(async (req) => {
       nameSkips++;
       continue;
     }
-    const row = byNorm.get(slugNorm(url)) || byNorm.get(norm(p.name));
+    const row =
+      byPath.get(normalisedProductPath(url) ?? "") ||
+      byNorm.get(slugNorm(url)) ||
+      byNorm.get(norm(p.name));
     if (!row) continue;
     matched++;
     if (results.length < 8)
@@ -336,7 +361,7 @@ Deno.serve(async (req) => {
         has_description: !!p.descriptionScraped,
       });
     if (!dry) {
-      const upd: any = {
+      const upd: Record<string, unknown> = {
         url,
         scrape_source_url: url,
         url_verified: true,
@@ -366,7 +391,7 @@ Deno.serve(async (req) => {
         // Never overwrite a stored list; report the difference instead.
         runErrors.push({
           url,
-          message: `biomarker list differs from stored list (${p.bios.length} vs ${row.biomarkers_list.length}); not written`,
+          message: `biomarker list differs from stored list (${p.bios.length} vs ${row.biomarkers_list?.length ?? 0}); not written`,
         });
       } else if (
         !Array.isArray(row.biomarkers_list) ||

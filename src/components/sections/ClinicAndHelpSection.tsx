@@ -39,7 +39,7 @@ const ClinicAndHelpSection = () => {
               <div>
                 <div className="flex items-center gap-3 mb-4 justify-center lg:justify-start">
                   <div className="h-px w-8 sm:w-12 bg-brand-pink" />
-                  <span className="text-brand-turquoise text-base sm:text-lg font-semibold uppercase tracking-[0.25em]">
+                  <span className="text-brand-turquoise-text text-base sm:text-lg font-semibold uppercase tracking-[0.25em]">
                     Here to Help
                   </span>
                   <div className="h-px w-8 sm:w-12 bg-brand-pink" />
@@ -83,7 +83,7 @@ const ClinicAndHelpSection = () => {
                       <resource.icon
                         className={`w-5 h-5 sm:w-6 sm:h-6 transition-colors duration-300 ${
                           resource.accent === "turquoise"
-                            ? "text-brand-turquoise group-hover:text-white"
+                            ? "text-brand-turquoise-text group-hover:text-brand-navy"
                             : "text-brand-pink group-hover:text-white"
                         }`}
                       />
