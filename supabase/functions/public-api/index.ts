@@ -1,3 +1,4 @@
+import { clientIp as trustedClientIp } from "../_shared/client-ip.ts";
 // myhealth checkup — public comparison API (v1)
 //
 // Read-only JSON API over the api_v1_* views. Built for AI agents and any
@@ -1183,9 +1184,7 @@ function cacheSet(key: string, status: number, text: string) {
 const buckets = new Map<string, { count: number; windowStart: number }>();
 
 async function clientKey(req: Request): Promise<string> {
-  const ip =
-    (req.headers.get("x-forwarded-for") ?? "").split(",")[0].trim() ||
-    "unknown";
+  const ip = trustedClientIp(req.headers) ?? "unknown";
   const digest = await crypto.subtle.digest(
     "SHA-256",
     new TextEncoder().encode(`mhc-public-api:${ip}`),

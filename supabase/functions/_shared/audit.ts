@@ -1,3 +1,4 @@
+import { clientIp } from "./client-ip.ts";
 // Shared audit-logging helper for protected edge functions.
 // Writes to public.protected_call_log via the service role (bypasses RLS).
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.51.0";
@@ -28,10 +29,7 @@ export async function logProtectedCall(
   try {
     const c = client();
     if (!c) return;
-    const ip =
-      args.req?.headers.get("cf-connecting-ip") ??
-      args.req?.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ??
-      null;
+    const ip = args.req ? clientIp(args.req.headers) : null;
     const ua = args.req?.headers.get("user-agent") ?? null;
     await c.from("protected_call_log").insert({
       caller_id: args.callerId ?? null,

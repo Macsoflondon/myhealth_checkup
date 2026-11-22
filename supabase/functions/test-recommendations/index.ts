@@ -1,4 +1,4 @@
-import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { clientIp as trustedClientIp } from "../_shared/client-ip.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 const corsHeaders = {
@@ -118,14 +118,13 @@ function validatePreferences(prefs: unknown): prefs is Preferences {
   );
 }
 
-serve(async (req) => {
+Deno.serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
   }
 
   // Persistent shared rate limit, keyed by authenticated user when present, otherwise client IP
-  const clientIp =
-    req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
+  const clientIp = trustedClientIp(req.headers) ?? "unknown";
   const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
   const supabaseServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
   const rateClient = createClient(supabaseUrl, supabaseServiceKey);

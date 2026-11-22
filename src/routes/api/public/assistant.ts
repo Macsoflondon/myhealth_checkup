@@ -1,3 +1,4 @@
+import { clientIp } from "@/lib/mcp/rate-limit";
 import { createFileRoute } from "@tanstack/react-router";
 import { createOpenAI } from "@ai-sdk/openai";
 import { createClient } from "@supabase/supabase-js";
@@ -78,10 +79,7 @@ function catalogueClient() {
 const MAX_BODY_BYTES = 64 * 1024;
 
 async function handle(request: Request): Promise<Response> {
-  const ip =
-    request.headers.get("cf-connecting-ip") ??
-    request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ??
-    "unknown";
+  const ip = clientIp(request.headers) ?? "unknown";
   if (!allow(ip))
     return json(429, "You're sending messages quickly. Please wait a minute.");
 

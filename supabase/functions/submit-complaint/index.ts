@@ -1,4 +1,4 @@
-import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
+import { clientIp as trustedClientIp } from "../_shared/client-ip.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.39.3";
 import { Resend } from "https://esm.sh/resend@2.0.0";
 
@@ -49,7 +49,7 @@ const esc = (s: string) =>
       ]!,
   );
 
-serve(async (req: Request) => {
+Deno.serve(async (req: Request) => {
   if (req.method === "OPTIONS")
     return new Response(null, { headers: corsHeaders });
   if (req.method !== "POST") return json({ error: "Method not allowed" }, 405);
@@ -89,8 +89,7 @@ serve(async (req: Request) => {
       );
 
     // Per-IP rate limit (sliding window via api_rate_limits)
-    const ip =
-      req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "unknown";
+    const ip = trustedClientIp(req.headers) ?? "unknown";
     const supabaseUrl = Deno.env.get("SUPABASE_URL");
     const serviceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
     if (supabaseUrl && serviceKey) {

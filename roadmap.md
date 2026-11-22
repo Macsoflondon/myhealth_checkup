@@ -1,5 +1,11 @@
 # Roadmap
 
+## 22 November security screening, part 4
+- [x] Replace forwarded-address reads with validated Cloudflare/gateway helpers and repository guard tests; two additional sibling functions and existing nullable-helper consumers covered.
+- [ ] Restore landing-signup and deploy its address fix — blocked by the sandbox's explicit prohibition on adding absent Edge-function source. Upload SHA-256 matches; existing verify_jwt=false setting recorded, production signup unchanged.
+- [x] Correct blog aggregation documentation and inventory out-of-repository functions, including the still-blocked landing-signup restoration.
+- [x] 1,315 unit tests, 35 targeted Deno tests, 15 live public API checks and eight retried legacy live tests passed; 14 deployed versions verified from invocation logs. Automatic compilation clean. Lint run: one pre-existing intentional control-regex finding plus existing generated MCP formatting/no-var findings remain. Details in docs/SECURITY_SCREENING_PART_4.md. No publishing, migrations or cron changes.
+
 ## Medical Diagnosis batch coverage follow-up
 - [x] Partition stable matched paths into five dynamic slices using the existing offset/limit batch positions; preserve urls_only and report batch_index, batch_count and slice_size.
 - [x] Exact coverage tests for 150, 151 and 180 URLs pass (15 Deno tests plus 3 targeted URL tests); automatic compilation clean. Deployed mhc-page-scrape v159 confirmed in logs. All five live URL-only calls return 200 with 152 matched URLs and slice_size=31: batch lengths are 31/31/31/31/28, covering all 152. No cron, migration or catalogue price updates; site not published.

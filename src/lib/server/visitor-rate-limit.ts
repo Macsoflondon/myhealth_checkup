@@ -16,7 +16,7 @@ export async function withinVisitorLimit(
   secret: string,
   hit: RateHit,
 ): Promise<boolean> {
-  const ip = clientIp(request.headers);
+  const ip = clientIp(request.headers) ?? "unknown";
   const ipHash = await hashVisitor(scope ? `${scope}|${ip}` : ip, secret);
   try {
     return await hit(ipHash, limit);
@@ -25,12 +25,14 @@ export async function withinVisitorLimit(
   }
 }
 
-type AdminClient = (typeof import("@/integrations/supabase/client.server"))["supabaseAdmin"];
+type AdminClient =
+  (typeof import("@/integrations/supabase/client.server"))["supabaseAdmin"];
 
 /** Server-only admin client, loaded inside the handler. Null when the key is missing. */
 export async function loadAdmin(): Promise<AdminClient | null> {
   if (!process.env["SUPABASE_SERVICE_ROLE_KEY"]) return null;
-  const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+  const { supabaseAdmin } =
+    await import("@/integrations/supabase/client.server");
   return supabaseAdmin;
 }
 

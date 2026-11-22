@@ -48,13 +48,27 @@ export function createRateLimiter(
   };
 }
 
-export function clientIp(headers: Headers): string {
-  const cf = headers.get("cf-connecting-ip")?.trim();
-  if (cf) return cf;
-  const xff = headers.get("x-forwarded-for");
-  const first = xff?.split(",")[0]?.trim();
-  if (first) return first;
-  return headers.get("x-real-ip")?.trim() || "unknown";
+/** Only infrastructure-overwritten headers may identify the client. */
+export function clientIp(headers: Headers): string | null {
+  for (const name of ["cf-connecting-ip", "x-real-ip"]) {
+    const value = headers.get(name)?.trim();
+    if (!value) continue;
+    if (isIpLiteral(value)) return value;
+  }
+  return null;
+}
+
+function isIpLiteral(value: string): boolean {
+  if (/^(?:0|[1-9]\d{0,2})(?:\.(?:0|[1-9]\d{0,2})){3}$/.test(value)) {
+    return value.split(".").every((part) => Number(part) <= 255);
+  }
+  if (!value.includes(":") || !/^[\da-f:.]+$/i.test(value)) return false;
+  try {
+    // WHATWG URL validates compressed IPv6 and embedded IPv4 without Node APIs.
+    return new URL(`http://[${value}]/`).hostname.startsWith("[");
+  } catch {
+    return false;
+  }
 }
 
 type Handler = (request: Request) => Response | Promise<Response>;
@@ -67,7 +81,7 @@ export function withRateLimit(
     // CORS preflights are free so browsers can still discover the server.
     if (request.method === "OPTIONS") return handler(request);
     const { allowed, retryAfterSeconds } = limiter.check(
-      clientIp(request.headers),
+      clientIp(request.headers) ?? "unknown",
     );
     if (!allowed) {
       return new Response(

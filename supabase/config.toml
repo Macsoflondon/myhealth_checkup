@@ -236,3 +236,7 @@ verify_jwt = false
 # call_edge_with_service_role. Security: service-role bearer checked in code.
 [functions.refresh-trustpilot-ratings]
 verify_jwt = false
+
+# Existing deployed public signup; repository source restoration is pending.
+[functions.landing-signup]
+verify_jwt = false

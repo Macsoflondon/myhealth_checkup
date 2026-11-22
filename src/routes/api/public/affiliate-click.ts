@@ -30,22 +30,31 @@ export const affiliateClickSchema = z.object({
   click_id: z.string().uuid(),
   provider_id: z.string().regex(/^[a-z0-9-]{1,64}$/),
   test_id: z.string().max(200).nullable(),
-  source_page: z.string().min(1).max(300).regex(/^\/[^?#]*$/),
+  source_page: z
+    .string()
+    .min(1)
+    .max(300)
+    .regex(/^\/[^?#]*$/),
   placement: z.enum(AFFILIATE_PLACEMENTS),
   // Accepted for older clients but ignored: the server derives the host.
   destination_host: z.string().max(253).optional(),
 });
 
-type Admin = (typeof import("@/integrations/supabase/client.server"))["supabaseAdmin"];
+type Admin =
+  (typeof import("@/integrations/supabase/client.server"))["supabaseAdmin"];
 
 async function adminClient(): Promise<Admin | null> {
   if (!process.env["SUPABASE_SERVICE_ROLE_KEY"]) return null;
-  const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+  const { supabaseAdmin } =
+    await import("@/integrations/supabase/client.server");
   return supabaseAdmin;
 }
 
-async function withinRateLimit(admin: Admin, request: Request): Promise<boolean> {
-  const ip = clientIp(request.headers);
+async function withinRateLimit(
+  admin: Admin,
+  request: Request,
+): Promise<boolean> {
+  const ip = clientIp(request.headers) ?? "unknown";
   const secret = process.env["SUPABASE_SERVICE_ROLE_KEY"] ?? "";
   const ipHash = await hashVisitor(ip, secret);
   const { data, error } = await admin.rpc("affiliate_click_rate_hit", {
@@ -76,8 +85,13 @@ async function record(
   },
   request: Request,
 ): Promise<boolean> {
-  const traffic_flag = classifyTraffic(request.headers.get("user-agent"), false);
-  const { error } = await admin.from("affiliate_clicks").insert({ ...row, traffic_flag });
+  const traffic_flag = classifyTraffic(
+    request.headers.get("user-agent"),
+    false,
+  );
+  const { error } = await admin
+    .from("affiliate_clicks")
+    .insert({ ...row, traffic_flag });
   return !error;
 }
 
@@ -91,7 +105,9 @@ export type AffiliateClickRow = {
 };
 
 export type AffiliateBeaconDeps = {
-  lookupTest: (testId: string) => Promise<{ id: string; provider_id: string; url: string | null } | null>;
+  lookupTest: (
+    testId: string,
+  ) => Promise<{ id: string; provider_id: string; url: string | null } | null>;
   withinLimit: (request: Request) => Promise<boolean>;
   insert: (row: AffiliateClickRow) => Promise<boolean>;
 };
@@ -102,7 +118,10 @@ export function serverDestinationHost(
   catalogueUrl: string | null,
 ): string | null {
   if (catalogueUrl !== null) {
-    return verifiedProviderUrl(catalogueUrl, providerId)?.hostname.toLowerCase() ?? null;
+    return (
+      verifiedProviderUrl(catalogueUrl, providerId)?.hostname.toLowerCase() ??
+      null
+    );
   }
   return AFFILIATE_PROVIDERS[providerId]?.hosts[0] ?? null;
 }
@@ -116,11 +135,13 @@ export async function handleAffiliateBeacon(
   deps: AffiliateBeaconDeps,
 ): Promise<Response> {
   const declared = Number(request.headers.get("content-length") ?? "0");
-  if (declared > MAX_CLICK_BODY_BYTES) return new Response(null, { status: 413 });
+  if (declared > MAX_CLICK_BODY_BYTES)
+    return new Response(null, { status: 413 });
   let body: unknown;
   try {
     const text = await request.text();
-    if (text.length > MAX_CLICK_BODY_BYTES) return new Response(null, { status: 413 });
+    if (text.length > MAX_CLICK_BODY_BYTES)
+      return new Response(null, { status: 413 });
     body = JSON.parse(text);
   } catch {
     return new Response(null, { status: 400 });
@@ -135,22 +156,36 @@ export async function handleAffiliateBeacon(
   let testId: string | null = null;
   let catalogueUrl: string | null = null;
   if (parsed.data.test_id !== null) {
-    if (!isCatalogueTestId(parsed.data.test_id)) return new Response(null, { status: 400 });
+    if (!isCatalogueTestId(parsed.data.test_id))
+      return new Response(null, { status: 400 });
     const test = await deps.lookupTest(parsed.data.test_id);
-    if (!test || test.provider_id !== provider_id) return new Response(null, { status: 400 });
+    if (!test || test.provider_id !== provider_id)
+      return new Response(null, { status: 400 });
     testId = test.id;
     catalogueUrl = test.url ?? "";
   }
   const destination_host = serverDestinationHost(provider_id, catalogueUrl);
   if (!destination_host) return new Response(null, { status: 400 });
   if (!(await deps.withinLimit(request))) {
-    return new Response(null, { status: 429, headers: { "retry-after": "600" } });
+    return new Response(null, {
+      status: 429,
+      headers: { "retry-after": "600" },
+    });
   }
-  const ok = await deps.insert({ click_id, provider_id, test_id: testId, source_page, placement, destination_host });
+  const ok = await deps.insert({
+    click_id,
+    provider_id,
+    test_id: testId,
+    source_page,
+    placement,
+    destination_host,
+  });
   return new Response(null, { status: ok ? 204 : 502 });
 }
 
-export async function handleAffiliateClick(request: Request): Promise<Response> {
+export async function handleAffiliateClick(
+  request: Request,
+): Promise<Response> {
   const admin = await adminClient();
   if (!admin) return new Response(null, { status: 503 });
   return handleAffiliateBeacon(request, {
@@ -166,15 +201,21 @@ export async function handleAffiliateClick(request: Request): Promise<Response> 
  * request is never used. Over the rate limit the visitor is still sent to
  * the provider, but the click is not recorded.
  */
-export async function handleAffiliateRedirect(request: Request): Promise<Response> {
+export async function handleAffiliateRedirect(
+  request: Request,
+): Promise<Response> {
   const params = new URL(request.url).searchParams;
   const testId = params.get("test");
-  if (!isCatalogueTestId(testId)) return new Response("Unknown test", { status: 400 });
+  if (!isCatalogueTestId(testId))
+    return new Response("Unknown test", { status: 400 });
   const admin = await adminClient();
   if (!admin) return new Response(null, { status: 503 });
   const test = await lookupTest(admin, testId);
-  const destination = test ? verifiedProviderUrl(test.url, test.provider_id) : null;
-  if (!test || !destination) return new Response("Unknown test", { status: 404 });
+  const destination = test
+    ? verifiedProviderUrl(test.url, test.provider_id)
+    : null;
+  if (!test || !destination)
+    return new Response("Unknown test", { status: 404 });
 
   const pl = params.get("pl");
   const placement = isAffiliatePlacement(pl) ? pl : "card";
@@ -193,10 +234,18 @@ export async function handleAffiliateRedirect(request: Request): Promise<Respons
       request,
     );
   }
-  const location = buildAffiliateUrl(destination.toString(), test.provider_id, clickId);
+  const location = buildAffiliateUrl(
+    destination.toString(),
+    test.provider_id,
+    clickId,
+  );
   return new Response(null, {
     status: 302,
-    headers: { location, "cache-control": "no-store", "referrer-policy": "no-referrer" },
+    headers: {
+      location,
+      "cache-control": "no-store",
+      "referrer-policy": "no-referrer",
+    },
   });
 }
 

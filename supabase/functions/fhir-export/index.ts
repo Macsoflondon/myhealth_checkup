@@ -1,3 +1,4 @@
+import { clientIp as trustedClientIp } from "../_shared/client-ip.ts";
 /* eslint-disable @typescript-eslint/no-explicit-any -- TODO: type properly; inherited from upstream merge 2026-07-10 */
 // FHIR R4 export + async bulk-data pattern + consent-based sharing grants.
 //
@@ -237,8 +238,7 @@ Deno.serve(async (req) => {
     if (req.method === "POST") {
       const body = await req.json().catch(() => ({}));
       const grant = body?.grant === true;
-      const ip =
-        req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? null;
+      const ip = trustedClientIp(req.headers);
       const ua = req.headers.get("user-agent") ?? null;
       if (grant) {
         const { error } = await supabase.from("user_consents").insert({

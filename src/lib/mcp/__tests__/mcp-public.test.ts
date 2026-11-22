@@ -72,11 +72,11 @@ describe("rate limiter", () => {
   it("reads the client IP from proxy headers", () => {
     expect(
       clientIp(new Headers({ "x-forwarded-for": "9.9.9.9, 10.0.0.1" })),
-    ).toBe("9.9.9.9");
+    ).toBeNull();
     expect(clientIp(new Headers({ "cf-connecting-ip": "8.8.8.8" }))).toBe(
       "8.8.8.8",
     );
-    expect(clientIp(new Headers())).toBe("unknown");
+    expect(clientIp(new Headers())).toBeNull();
   });
 
   it("returns HTTP 429 after the limit and skips preflights", async () => {

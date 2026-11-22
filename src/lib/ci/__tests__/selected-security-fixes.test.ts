@@ -5,6 +5,7 @@ import { resolve } from "node:path";
 import { runInNewContext } from "node:vm";
 import { transpileModule, ModuleKind } from "typescript";
 import { describe, expect, it, vi } from "vitest";
+import { clientIp } from "@/lib/mcp/rate-limit";
 
 type Result = { data?: unknown; error?: unknown; count?: number };
 type Handler = (request: Request) => Promise<Response>;
@@ -26,6 +27,7 @@ function loadHandler(name: string, createClient: () => unknown) {
         },
       },
       createClient,
+      trustedClientIp: clientIp,
       Request,
       Response,
       URL,

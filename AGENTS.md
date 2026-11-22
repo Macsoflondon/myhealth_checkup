@@ -1,5 +1,7 @@
 # Architecture decisions
 
+- Site and Edge address helpers validate infrastructure-overwritten Cloudflare/gateway IP literals; callers retain their null/unknown fallback. Why: forwarded lists are caller-controlled and cannot key rate limits or consent evidence.
+
 - Medical Diagnosis interprets offset/limit as one of five batch positions and partitions normalised-path-sorted sitemap matches dynamically. Why: unchanged cron jobs must cover growing catalogues without stale-tail delisting.
 
 - Scraper identity matching prefers stored product URLs before name fallbacks; URL verification rejects homepage/non-product redirects. Why: provider renames must not freeze prices or send booking clicks to unrelated pages.

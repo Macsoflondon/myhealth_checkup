@@ -514,18 +514,29 @@ function createRateLimiter(limit = PUBLIC_RATE_LIMIT, windowMs = PUBLIC_RATE_WIN
   };
 }
 function clientIp(headers) {
-  const cf = headers.get("cf-connecting-ip")?.trim();
-  if (cf) return cf;
-  const xff = headers.get("x-forwarded-for");
-  const first = xff?.split(",")[0]?.trim();
-  if (first) return first;
-  return headers.get("x-real-ip")?.trim() || "unknown";
+  for (const name of ["cf-connecting-ip", "x-real-ip"]) {
+    const value = headers.get(name)?.trim();
+    if (!value) continue;
+    if (isIpLiteral(value)) return value;
+  }
+  return null;
+}
+function isIpLiteral(value) {
+  if (/^(?:0|[1-9]\d{0,2})(?:\.(?:0|[1-9]\d{0,2})){3}$/.test(value)) {
+    return value.split(".").every((part) => Number(part) <= 255);
+  }
+  if (!value.includes(":") || !/^[\da-f:.]+$/i.test(value)) return false;
+  try {
+    return new URL(`http://[${value}]/`).hostname.startsWith("[");
+  } catch {
+    return false;
+  }
 }
 function withRateLimit(handler, limiter = createRateLimiter()) {
   return (request) => {
     if (request.method === "OPTIONS") return handler(request);
     const { allowed, retryAfterSeconds } = limiter.check(
-      clientIp(request.headers)
+      clientIp(request.headers) ?? "unknown"
     );
     if (!allowed) {
       return new Response(

@@ -1,3 +1,4 @@
+import { clientIp as trustedClientIp } from "../_shared/client-ip.ts";
 // Cyber Essentials: brute-force protection for sign-in.
 // Call BEFORE supabase.auth.signInWithPassword from the client.
 // Returns { allowed: boolean, retryAfter?: number }.
@@ -43,11 +44,7 @@ Deno.serve(async (req) => {
 
     const supabase = createClient(supabaseUrl, serviceKey);
 
-    const ip = (
-      req.headers.get("cf-connecting-ip") ??
-      req.headers.get("x-forwarded-for")?.split(",")[0] ??
-      "unknown"
-    ).trim();
+    const ip = trustedClientIp(req.headers) ?? "unknown";
     const key = `auth:signin:${email.toLowerCase()}|${ip}`;
     const windowStart = new Date(
       Date.now() - WINDOW_MIN * 60_000,

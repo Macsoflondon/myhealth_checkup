@@ -1,3 +1,4 @@
+import { clientIp as trustedClientIp } from "../_shared/client-ip.ts";
 // Cyber Essentials: CSP violation report sink.
 // Accepts application/csp-report and application/reports+json.
 // Rate-limited per IP, payload capped, never reflects input back.
@@ -33,14 +34,23 @@ function normaliseReports(parsed: unknown): NormalisedReport[] {
     const record = entry as Record<string, unknown>;
     // Reporting API entries of another type (deprecation, intervention) are
     // not CSP violations.
-    if (typeof record.type === "string" && record.type !== "csp-violation") continue;
-    const body = (record["csp-report"] ?? record.body ?? record) as Record<string, unknown>;
+    if (typeof record.type === "string" && record.type !== "csp-violation")
+      continue;
+    const body = (record["csp-report"] ?? record.body ?? record) as Record<
+      string,
+      unknown
+    >;
     if (body === null || typeof body !== "object") continue;
     out.push({
       raw: entry,
-      documentUri: str(body["document-uri"] ?? body.documentURL ?? record.url, 2048),
+      documentUri: str(
+        body["document-uri"] ?? body.documentURL ?? record.url,
+        2048,
+      ),
       directive: str(
-        body["violated-directive"] ?? body["effective-directive"] ?? body.effectiveDirective,
+        body["violated-directive"] ??
+          body["effective-directive"] ??
+          body.effectiveDirective,
         256,
       ),
       blockedUri: str(body["blocked-uri"] ?? body.blockedURL, 2048),
@@ -83,11 +93,7 @@ Deno.serve(async (req) => {
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
     );
 
-    const ip = (
-      req.headers.get("cf-connecting-ip") ??
-      req.headers.get("x-forwarded-for")?.split(",")[0] ??
-      "unknown"
-    ).trim();
+    const ip = trustedClientIp(req.headers) ?? "unknown";
 
     const windowStart = new Date(Date.now() - 60 * 60_000).toISOString();
     const { count } = await supabase

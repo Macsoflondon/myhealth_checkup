@@ -1,3 +1,4 @@
+import { clientIp as trustedClientIp } from "../_shared/client-ip.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.39.3";
 
 const corsHeaders = {
@@ -202,8 +203,7 @@ Deno.serve(async (req) => {
 
   try {
     // Per-IP rate limit (sliding window via api_rate_limits)
-    const ip =
-      req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "unknown";
+    const ip = trustedClientIp(req.headers) ?? "unknown";
     const supabaseUrl = Deno.env.get("SUPABASE_URL");
     const serviceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
     if (supabaseUrl && serviceKey) {
@@ -264,18 +264,25 @@ Deno.serve(async (req) => {
     const cacheMap = new Map(cached.map((row) => [row.test_id, row]));
     const cutoff = Date.now() - CACHE_TTL_MS;
 
-    const knownRows: Array<{ id: string; provider_id: string; url: string | null }> =
-      sb
-        ? ((
-            await sb
-              .from("provider_tests")
-              .select("id, provider_id, url")
-              .in("id", ids)
-          ).data ?? [])
-        : [];
+    const knownRows: Array<{
+      id: string;
+      provider_id: string;
+      url: string | null;
+    }> = sb
+      ? ((
+          await sb
+            .from("provider_tests")
+            .select("id, provider_id, url")
+            .in("id", ids)
+        ).data ?? [])
+      : [];
     const knownTests = new Map(knownRows.map((row) => [row.id, row]));
     const normaliseUrl = (value: string | null | undefined): string =>
-      (value ?? "").trim().replace(/[?#].*$/, "").replace(/\/+$/, "").toLowerCase();
+      (value ?? "")
+        .trim()
+        .replace(/[?#].*$/, "")
+        .replace(/\/+$/, "")
+        .toLowerCase();
 
     const results = await Promise.all(
       parsed.data.items.map(async (item) => {

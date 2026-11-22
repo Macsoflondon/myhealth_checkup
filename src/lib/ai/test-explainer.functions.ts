@@ -1,3 +1,4 @@
+import { clientIp } from "@/lib/mcp/rate-limit";
 import { createServerFn } from "@tanstack/react-start";
 import { getRequest } from "@tanstack/react-start/server";
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
@@ -146,9 +147,8 @@ export const explainTestForVisitor = createServerFn({ method: "POST" })
     if (!test) return null;
 
     const request = getRequest();
-    const forwarded = request.headers.get("x-forwarded-for");
-    const clientIp = forwarded?.split(",")[0]?.trim() || "unknown";
+    const address = clientIp(request.headers) ?? "unknown";
 
     const { explainTest } = await import("./test-explainer.server");
-    return explainTest(test, clientIp);
+    return explainTest(test, address);
   });

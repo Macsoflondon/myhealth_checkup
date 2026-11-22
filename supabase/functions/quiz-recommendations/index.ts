@@ -1,5 +1,5 @@
+import { clientIp as trustedClientIp } from "../_shared/client-ip.ts";
 /* eslint-disable @typescript-eslint/no-explicit-any -- TODO: type properly; inherited from upstream merge 2026-07-10 */
-import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 const corsHeaders = {
@@ -46,14 +46,13 @@ async function checkPersistentRateLimit(
   return true;
 }
 
-serve(async (req) => {
+Deno.serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
   }
 
   // Rate limit deferred until after supabase client is created (persistent store)
-  const clientIp =
-    req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
+  const clientIp = trustedClientIp(req.headers) ?? "unknown";
 
   try {
     const body = await req.json();

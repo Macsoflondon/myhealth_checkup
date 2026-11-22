@@ -1,3 +1,4 @@
+import { clientIp as trustedClientIp } from "../_shared/client-ip.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.51.0";
 
 const corsHeaders = {
@@ -9,7 +10,6 @@ const corsHeaders = {
 
 const TOKEN_TTL_MINUTES = 15;
 const MIN_PASSWORD_LENGTH = 12;
-
 
 /**
  * Read the `aal` claim from an already-verified JWT. Decodes only the payload
@@ -56,8 +56,7 @@ const generateToken = (): string => {
     .join("");
 };
 
-const clientIp = (req: Request) =>
-  req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "unknown";
+const clientIp = (req: Request) => trustedClientIp(req.headers) ?? "unknown";
 
 const serviceClient = () =>
   createClient(

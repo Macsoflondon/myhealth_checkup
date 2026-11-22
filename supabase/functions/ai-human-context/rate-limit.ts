@@ -1,3 +1,4 @@
+import { clientIp } from "../_shared/client-ip.ts";
 /** Per-IP limits that keep anonymous use of the finder affordable. */
 export const MINUTE_LIMIT = 8;
 export const DAILY_LIMIT = 30;
@@ -18,7 +19,10 @@ export type DailyDecision =
  * Decide whether an IP may make another request in its rolling 24-hour
  * window. A missing or expired window starts a fresh one.
  */
-export function decideDailyCap(window: DailyWindow | null, now: number): DailyDecision {
+export function decideDailyCap(
+  window: DailyWindow | null,
+  now: number,
+): DailyDecision {
   if (!window) return { allowed: true, action: "start" };
   const started = Date.parse(window.window_start);
   if (!Number.isFinite(started) || now - started >= DAILY_WINDOW_MS) {
@@ -31,9 +35,5 @@ export function decideDailyCap(window: DailyWindow | null, now: number): DailyDe
 
 /** Client IP from the edge headers, preferring Cloudflare's. */
 export function clientIpFrom(headers: Headers): string {
-  return (
-    headers.get("cf-connecting-ip")?.trim() ||
-    headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
-    "unknown"
-  );
+  return clientIp(headers) ?? "unknown";
 }
