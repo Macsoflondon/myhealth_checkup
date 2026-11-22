@@ -18,7 +18,7 @@ export interface LiveTestRow {
   provider_id: string;
   category: string | null;
   price: number | null;
-  description: string | null;
+  description?: string | null;
   is_active: boolean | null;
   url: string | null;
   /** provider_tests.url_verified: null = never checked, true = passed, false = last check failed. */

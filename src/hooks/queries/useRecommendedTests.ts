@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any -- TODO: type properly; inherited from upstream merge 2026-07-10 */
 /**
  * Hook for fetching recommended/popular tests by category
  */
@@ -8,6 +7,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { TestDataTransformer } from "@/services/transformers/testDataTransformer";
 import type { CompareTestData } from "@/services/CompareService";
 import { logger } from "@/lib/logger";
+import { COMPARE_SELECT } from "@/services/queryBuilders/testQueryBuilder";
 import {
   getCanonicalCategoriesForSlug,
   getNameFilterForSlug,
@@ -19,7 +19,13 @@ export const recommendedQueryKeys = {
 
 const escapeIlike = (s: string) => s.replace(/[%,()]/g, " ").trim();
 
-function applyCategoryFilter(query: any, category: string) {
+const recommendedBaseQuery = () =>
+  supabase.from("provider_tests").select(COMPARE_SELECT).eq("is_active", true);
+
+function applyCategoryFilter(
+  query: ReturnType<typeof recommendedBaseQuery>,
+  category: string,
+) {
   if (!category || category === "all") return query;
 
   const nameFilter = getNameFilterForSlug(category);
@@ -61,14 +67,13 @@ export function recommendedTestsQueryOptions(
     queryFn: async (): Promise<CompareTestData[]> => {
       try {
         // First try to get popular tests for this category
-        let popularQuery = supabase
-          .from("provider_tests")
-          .select("*")
-          .eq("is_active", true)
+        const popularQuery = applyCategoryFilter(
+          recommendedBaseQuery(),
+          category,
+        )
           .eq("is_popular", true)
           .order("popularity_rank", { ascending: true, nullsFirst: false })
           .limit(limit);
-        popularQuery = applyCategoryFilter(popularQuery, category);
 
         const { data: popularData, error: popularError } = await popularQuery;
         if (popularError) {
@@ -80,14 +85,13 @@ export function recommendedTestsQueryOptions(
         }
 
         // Fallback: cheapest matching tests in the category
-        let fallbackQuery = supabase
-          .from("provider_tests")
-          .select("*")
-          .eq("is_active", true)
+        const fallbackQuery = applyCategoryFilter(
+          recommendedBaseQuery(),
+          category,
+        )
           .not("price", "is", null)
           .order("price", { ascending: true })
           .limit(limit * 2);
-        fallbackQuery = applyCategoryFilter(fallbackQuery, category);
 
         const { data: fallbackData, error: fallbackError } =
           await fallbackQuery;

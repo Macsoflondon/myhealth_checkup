@@ -1,4 +1,7 @@
-import { bundledProductImageSrcSet } from "./product-image-variants";
+import {
+  bundledProductImageSrcSet,
+  bundledProductImageUrl,
+} from "./product-image-variants";
 
 /** Parses `src` and reports whether it is a resizable Shopify CDN image. */
 function parseShopifyImage(src: string): URL | null {
@@ -39,6 +42,8 @@ export function productImageUrl(
     density <= 0
   )
     return src;
+  const bundled = bundledProductImageUrl(src, displayWidth * density);
+  if (bundled) return bundled;
   const storage = parseStorageImage(src);
   if (!storage) return shopifyImageUrl(src, displayWidth, density);
   storage.pathname = storage.pathname.replace(

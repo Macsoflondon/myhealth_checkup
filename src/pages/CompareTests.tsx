@@ -16,6 +16,8 @@ import {
   defaultFilters,
 } from "@/hooks/queries/useCompareTestsData";
 import { useRecommendedTests } from "@/hooks/queries/useRecommendedTests";
+import { useTestDetailsByIds } from "@/hooks/queries/useTestDetailsByIds";
+import { normalizeBiomarkers } from "@/utils/normalize-biomarkers";
 import { getCategoryPinColor } from "@/data/categoryColors";
 import { getBranding } from "@/data/providerBranding";
 import { StandardPageHero } from "@/components/layout/StandardPageHero";
@@ -159,18 +161,26 @@ const CompareTests = () => {
       ? isLoading
       : isLoadingRecommended;
 
+  const details = useTestDetailsByIds(
+    displayTests.slice(0, visibleCount).map((test) => test.id),
+  );
+
   const renderCard = (test: CompareTestData) => {
+    const detail = details[test.id];
+    const description = detail?.description ?? test.description;
+    const biomarkers = detail
+      ? normalizeBiomarkers(detail.biomarkersList)
+      : (test.biomarkersList ?? []);
     const selected = isSelected(test.id);
     return (
       <div key={test.id} className="w-full">
         <UnifiedTestCard
+          imageSizes="(min-width: 1280px) 187px, (min-width: 1024px) calc((100vw - 136px) / 3 - 58px), (min-width: 640px) calc((100vw - 68px) / 2 - 58px), calc(100vw - 90px)"
           category={test.category || "Health"}
           categoryColor={resolveCategoryColor(test)}
           name={test.name}
-          description={
-            test.description || "Comprehensive health screening test"
-          }
-          biomarkers={test.biomarkerCount ?? 0}
+          description={description || "Comprehensive health screening test"}
+          biomarkers={test.biomarkerCount || biomarkers.length}
           results={
             test.features?.turnaround || `${test.turnaroundDays ?? "2-3"} days`
           }
@@ -184,7 +194,7 @@ const CompareTests = () => {
             id: test.id,
             provider_id: test.provider.toLowerCase().replace(/\s+/g, "-"),
             test_name: test.name,
-            description: test.description ?? null,
+            description: description ?? null,
             price: test.price ?? null,
             category: test.category ?? null,
             sample_type: test.features?.collection ?? null,
@@ -192,7 +202,7 @@ const CompareTests = () => {
             url: test.url ?? null,
             url_verified: test.url_verified ?? null,
             image_url: test.image_is_stock ? null : test.image_url,
-            biomarkers_list: (test.biomarkersList ?? []).map((value) => ({
+            biomarkers_list: biomarkers.map((value) => ({
               value,
             })),
             turnaround_days_text: test.features?.turnaround ?? null,

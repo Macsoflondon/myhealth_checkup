@@ -42,7 +42,7 @@ import { describeSampleType } from "@/lib/sampleType";
 /** Largest rendered width of the card's product image, in CSS pixels. */
 const CARD_IMAGE_DISPLAY_WIDTH = 325;
 const CARD_IMAGE_SIZES =
-  "(min-width: 1024px) 18vw, (min-width: 640px) 40vw, calc(100vw - 66px)";
+  "(min-width: 1024px) 300px, (min-width: 640px) 40vw, calc(100vw - 90px)";
 import { trackFunnelEvent } from "@/lib/funnelTracking";
 import {
   categoryMenuIconFor,
@@ -850,6 +850,7 @@ export const UniversalTestDetailModal: React.FC<{
 export interface UniversalTestCardProps {
   test: UniversalTestData;
   priority?: boolean;
+  imageSizes?: string;
   /** Display-only title override. The underlying catalogue name remains unchanged. */
   headline?: string;
   /** Optional override for the click handler. If omitted, opens the detail modal. */
@@ -869,6 +870,7 @@ const UniversalTestCardInner: React.FC<UniversalTestCardProps> = ({
   test,
   headline,
   priority = false,
+  imageSizes = CARD_IMAGE_SIZES,
   onOpenDetail,
   className,
 }) => {
@@ -1032,7 +1034,7 @@ const UniversalTestCardInner: React.FC<UniversalTestCardProps> = ({
                 providerName={meta.displayName}
                 priority={priority}
                 displayWidth={CARD_IMAGE_DISPLAY_WIDTH}
-                sizes={CARD_IMAGE_SIZES}
+                sizes={imageSizes}
               />
             </div>
 

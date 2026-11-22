@@ -3,6 +3,7 @@ import { publicCatalogueRead } from "./public-catalogue-memo";
 import { loadViewPricing, mergeActiveRows } from "@/lib/viewPricing";
 import { supabase } from "@/integrations/supabase/client";
 import { CategoryTestItem } from "@/components/category/CategoryPageLayout";
+import { getCategoryEvidence } from "./category-evidence.functions";
 import {
   CATEGORY_TEST_COLUMNS,
   mapProviderTestRowVariants,
@@ -96,8 +97,25 @@ export function mappedCategoryTestsQueryOptions(
             .order("price", { ascending: true });
           if (error) throw error;
 
+          const rows = (data ?? []) as unknown as ProviderTestRow[];
+          const evidenceIds = rows
+            .filter(
+              (row) =>
+                !row.biomarker_count ||
+                (row.provider_id === "lola-health" && !row.is_addon),
+            )
+            .map((row) => row.id);
+          const evidence = await getCategoryEvidence({
+            data: { ids: evidenceIds, category: "", subcategory: null },
+          });
+          const enriched = rows.map((row) => ({
+            ...row,
+            is_addon: row.is_addon || evidence[row.id]?.isAddon || false,
+            biomarker_count:
+              evidence[row.id]?.biomarkerCount ?? row.biomarker_count,
+          }));
           return mergeActiveRows(
-            (data ?? []) as unknown as ProviderTestRow[],
+            enriched,
             await loadViewPricing(
               queryClient,
               ((data ?? []) as unknown as ProviderTestRow[]).map((r) => r.id),

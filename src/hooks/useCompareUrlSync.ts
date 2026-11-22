@@ -20,6 +20,8 @@ import {
 } from "@/lib/compareUrl";
 
 import type { CompareTestData } from "@/types";
+import { useTestDetailsByIds } from "@/hooks/queries/useTestDetailsByIds";
+import { normalizeBiomarkers } from "@/utils/normalize-biomarkers";
 
 interface CompareUrlSync {
   selected: CompareTestData[];
@@ -74,6 +76,23 @@ export function useCompareUrlSync(): CompareUrlSync {
 
   // Panel rows (including "not listed" placeholders) render straight from the
   // query and are never written into the global compare selection.
+  const panelDetails = useTestDetailsByIds(
+    shouldLoadPanel
+      ? (panelTests ?? [])
+          .filter((test) => test.available)
+          .map((test) => test.id)
+      : [],
+  );
+  const hydratedPanel = (panelTests ?? []).map((test) => {
+    const detail = panelDetails[test.id];
+    return detail
+      ? {
+          ...test,
+          description: detail.description ?? test.description,
+          biomarkersList: normalizeBiomarkers(detail.biomarkersList),
+        }
+      : test;
+  });
 
   // URL -> store (once, on arrival with ids).
   useEffect(() => {
@@ -155,7 +174,7 @@ export function useCompareUrlSync(): CompareUrlSync {
   );
 
   return {
-    selected: shouldLoadPanel ? (panelTests ?? []) : selected,
+    selected: shouldLoadPanel ? hydratedPanel : selected,
     isHydrating:
       (shouldHydrate && isFetching) || (shouldLoadPanel && isPanelFetching),
     missingIds,

@@ -2,6 +2,7 @@ import type { QueryClient } from "@tanstack/react-query";
 import { categoryTestsQueryOptions } from "./category-catalogue";
 import { mappedCategoryTestsQueryOptions } from "./mapped-category-catalogue";
 import { findMappedWellnessCategory } from "@/config/mappedCategories";
+import { testDetailsQueryOptions } from "@/hooks/queries/useTestDetailsByIds";
 
 export const LISTING_CATEGORIES: Record<string, string> = {
   "/tests/heart": "heart",
@@ -48,7 +49,7 @@ export async function prefetchPublicListing(
   if (canonical) {
     const mapped =
       path === "/wellness" ? findMappedWellnessCategory(subcategory) : null;
-    await queryClient.ensureQueryData(
+    const tests = await queryClient.ensureQueryData(
       mapped
         ? mappedCategoryTestsQueryOptions(
             queryClient,
@@ -56,6 +57,13 @@ export async function prefetchPublicListing(
             mapped.badgeColor,
           )
         : categoryTestsQueryOptions(queryClient, canonical, subcategory),
+    );
+    await queryClient.ensureQueryData(
+      testDetailsQueryOptions(
+        tests
+          .filter((test) => test.detailsDeferred)
+          .map((test) => String(test.id)),
+      ),
     );
     return;
   }

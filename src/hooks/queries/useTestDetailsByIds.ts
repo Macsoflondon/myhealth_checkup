@@ -10,6 +10,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { logger } from "@/lib/logger";
+import { baseTestId } from "@/lib/collectionVariants";
 
 export interface TestDetails {
   description: string | null;
@@ -20,7 +21,7 @@ export interface TestDetails {
 export type TestDetailsMap = Record<string, TestDetails>;
 
 export function testDetailsQueryOptions(ids: readonly string[]) {
-  const sortedIds = [...ids].filter(Boolean).sort();
+  const sortedIds = [...new Set(ids.filter(Boolean).map(baseTestId))].sort();
 
   return {
     queryKey: ["test-details", sortedIds],

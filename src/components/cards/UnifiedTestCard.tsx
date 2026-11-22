@@ -9,6 +9,7 @@ import type { CollectionVariant } from "@/lib/collectionVariants";
 /* ───────── Backwards-compatible props ───────── */
 export interface UnifiedTestCardProps {
   priority?: boolean;
+  imageSizes?: string;
   category: string;
   categoryColor?: string;
   badge?: string;
@@ -50,6 +51,7 @@ export function UnifiedTestCard(props: UnifiedTestCardProps) {
       test={data}
       className={props.className}
       priority={props.priority}
+      imageSizes={props.imageSizes}
     />
   );
 }

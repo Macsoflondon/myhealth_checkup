@@ -1,5 +1,13 @@
 # Roadmap
 
+## 22 November screening, part 6
+- [x] Slim compare, search, recommended, panel and category projections; rendered-card/table details and base-ID deduplication preserve prose/markers. Public server evidence preserves subcategory matching, add-on classification and missing-count fallback.
+- [x] Hosted 364 WebPs for 182 mapped kits; 53,547,689 original bytes versus 799,590 at 320px or 1,726,920 at 640px; original maps retained.
+- [x] Category Unsplash candidates 480/800/1200px at q=70; hero network trace shows only the AVIF still.
+- [x] Preview transfer measurement, 375/1280px route/modal checks, 1,355 unit tests, changed-file lint and automatic compilation passed. Details in docs/SCREENING_PART_6.md; no publication or database changes.
+- [ ] Production artefact verification depends on harness compilation; manual production builds are prohibited.
+- [ ] JavaScript Playwright smoke suite could not launch its missing Chromium version; Python Chromium route checks passed instead.
+
 ## 22 November screening, part 5
 - [x] Shared complete entity decoding, parity tests, app aggregation/public article read and bounded repair/EDGE article helpers implemented. Deno tests and prepared entry-point handoff pass.
 - [ ] Restore and deploy blog-aggregate — sandbox refused adding the missing function entry point. Updated standalone source is prepared; daily production EDGE handling and stored-row repair remain unapplied. Documentation accurately retains outside-repository status.

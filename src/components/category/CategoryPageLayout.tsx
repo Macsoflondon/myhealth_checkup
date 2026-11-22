@@ -15,6 +15,9 @@ import { categoryMenuIconFor } from "@/components/header/menuIcons";
 const isFromPriceLabel = (value: string) => /^from\s+/i.test(value.trim());
 
 import type { CollectionVariant } from "@/lib/collectionVariants";
+import { baseTestId } from "@/lib/collectionVariants";
+import { useTestDetailsByIds } from "@/hooks/queries/useTestDetailsByIds";
+import { normalizeBiomarkers } from "@/utils/normalize-biomarkers";
 
 /* ───────── Types ───────── */
 export interface CategoryTestItem {
@@ -31,6 +34,7 @@ export interface CategoryTestItem {
   biomarkerCount: number;
   title: string;
   desc: string;
+  detailsDeferred?: boolean;
   biomarkers: string[];
   tag: string;
   collection?: string;
@@ -117,6 +121,30 @@ export function CategoryPageLayout({
   const { getRating } = useProviderRatings();
   const [sort, setSort] = useState("popular");
   const [compared, setCompared] = useState<CategoryTestItem[]>([]);
+  const details = useTestDetailsByIds(
+    tests
+      .filter(
+        (test) =>
+          test.detailsDeferred &&
+          (activeFilter === "All" || test.tag === activeFilter),
+      )
+      .map((test) => String(test.id)),
+  );
+  const hydratedTests = useMemo(
+    () =>
+      tests.map((test) => {
+        const detail = details[baseTestId(String(test.id))];
+        return detail
+          ? {
+              ...test,
+              desc: detail.description || test.desc,
+              biomarkers: normalizeBiomarkers(detail.biomarkersList),
+              collectionOptions: detail.collectionOptions,
+            }
+          : test;
+      }),
+    [tests, details],
+  );
 
   const toggleCompare = (test: CategoryTestItem) => {
     setCompared((prev) => {
@@ -128,7 +156,7 @@ export function CategoryPageLayout({
   };
 
   const filtered = useMemo(() => {
-    let list = tests;
+    let list = hydratedTests;
     if (activeFilter !== "All")
       list = list.filter((t) => t.tag === activeFilter);
     if (search.trim()) {
@@ -167,7 +195,7 @@ export function CategoryPageLayout({
         break;
     }
     return sorted;
-  }, [tests, activeFilter, search, sort, getRating]);
+  }, [hydratedTests, activeFilter, search, sort, getRating]);
 
   const compareItems: CompareItem[] = compared.map((t) => ({
     id: t.id,
@@ -278,6 +306,7 @@ export function CategoryPageLayout({
                   <UnifiedTestCard
                     key={test.id}
                     priority={index < 2}
+                    imageSizes="(min-width: 1280px) 313px, (min-width: 1024px) calc((100vw - 136px) / 3 - 58px), (min-width: 640px) calc((100vw - 68px) / 2 - 58px), calc(100vw - 90px)"
                     category={categoryAccent ?? test.tag}
                     categoryColor={
                       categoryAccent

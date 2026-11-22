@@ -43,13 +43,13 @@ export const BADGE_COLOR_BY_CATEGORY: Record<string, string> = {
 
 /** Columns required to build a CategoryTestItem from provider_tests. */
 export const CATEGORY_TEST_COLUMNS =
-  "id,provider_id,test_name,description,price,base_price,url,url_verified,image_url,biomarker_count,biomarkers_list,turnaround_days_text,is_popular,popularity_rank,sample_type,home_kit_available,clinic_visit_available,home_phlebotomy_cost,category,source_section_label,canonical_category,is_addon,purchase_notes";
+  "id,provider_id,test_name,price,base_price,url,url_verified,image_url,biomarker_count,turnaround_days_text,is_popular,popularity_rank,sample_type,home_kit_available,clinic_visit_available,home_phlebotomy_cost,category,source_section_label,canonical_category,is_addon,purchase_notes";
 
 export interface ProviderTestRow {
   id: string;
   provider_id: string;
   test_name: string;
-  description: string | null;
+  description?: string | null;
   price: number | null;
   base_price: number | null;
   url: string | null;
@@ -57,7 +57,7 @@ export interface ProviderTestRow {
   url_verified?: boolean | null;
   image_url: string | null;
   biomarker_count: number | null;
-  biomarkers_list: unknown;
+  biomarkers_list?: unknown;
   turnaround_days_text: string | null;
   is_popular: boolean | null;
   popularity_rank: number | null;
@@ -120,6 +120,8 @@ export function mapProviderTestRow(
     }),
     title: row.test_name,
     desc: row.description || `${row.test_name} from ${providerName}.`,
+    detailsDeferred:
+      row.description === undefined && row.biomarkers_list === undefined,
     biomarkers,
     tag: "All",
     collection,

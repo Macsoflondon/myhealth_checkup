@@ -13,7 +13,7 @@ const categories = [
     link: "/wellness",
     linkLabel: "Explore Tests",
     image:
-      "https://images.unsplash.com/photo-1612277795421-9bc7706a4a34?w=1800&q=85&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1612277795421-9bc7706a4a34?w=480&q=70&auto=format&fit=crop",
   },
   {
     tag: "Cancer Screening",
@@ -25,7 +25,7 @@ const categories = [
     link: "/tests/cancer",
     linkLabel: "Explore Screening",
     image:
-      "https://images.unsplash.com/photo-1530026405186-ed1f139313f8?w=1800&q=85&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1530026405186-ed1f139313f8?w=480&q=70&auto=format&fit=crop",
   },
   {
     tag: "Wellness",
@@ -38,7 +38,7 @@ const categories = [
     link: "/test-categories",
     linkLabel: "Explore Panels",
     image:
-      "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=1800&q=85&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=480&q=70&auto=format&fit=crop",
   },
   {
     tag: "At Home Test Kits",
@@ -89,6 +89,17 @@ const TestCategoriesSection = () => {
                 width={600}
                 height={400}
                 src={cat.image}
+                srcSet={
+                  cat.image.startsWith("https://images.unsplash.com/")
+                    ? [480, 800, 1200]
+                        .map(
+                          (width) =>
+                            `${cat.image.replace("w=480", `w=${width}`)} ${width}w`,
+                        )
+                        .join(", ")
+                    : undefined
+                }
+                sizes="(min-width: 1024px) calc((100vw - 132px) / 2), (min-width: 640px) calc((100vw - 100px) / 2), calc(100vw - 32px)"
                 alt=""
                 aria-hidden="true"
                 loading="lazy"

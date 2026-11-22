@@ -1,8 +1,10 @@
 # Architecture decisions
 
-- Provider article text uses parity-tested app/Edge decoding; bounded repairs change text only. Why: encoded source text must display identically without rewriting publication dates.
-- Article illustration width-query imports are resized by a build-only image plugin; homepage prose comes from the prefetched details map. Why: smaller transfers must preserve artwork and SSR card text.
-- AutoReveal uses animation effects, not React-owned attributes. Why: deferred section hydration must not encounter DOM attributes absent from server HTML.
+- App/Edge article decoders have parity; repairs preserve dates.
+- Build-only illustration resizing and prefetched details preserve artwork and SSR text.
+- AutoReveal avoids React-owned DOM mutation to preserve hydration.
+- Thin catalogue pools share base-ID card details; server-side evidence preserves category matching and add-on classification.
+- Hosted kits use manifest-mapped 320/640px candidates; original source maps remain for large views.
 
 - Site and Edge address helpers validate infrastructure-overwritten Cloudflare/gateway IP literals; callers retain their null/unknown fallback. Why: forwarded lists are caller-controlled and cannot key rate limits or consent evidence.
 

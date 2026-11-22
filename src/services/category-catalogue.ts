@@ -3,10 +3,8 @@ import { publicCatalogueRead } from "./public-catalogue-memo";
 import { loadViewPricing, mergeActiveRows } from "@/lib/viewPricing";
 import { supabase } from "@/integrations/supabase/client";
 import { CategoryTestItem } from "@/components/category/CategoryPageLayout";
-import {
-  findSubcategory,
-  testMatchesSubcategory,
-} from "@/config/subcategoryMap";
+import { findSubcategory } from "@/config/subcategoryMap";
+import { getCategoryEvidence } from "./category-evidence.functions";
 import {
   BADGE_COLOR_BY_CATEGORY,
   CATEGORY_TEST_COLUMNS,
@@ -61,23 +59,37 @@ export function categoryTestsQueryOptions(
 
           const badgeColor =
             BADGE_COLOR_BY_CATEGORY[canonicalCategory] || "#3B82F6";
-          const mapped = mergeActiveRows(
-            data as unknown as ProviderTestRow[],
+          const rows = data as unknown as ProviderTestRow[];
+          const evidenceIds = rows
+            .filter(
+              (row) =>
+                sub ||
+                !row.biomarker_count ||
+                (row.provider_id === "lola-health" && !row.is_addon),
+            )
+            .map((row) => row.id);
+          const evidence = await getCategoryEvidence({
+            data: {
+              ids: evidenceIds,
+              category: canonicalCategory,
+              subcategory: sub?.slug ?? null,
+            },
+          });
+          const matched = rows
+            .filter((row) => !sub || evidence[row.id]?.matches)
+            .map((row) => ({
+              ...row,
+              is_addon: row.is_addon || evidence[row.id]?.isAddon || false,
+              biomarker_count:
+                evidence[row.id]?.biomarkerCount ?? row.biomarker_count,
+            }));
+          return mergeActiveRows(
+            matched,
             await loadViewPricing(
               queryClient,
               (data as unknown as ProviderTestRow[]).map((r) => r.id),
             ),
           ).flatMap((row) => mapProviderTestRowVariants(row, badgeColor));
-
-          if (!sub) return mapped;
-          return mapped.filter((t) =>
-            testMatchesSubcategory(sub, {
-              title: t.title,
-              biomarkers: t.biomarkers,
-              tag: t.tag,
-              desc: t.desc,
-            }),
-          );
         },
       ),
     staleTime: 5 * 60 * 1000,

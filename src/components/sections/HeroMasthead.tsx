@@ -42,7 +42,10 @@ export default function HeroMasthead() {
     // the photo: the loop would cost them megabytes for a background effect.
     // Reduced-motion is not a gate: the owner wants the muted background
     // loop to play for every visitor (macOS "Reduce motion" froze it).
-    if (connection?.saveData || /(^|-)2g$/.test(connection?.effectiveType ?? "")) {
+    if (
+      connection?.saveData ||
+      /(^|-)2g$/.test(connection?.effectiveType ?? "")
+    ) {
       return;
     }
     // Mount the <video> (which starts the download) only once the window
@@ -50,7 +53,10 @@ export default function HeroMasthead() {
     // after hydration started the loop download while scripts and the hero
     // photo were still loading, which delayed the page on mobile networks.
     const idleWindow = window as Window & {
-      requestIdleCallback?: (cb: () => void, opts?: { timeout: number }) => number;
+      requestIdleCallback?: (
+        cb: () => void,
+        opts?: { timeout: number },
+      ) => number;
       cancelIdleCallback?: (handle: number) => void;
     };
     let cancelled = false;
@@ -94,11 +100,17 @@ export default function HeroMasthead() {
     const onVisible = () => {
       if (document.visibilityState === "visible") resume();
     };
-    const interactionEvents = ["pointerdown", "touchstart", "scroll", "keydown"] as const;
+    const interactionEvents = [
+      "pointerdown",
+      "touchstart",
+      "scroll",
+      "keydown",
+    ] as const;
     video.addEventListener("canplay", resume);
     video.addEventListener("pause", onVisible);
     document.addEventListener("visibilitychange", onVisible);
-    for (const e of interactionEvents) window.addEventListener(e, resume, { passive: true });
+    for (const e of interactionEvents)
+      window.addEventListener(e, resume, { passive: true });
     resume();
     return () => {
       video.removeEventListener("canplay", resume);
@@ -203,7 +215,6 @@ export default function HeroMasthead() {
                 playsInline
                 autoPlay
                 preload="metadata"
-                poster={HERO_POSTER_SRC}
                 aria-hidden
               >
                 {/* Phones get a 480p (~0.9 MB) encode; larger screens the 720p loop. */}
