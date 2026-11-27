@@ -58,7 +58,10 @@ Deno.test("constantTimeEqual", () => {
 Deno.test("header with the Vault value is accepted", async () => {
   const { db, calls } = fakeDb({ data: SECRET, error: null });
   const check = createMhcSyncSecretCheck();
-  assertEquals(await check(hdr(SECRET), db, "t"), { ok: true, source: "vault" });
+  assertEquals(await check(hdr(SECRET), db, "t"), {
+    ok: true,
+    source: "vault",
+  });
   assertEquals(calls, ["mhc_sync_secret"]);
 });
 
@@ -77,42 +80,59 @@ Deno.test("missing secret is refused", async () => {
   assertEquals(await check(qry(), db, "t"), { ok: false, reason: "mismatch" });
 });
 
-Deno.test("query value is refused, warning names the caller and not the value", async () => {
-  const { db, calls } = fakeDb({ data: SECRET, error: null });
-  const { lines, log } = capture();
-  const check = createMhcSyncSecretCheck({ log });
-  const refused = { ok: false, reason: "secret_in_url" } as const;
-  assertEquals(await check(qry(SECRET), db, "mhc-caller"), refused);
-  assertEquals(await check(qry(""), db, "mhc-caller"), refused);
-  assertEquals(calls.length, 0);
-  assert(lines.length === 2 && lines.every((l) => l.includes("mhc-caller") && !l.includes(SECRET)));
-});
+Deno.test(
+  "query value is refused, warning names the caller and not the value",
+  async () => {
+    const { db, calls } = fakeDb({ data: SECRET, error: null });
+    const { lines, log } = capture();
+    const check = createMhcSyncSecretCheck({ log });
+    const refused = { ok: false, reason: "secret_in_url" } as const;
+    assertEquals(await check(qry(SECRET), db, "mhc-caller"), refused);
+    assertEquals(await check(qry(""), db, "mhc-caller"), refused);
+    assertEquals(calls.length, 0);
+    assert(
+      lines.length === 2 &&
+        lines.every((l) => l.includes("mhc-caller") && !l.includes(SECRET)),
+    );
+  },
+);
 
 Deno.test("query value plus a correct header is refused", async () => {
   const { db } = fakeDb({ data: SECRET, error: null });
   const { lines, log } = capture();
   const check = createMhcSyncSecretCheck({ log });
-  const both = new Request(`${BASE}?secret=${SECRET}`, { headers: { "x-mhc-sync-secret": SECRET } });
-  assertEquals(await check(both, db, "t"), { ok: false, reason: "secret_in_url" });
+  const both = new Request(`${BASE}?secret=${SECRET}`, {
+    headers: { "x-mhc-sync-secret": SECRET },
+  });
+  assertEquals(await check(both, db, "t"), {
+    ok: false,
+    reason: "secret_in_url",
+  });
   assert(lines.every((l) => !l.includes(SECRET)));
 });
 
-Deno.test("Vault failure refuses (no env fallback), logging no secret", async () => {
-  const prev = Deno.env.get("MHC_SYNC_SECRET");
-  for (const reply of [
-    { data: null, error: { message: "boom" } },
-    new Error("network"),
-    { data: null, error: null },
-    { data: "   ", error: null },
-  ] as Reply[]) {
-    const { db } = fakeDb(reply);
-    const { lines, log } = capture();
-    const check = createMhcSyncSecretCheck({ log });
-    assertEquals(await check(hdr(SECRET), db, "t"), { ok: false, reason: "not_configured" });
-    assert(lines.every((l) => !l.includes(SECRET)));
-  }
-  assertEquals(Deno.env.get("MHC_SYNC_SECRET"), prev);
-});
+Deno.test(
+  "Vault failure refuses (no env fallback), logging no secret",
+  async () => {
+    const prev = Deno.env.get("MHC_SYNC_SECRET");
+    for (const reply of [
+      { data: null, error: { message: "boom" } },
+      new Error("network"),
+      { data: null, error: null },
+      { data: "   ", error: null },
+    ] as Reply[]) {
+      const { db } = fakeDb(reply);
+      const { lines, log } = capture();
+      const check = createMhcSyncSecretCheck({ log });
+      assertEquals(await check(hdr(SECRET), db, "t"), {
+        ok: false,
+        reason: "not_configured",
+      });
+      assert(lines.every((l) => !l.includes(SECRET)));
+    }
+    assertEquals(Deno.env.get("MHC_SYNC_SECRET"), prev);
+  },
+);
 
 Deno.test("caches a Vault value for the TTL, never a failure", async () => {
   let t = 0;
@@ -120,7 +140,11 @@ Deno.test("caches a Vault value for the TTL, never a failure", async () => {
     { data: null, error: { message: "x" } },
     { data: SECRET, error: null },
   );
-  const check = createMhcSyncSecretCheck({ now: () => t, ttlMs: 1000, log: capture().log });
+  const check = createMhcSyncSecretCheck({
+    now: () => t,
+    ttlMs: 1000,
+    log: capture().log,
+  });
   assertEquals((await check(hdr(SECRET), db, "t")).ok, false);
   assertEquals((await check(hdr(SECRET), db, "t")).ok, true);
   t = 500;
@@ -131,7 +155,9 @@ Deno.test("caches a Vault value for the TTL, never a failure", async () => {
 Deno.test("concurrent first requests share one Vault read", async () => {
   const { db, calls } = fakeDb({ data: SECRET, error: null });
   const check = createMhcSyncSecretCheck();
-  const results = await Promise.all([1, 2, 3, 4].map(() => check(hdr(SECRET), db, "t")));
+  const results = await Promise.all(
+    [1, 2, 3, 4].map(() => check(hdr(SECRET), db, "t")),
+  );
   assert(results.every((r) => r.ok));
   assertEquals(calls.length, 1);
 });

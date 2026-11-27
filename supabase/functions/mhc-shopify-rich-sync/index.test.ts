@@ -64,10 +64,9 @@ Deno.test(
     };
     try {
       const response = await handler(
-        new Request(
-          "https://test.local?provider=london-health-company&dry=1",
-          { headers: { "x-mhc-sync-secret": "test-sync-secret" } },
-        ),
+        new Request("https://test.local?provider=london-health-company&dry=1", {
+          headers: { "x-mhc-sync-secret": "test-sync-secret" },
+        }),
       );
       assertEquals(response.status, 200);
       const body = (await response.json()) as {

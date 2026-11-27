@@ -12,10 +12,10 @@ import { htmlToText } from "../_shared/scrape/html.ts";
 import { checkMhcSyncSecret } from "../_shared/mhc-auth.ts";
 import { turnaroundColumns } from "../_shared/scrape/parseTurnaround.ts";
 const PROVIDER = "london-medical-laboratory";
-function stripTags(s) {
+function stripTags(s: string | null | undefined): string {
   return htmlToText(s || "");
 }
-function slugRaw(u) {
+function slugRaw(u: string): string {
   return (
     u
       .replace(/[?#].*$/, "")
@@ -28,7 +28,7 @@ function slugRaw(u) {
 // embedded HTML (<p>, <strong>) as escaped text — a genuine, real description,
 // just not plain text. Run it through stripTags too, not only the fallback
 // path, so description_scraped is always plain text either way.
-function extractJsonLdDescription(html) {
+function extractJsonLdDescription(html: string): string | null {
   const matches = [
     ...html.matchAll(/"description"\s*:\s*"((?:[^"\\]|\\.)*)"/gi),
   ];
@@ -44,7 +44,11 @@ function extractJsonLdDescription(html) {
   }
   return best && best.length > 40 ? best.slice(0, 4000) : null;
 }
-function extractDescriptionScraped(html, txt, title) {
+function extractDescriptionScraped(
+  html: string,
+  txt: string,
+  title: string | null,
+): string | null {
   const jsonLd = extractJsonLdDescription(html);
   if (jsonLd) return stripTags(jsonLd).slice(0, 4000);
   let startIdx = 0;
@@ -68,7 +72,7 @@ function extractDescriptionScraped(html, txt, title) {
   const slice = txt.slice(startIdx, endIdx).trim();
   return slice && slice.length > 20 ? slice.slice(0, 4000) : null;
 }
-function parsePage(html) {
+function parsePage(html: string) {
   let title = null;
   const og = html.match(/property="og:title"\s+content="([^"]+)"/i);
   if (og) title = og[1].split("|")[0].trim();
@@ -121,10 +125,12 @@ function parsePage(html) {
 }
 Deno.serve(async (req) => {
   const u = new URL(req.url);
-  const supabase = createClient(
-    Deno.env.get("SUPABASE_URL"),
-    Deno.env.get("SUPABASE_SERVICE_ROLE_KEY"),
-  );
+  const supabaseUrl = Deno.env.get("SUPABASE_URL");
+  const serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
+  if (!supabaseUrl || !serviceRoleKey) {
+    return new Response("not configured", { status: 503 });
+  }
+  const supabase = createClient(supabaseUrl, serviceRoleKey);
   const auth = await checkMhcSyncSecret(req, supabase, "mhc-lml-scrape");
   if (!auth.ok) return new Response("unauthorized", { status: 401 });
   const startedAt = new Date().toISOString();
@@ -197,7 +203,7 @@ Deno.serve(async (req) => {
         has_description: !!p.descriptionScraped,
       });
     if (!dry) {
-      const upd = {
+      const upd: Record<string, unknown> = {
         base_price: p.price,
         total_expected_cost: p.price,
         price: p.price,

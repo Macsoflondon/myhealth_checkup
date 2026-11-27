@@ -75,7 +75,9 @@ serve(async (req) => {
   // it no run starts, so Apify is never handed a fallback credential.
   const ingestSecret = await readApifyIngestSecret(supabase);
   if (ingestSecret === null) {
-    console.error("[apify-scrape-provider] apify_ingest_secret is empty or unreadable");
+    console.error(
+      "[apify-scrape-provider] apify_ingest_secret is empty or unreadable",
+    );
     return json({ error: "Webhook secret not configured" }, 503);
   }
 

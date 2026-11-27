@@ -307,7 +307,7 @@ Deno.test(
         const response = await handler(
           new Request(
             `https://test.local?provider=medical-diagnosis&offset=${offset}&limit=30`,
-          { headers: { "x-mhc-sync-secret": "test-sync-secret" } },
+            { headers: { "x-mhc-sync-secret": "test-sync-secret" } },
           ),
         );
         assertEquals(response.status, 200);

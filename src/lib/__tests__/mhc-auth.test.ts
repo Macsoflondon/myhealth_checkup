@@ -57,9 +57,18 @@ describe("mhc-auth (loads without a Deno global)", () => {
   it("accepts only the header and refuses wrong or missing secrets", async () => {
     const check = createMhcSyncSecretCheck({ log: quiet });
     const { client } = db({ data: SECRET, error: null });
-    expect(await check(hdr(SECRET), client, "t")).toEqual({ ok: true, source: "vault" });
-    expect(await check(hdr("wrong"), client, "t")).toEqual({ ok: false, reason: "mismatch" });
-    expect(await check(url(), client, "t")).toEqual({ ok: false, reason: "mismatch" });
+    expect(await check(hdr(SECRET), client, "t")).toEqual({
+      ok: true,
+      source: "vault",
+    });
+    expect(await check(hdr("wrong"), client, "t")).toEqual({
+      ok: false,
+      reason: "mismatch",
+    });
+    expect(await check(url(), client, "t")).toEqual({
+      ok: false,
+      reason: "mismatch",
+    });
   });
 
   it("refuses a query value, with or without a correct header, logging no value", async () => {
@@ -70,12 +79,17 @@ describe("mhc-auth (loads without a Deno global)", () => {
     const { client } = db({ data: SECRET, error: null });
     const refused = { ok: false, reason: "secret_in_url" };
     expect(await check(url(SECRET), client, "caller-x")).toEqual(refused);
-    const both = new Request(`https://x.supabase.co/functions/v1/mhc-test?secret=${SECRET}`, {
-      headers: { "x-mhc-sync-secret": SECRET },
-    });
+    const both = new Request(
+      `https://x.supabase.co/functions/v1/mhc-test?secret=${SECRET}`,
+      {
+        headers: { "x-mhc-sync-secret": SECRET },
+      },
+    );
     expect(await check(both, client, "caller-x")).toEqual(refused);
     expect(warns).toHaveLength(2);
-    expect(warns.every((w) => w.includes("caller-x") && !w.includes(SECRET))).toBe(true);
+    expect(
+      warns.every((w) => w.includes("caller-x") && !w.includes(SECRET)),
+    ).toBe(true);
   });
 
   it("a Vault failure refuses with no env fallback", async () => {

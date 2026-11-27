@@ -13,7 +13,9 @@ export const APIFY_INGEST_SECRET_RPC = "apify_ingest_secret";
 const MAX_SECRET_CHARS = 4096;
 
 /** The Vault value, or null when it is empty, too long or unreadable. */
-export async function readApifyIngestSecret(db: MhcRpcClient): Promise<string | null> {
+export async function readApifyIngestSecret(
+  db: MhcRpcClient,
+): Promise<string | null> {
   try {
     const { data, error } = await db.rpc(APIFY_INGEST_SECRET_RPC);
     if (error || typeof data !== "string") return null;
@@ -24,9 +26,7 @@ export async function readApifyIngestSecret(db: MhcRpcClient): Promise<string | 
   }
 }
 
-export type ApifyIngestAuth =
-  | { ok: true }
-  | { ok: false; status: 503 | 401 };
+export type ApifyIngestAuth = { ok: true } | { ok: false; status: 503 | 401 };
 
 /** 503 when Vault has no value, 401 unless the header matches exactly. */
 export async function checkApifyIngestSecret(

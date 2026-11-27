@@ -18,8 +18,30 @@ export type FeedRpcClient = {
   ): PromiseLike<{ data: unknown; error: { message: string } | null }>;
 };
 
+/** Fields the sync functions read from a Shopify products.json variant. */
+export type ShopifyVariant = {
+  title: string;
+  /** products.json sends prices as decimal strings, e.g. "49.00". */
+  price: string;
+  sku?: string | null;
+  available?: boolean;
+};
+
+/** Fields the sync functions read from a Shopify products.json product. */
+export type ShopifyProduct = {
+  id?: number;
+  handle: string;
+  title: string;
+  product_type?: string | null;
+  vendor?: string | null;
+  tags?: string[] | string | null;
+  body_html?: string | null;
+  variants?: ShopifyVariant[] | null;
+  images?: { src?: string | null }[] | null;
+};
+
 export type ShopifyFeedPage = {
-  products: any[];
+  products: ShopifyProduct[];
   source: "direct" | "database";
   /** Status of the direct request (0 when it threw). */
   directStatus: number;
@@ -78,10 +100,10 @@ export async function fetchShopifyFeedPage(
     } else if (
       data &&
       typeof data === "object" &&
-      Array.isArray((data as any).products)
+      Array.isArray((data as { products?: unknown }).products)
     ) {
       return {
-        products: (data as any).products,
+        products: (data as { products: ShopifyProduct[] }).products,
         source: "database",
         directStatus,
       };

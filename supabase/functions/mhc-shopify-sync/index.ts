@@ -18,13 +18,15 @@
 // in constant time against Vault mhc_sync_secret; a ?secret= URL is refused (401).
 // No secret is committed here.
 import { createClient } from "npm:@supabase/supabase-js@2";
-import { internalErrorResponse } from "../_shared/errors.ts";
+import { getErrorMessage, internalErrorResponse } from "../_shared/errors.ts";
 import { htmlToText } from "../_shared/scrape/html.ts";
 import { checkMhcSyncSecret } from "../_shared/mhc-auth.ts";
 import { turnaroundColumns } from "../_shared/scrape/parseTurnaround.ts";
 import {
   fetchShopifyFeedPage,
   shopifyFeedUrl,
+  type ShopifyProduct,
+  type ShopifyVariant,
 } from "../_shared/scrape/shopify-feed.ts";
 import {
   hasLolaVariantFlags,
@@ -113,7 +115,12 @@ Deno.serve(async (req: Request) => {
         .select("id")
         .single();
       runId = data?.id ?? null;
-    } catch (_e) {}
+    } catch (e) {
+      console.error(
+        "[mhc-shopify-sync] scrape_runs write failed:",
+        getErrorMessage(e),
+      );
+    }
   }
 
   let seen = 0,
@@ -136,7 +143,7 @@ Deno.serve(async (req: Request) => {
         },
       },
     );
-    const products: any[] = feed.products;
+    const products: ShopifyProduct[] = feed.products;
 
     for (const p of products) {
       seen++;
@@ -166,10 +173,12 @@ Deno.serve(async (req: Request) => {
       const lola =
         provider === "lola-health"
           ? lolaPriceModel(
-              (Array.isArray(p?.variants) ? p.variants : []).map((v: any) => ({
-                title: String(v?.title ?? ""),
-                price: v?.price,
-              })),
+              (Array.isArray(p?.variants) ? p.variants : []).map(
+                (v: ShopifyVariant) => ({
+                  title: String(v?.title ?? ""),
+                  price: v?.price,
+                }),
+              ),
             )
           : null;
       const basePrice = lola
@@ -325,7 +334,12 @@ Deno.serve(async (req: Request) => {
           total_expected_cost: row.total_expected_cost,
           scrape_source_url: productUrl,
         });
-      } catch (_e) {}
+      } catch (e) {
+        console.error(
+          "[mhc-shopify-sync] provider_test_history write failed:",
+          getErrorMessage(e),
+        );
+      }
     }
 
     const hasMore = products.length === limit;
@@ -341,7 +355,12 @@ Deno.serve(async (req: Request) => {
             errors: errors.slice(0, 20),
           })
           .eq("id", runId);
-      } catch (_e) {}
+      } catch (e) {
+        console.error(
+          "[mhc-shopify-sync] scrape_runs write failed:",
+          getErrorMessage(e),
+        );
+      }
     }
 
     return new Response(
@@ -376,7 +395,12 @@ Deno.serve(async (req: Request) => {
             errors: [{ message: msg }],
           })
           .eq("id", runId);
-      } catch (_e) {}
+      } catch (e) {
+        console.error(
+          "[mhc-shopify-sync] scrape_runs write failed:",
+          getErrorMessage(e),
+        );
+      }
     }
     return internalErrorResponse(
       "mhc-shopify-sync",

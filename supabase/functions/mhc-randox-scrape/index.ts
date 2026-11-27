@@ -26,7 +26,7 @@ const SITEMAPS = ["https://randoxhealth.com/sitemap.xml"];
 const URLMATCH = /\/en-GB\/product\//i;
 const URLEXCLUDE = /gift-card|corporate|training|refer-a-friend/i;
 
-function norm(s) {
+function norm(s: string | null | undefined): string {
   return (s || "")
     .toLowerCase()
     .replace(/™|®/g, "")
@@ -36,7 +36,7 @@ function norm(s) {
     .replace(/\s+/g, " ")
     .trim();
 }
-function slugRaw(u) {
+function slugRaw(u: string): string {
   return (
     u
       .replace(/[?#].*$/, "")
@@ -45,13 +45,13 @@ function slugRaw(u) {
       .pop() || ""
   ).toLowerCase();
 }
-function slugNorm(u) {
+function slugNorm(u: string): string {
   return norm(slugRaw(u).replace(/-/g, " "));
 }
-function stripTags(s) {
+function stripTags(s: string | null | undefined): string {
   return htmlToText(s || "");
 }
-function deriveCategory(n) {
+function deriveCategory(n: string): string {
   n = n.toLowerCase();
   if (/cancer|trucheck|guardant|tumour/.test(n)) return "Cancer Screening";
   if (/sti|sexual|hiv|chlamydia|gonorrh/.test(n)) return "Sexual Health";
@@ -70,16 +70,16 @@ function deriveCategory(n) {
   if (/iron|anaemia|ferritin/.test(n)) return "Iron & Anaemia";
   return "Comprehensive Blood Panels";
 }
-async function fetchText(url) {
+async function fetchText(url: string): Promise<string> {
   const r = await fetch(url, {
     headers: { "User-Agent": "myhealthcheckup-sync/1.0" },
   });
   if (!r.ok) return "";
   const buf = new Uint8Array(await r.arrayBuffer());
   if (buf[0] === 0x1f && buf[1] === 0x8b) {
-    const stream = new Response(buf).body.pipeThrough(
-      new DecompressionStream("gzip"),
-    );
+    const stream = new Blob([buf])
+      .stream()
+      .pipeThrough(new DecompressionStream("gzip"));
     return await new Response(stream).text();
   }
   return new TextDecoder().decode(buf);
@@ -107,7 +107,7 @@ async function getUrls() {
     (u) => URLMATCH.test(u) && !URLEXCLUDE.test(u),
   );
 }
-function extractName(html) {
+function extractName(html: string): string | null {
   const og = html.match(/property="og:title"\s+content="([^"]+)"/i);
   if (og)
     return og[1]
@@ -132,7 +132,7 @@ function extractName(html) {
 // was previously captured as pure analytics/widget script noise because the
 // fallback ran on unstripped script content — now strips all <script>
 // blocks before falling back.
-function extractJsonLdDescription(html) {
+function extractJsonLdDescription(html: string): string | null {
   const matches = [
     ...html.matchAll(/"description"\s*:\s*"((?:[^"\\]|\\.)*)"/gi),
   ];
@@ -148,7 +148,10 @@ function extractJsonLdDescription(html) {
   }
   return best && best.length > 40 ? best.slice(0, 4000) : null;
 }
-function extractDescriptionScraped(html, name) {
+function extractDescriptionScraped(
+  html: string,
+  name: string | null,
+): string | null {
   const jsonLd = extractJsonLdDescription(html);
   if (jsonLd) return jsonLd;
   // htmlToText drops script and style blocks itself.
@@ -174,14 +177,14 @@ function extractDescriptionScraped(html, name) {
   const slice = txt.slice(startIdx, endIdx).trim();
   return slice && slice.length > 20 ? slice.slice(0, 4000) : null;
 }
-function productPath(u) {
+function productPath(u: string): string {
   const m = u
     .replace(/[?#].*$/, "")
     .replace(/\/+$/, "")
     .match(/\/product\/(.+)$/i);
   return m ? m[1].toLowerCase() : "";
 }
-function parsePage(html, url) {
+function parsePage(html: string, url: string) {
   const name = extractName(html);
   let price = null;
   const pm = stripTags(html).match(/£\s*([\d,]+(?:\.\d{2})?)/);
@@ -222,10 +225,12 @@ function parsePage(html, url) {
 }
 Deno.serve(async (req) => {
   const u = new URL(req.url);
-  const supabase = createClient(
-    Deno.env.get("SUPABASE_URL"),
-    Deno.env.get("SUPABASE_SERVICE_ROLE_KEY"),
-  );
+  const supabaseUrl = Deno.env.get("SUPABASE_URL");
+  const serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
+  if (!supabaseUrl || !serviceRoleKey) {
+    return new Response("not configured", { status: 503 });
+  }
+  const supabase = createClient(supabaseUrl, serviceRoleKey);
   const auth = await checkMhcSyncSecret(req, supabase, "mhc-randox-scrape");
   if (!auth.ok) return new Response("unauthorized", { status: 401 });
   const startedAt = new Date().toISOString();

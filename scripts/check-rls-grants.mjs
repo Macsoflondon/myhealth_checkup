@@ -39,6 +39,11 @@ const DIR = "supabase/migrations";
 // policy but has no GRANT, so it took Supabase's default privileges.
 // 20261027234500_provider_test_exclusions_explicit_grants.sql sets its
 // privileges explicitly (anon none, authenticated SELECT, service_role ALL).
+//
+// Restored verbatim on 2026-11-28 (applied in production on 2026-11-27 outside
+// the repo): the biomarker audit snapshot tables enable RLS and revoke all from
+// public, anon and authenticated in the same file, leaving only postgres and
+// service_role, which matches production's ACL. They need no GRANT.
 const BASELINE_FILES = new Set([
   "20260630110630_enterprise_operational_intelligence_platform.sql",
 ]);
@@ -50,6 +55,13 @@ const BASELINE = new Set([
   "20261009091920_biomarker_layer_lock_20261009.sql:biomarker_lock_state",
   "20261016122323_create_landing_signups.sql:landing_signups",
   "20261026124821_provider_test_exclusions.sql:provider_test_exclusions",
+  "20261127031539_biomarker_audit_20261127_01_backup.sql:biomarker_hub_backup_20261127",
+  "20261127031539_biomarker_audit_20261127_01_backup.sql:provider_test_biomarkers_backup_20261127",
+  "20261127031539_biomarker_audit_20261127_01_backup.sql:clinical_loinc_mappings_backup_20261127",
+  "20261127031539_biomarker_audit_20261127_01_backup.sql:clinical_snomed_mappings_backup_20261127",
+  "20261127031539_biomarker_audit_20261127_01_backup.sql:biomarker_category_map_backup_20261127",
+  "20261127031539_biomarker_audit_20261127_01_backup.sql:known_scrape_junk_labels_backup_20261127",
+  "20261127204005_biomarker_audit_20261127_03a_categories_panels_names.sql:provider_tests_junk_backup_20261127",
 ]);
 
 const files = readdirSync(DIR)

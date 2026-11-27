@@ -26,6 +26,7 @@ import { turnaroundColumns } from "../_shared/scrape/parseTurnaround.ts";
 import {
   fetchShopifyFeedPage,
   shopifyFeedUrl,
+  type ShopifyProduct,
 } from "../_shared/scrape/shopify-feed.ts";
 
 const PROVIDER = "medichecks";
@@ -131,7 +132,7 @@ Deno.serve(async (req: Request) => {
         },
       },
     );
-    const products: any[] = feed.products;
+    const products: ShopifyProduct[] = feed.products;
 
     for (const p of products) {
       seen++;
@@ -207,7 +208,10 @@ Deno.serve(async (req: Request) => {
         row.turnaround_days = tg.results;
         row.turnaround_days_text = `Results in ${tg.results} working days (estimated)`;
         row.turnaround_unit = "days";
-        Object.assign(row, turnaroundColumns(row.turnaround_days_text as string) ?? {});
+        Object.assign(
+          row,
+          turnaroundColumns(row.turnaround_days_text as string) ?? {},
+        );
       } else {
         tagMissTotal++;
       }

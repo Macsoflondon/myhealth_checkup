@@ -21,8 +21,8 @@ type Variant = { price: string; option1?: string; title?: string };
 type Product = {
   title: string;
   handle: string;
-  body_html?: string;
-  variants?: Variant[];
+  body_html?: string | null;
+  variants?: Variant[] | null;
 };
 const PROVIDERS: Record<
   string,

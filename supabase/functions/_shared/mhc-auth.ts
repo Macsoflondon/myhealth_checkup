@@ -103,7 +103,9 @@ export function createMhcSyncSecretCheck(deps: MhcAuthDeps = {}) {
     }
     const fromVault = await inflight;
     cached =
-      fromVault === null ? null : { value: fromVault, expiresAt: now() + ttlMs };
+      fromVault === null
+        ? null
+        : { value: fromVault, expiresAt: now() + ttlMs };
     return fromVault;
   }
 
@@ -119,12 +121,16 @@ export function createMhcSyncSecretCheck(deps: MhcAuthDeps = {}) {
     caller: string,
   ): Promise<MhcAuthResult> {
     if (new URL(req.url).searchParams.has("secret")) {
-      log.warn(`[${caller}] refused: request URL carries a secret query parameter (value not logged)`);
+      log.warn(
+        `[${caller}] refused: request URL carries a secret query parameter (value not logged)`,
+      );
       return { ok: false, reason: "secret_in_url" };
     }
     const exp = await expected(db, caller);
     if (exp === null) {
-      log.error(`[${caller}] no sync secret: Vault ${MHC_SECRET_RPC} is empty or unreadable`);
+      log.error(
+        `[${caller}] no sync secret: Vault ${MHC_SECRET_RPC} is empty or unreadable`,
+      );
       return { ok: false, reason: "not_configured" };
     }
     const presented = req.headers.get(MHC_SECRET_HEADER);

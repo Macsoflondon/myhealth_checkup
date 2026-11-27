@@ -174,11 +174,13 @@ verify_jwt = true
 
 
 # Apify dispatch — starts a cheerio-scraper run for a provider, returns immediately.
-# Security: service-role bearer or scraper cron secret required in-code.
+# Security: service-role bearer or scraper cron secret required in-code. Sends the
+# Vault apify_ingest_secret to Apify only in the webhook headersTemplate.
 [functions.apify-scrape-provider]
 verify_jwt = false
 
-# Apify webhook receiver — called by Apify, authorised by shared secret in-code.
+# Apify webhook receiver — called by Apify. Security: the x-apify-ingest-secret
+# header is checked in code against the Vault entry apify_ingest_secret.
 [functions.apify-ingest]
 verify_jwt = false
 
@@ -206,8 +208,9 @@ verify_jwt = false
 
 # mhc-* catalogue and price sync, run every 6 hours by the mhc-* cron jobs
 # through net.http_get with no Authorization header, so the gateway must not
-# require a JWT. Security: ?secret= is checked in code against the Vault entry
-# mhc_sync_secret (supabase/functions/_shared/mhc-auth.ts).
+# require a JWT. Security: the x-mhc-sync-secret header is checked in code against
+# the Vault entry mhc_sync_secret (supabase/functions/_shared/mhc-auth.ts). A URL
+# carrying ?secret= is refused.
 [functions.mhc-shopify-sync]
 verify_jwt = false
 
@@ -228,7 +231,8 @@ verify_jwt = false
 
 # Randox kit box images, run every 6 hours by the randox-kit-images cron job
 # (migration 20261026140150) through net.http_get with no Authorization header.
-# Security: ?secret= is checked in code against the Vault entry mhc_sync_secret.
+# Security: the x-mhc-sync-secret header is checked in code against the Vault
+# entry mhc_sync_secret. A URL carrying ?secret= is refused.
 [functions.randox-kit-images]
 verify_jwt = false
 
