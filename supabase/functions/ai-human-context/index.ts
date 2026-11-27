@@ -390,10 +390,8 @@ Deno.serve(async (req) => {
   }
   const serviceClient = createClient<Database>(supabaseUrl, supabaseServiceKey);
   const userId = await getOptionalUserId(supabaseUrl, supabaseAnonKey, req);
-  if (userId && !openaiApiKey) {
-    return jsonResponse({ error: "AI recommendation service is not configured" }, 500);
-  }
-  // Anonymous visitors are welcome; limits are keyed by IP for everyone.
+  // Anonymous visitors receive AI matching too (owner decision 27/11/2026);
+  // cost is bounded by the per-IP minute and daily caps below.
   const clientKey = `ip:${clientIpFrom(req.headers)}`;
 
   try {
@@ -443,8 +441,8 @@ Deno.serve(async (req) => {
     const fallback = fallbackResult(body, candidates);
     let result = fallback;
 
-    // Paid AI matching is for signed-in users only; guests get keyword scoring.
-    if (!userId || !openaiApiKey) {
+    // Without a configured key everyone gets keyword scoring.
+    if (!openaiApiKey) {
       await logOperation(serviceClient, {
         userId,
         latencyMs: Date.now() - startedAt,

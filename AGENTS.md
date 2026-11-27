@@ -82,3 +82,5 @@
 - Educational test comparisons share a deduplicated public catalogue service and route-prefetched query, with deterministic panel/biomarker matching and tracked product links. Why: guide pages must not invent prices, counts or provider destinations.
 - Similar-test queries resolve canonical category slugs or category IDs and stop when neither exists. Why: raw nullable display categories must never become catalogue filters.
 - Public accessibility overrides live under the route-aware public-accessibility boundary and exclude brand identity. Why: text and form floors must not resize deliberate wordmarks or admin surfaces.
+
+- The AI test finder (`ai-human-context`) gives guests full AI matching without sign-in (owner pays the AI cost); spend is bounded only by the per-IP minute and daily caps, and only signed-in queries are stored. Why: account creation must never gate results.
