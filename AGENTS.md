@@ -83,4 +83,4 @@
 - Similar-test queries resolve canonical category slugs or category IDs and stop when neither exists. Why: raw nullable display categories must never become catalogue filters.
 - Public accessibility overrides live under the route-aware public-accessibility boundary and exclude brand identity. Why: text and form floors must not resize deliberate wordmarks or admin surfaces.
 
-- The AI test finder (`ai-human-context`) gives guests full AI matching without sign-in (owner pays the AI cost); spend is bounded only by the per-IP minute and daily caps, and only signed-in queries are stored. Why: account creation must never gate results.
+- AI test finder serves guests AI results; per-IP caps bound cost. Why: no account gate.
