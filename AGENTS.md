@@ -84,3 +84,5 @@
 - Public accessibility overrides live under the route-aware public-accessibility boundary and exclude brand identity. Why: text and form floors must not resize deliberate wordmarks or admin surfaces.
 
 - AI test finder serves guests AI results; per-IP caps bound cost. Why: no account gate.
+
+- script-src: per-request nonce + 'strict-dynamic', never 'unsafe-inline'; nonced HTML is private. Why: block injected scripts; never cache-share a nonce.

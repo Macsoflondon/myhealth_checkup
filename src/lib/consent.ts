@@ -113,6 +113,10 @@ export function loadCookiebot(): void {
   script.id = COOKIEBOT_SCRIPT_ID;
   script.src = COOKIEBOT_SRC;
   script.async = true;
+  // Same nonce as the page's scripts, so the CSP trusts uc.js directly.
+  const nonce =
+    document.querySelector<HTMLScriptElement>("script[nonce]")?.nonce;
+  if (nonce) script.nonce = nonce;
   script.setAttribute("data-cbid", COOKIEBOT_CBID);
   script.setAttribute("data-blockingmode", "manual");
   document.head.appendChild(script);

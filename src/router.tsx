@@ -1,8 +1,27 @@
 import "./lib/zod-jitless";
 import { QueryClient, dehydrate, hydrate } from "@tanstack/react-query";
 import { createRouter } from "@tanstack/react-router";
+import {
+  createIsomorphicFn,
+  getGlobalStartContext,
+} from "@tanstack/react-start";
 import { routeTree } from "./routeTree.gen";
 import { installStaleAssetGuard } from "./lib/stale-asset-guard";
+
+/**
+ * The CSP nonce for this render. On the server it is the per-request value
+ * from the security-headers middleware; in the browser it is read back from a
+ * nonced script (the .nonce property, since browsers blank the attribute).
+ */
+const getCspNonce = createIsomorphicFn()
+  .server((): string | undefined => {
+    const ctx = getGlobalStartContext() as { cspNonce?: unknown } | undefined;
+    return typeof ctx?.cspNonce === "string" ? ctx.cspNonce : undefined;
+  })
+  .client((): string | undefined => {
+    const el = document.querySelector<HTMLScriptElement>("script[nonce]");
+    return el?.nonce || undefined;
+  });
 
 export const getRouter = () => {
   // Recover automatically when this tab holds an asset map that no longer
@@ -26,6 +45,7 @@ export const getRouter = () => {
     context: { queryClient },
     scrollRestoration: true,
     defaultPreloadStaleTime: 0,
+    ssr: { nonce: getCspNonce() },
     dehydrate: () => ({
       queryState: JSON.stringify(
         dehydrate(queryClient, {

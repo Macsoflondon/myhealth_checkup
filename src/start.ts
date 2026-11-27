@@ -12,7 +12,10 @@ import "./lib/error-capture";
 import { renderErrorPage } from "./lib/error-page";
 import { isClientAbort } from "./lib/is-client-abort";
 import { attachSupabaseAuth } from "@/integrations/supabase/auth-attacher";
-import { applySecurityHeadersForRequest } from "./lib/security-headers";
+import {
+  applySecurityHeadersForRequest,
+  createCspNonce,
+} from "./lib/security-headers";
 
 const errorMiddleware = createMiddleware().server(async ({ next }) => {
   try {
@@ -35,10 +38,22 @@ const errorMiddleware = createMiddleware().server(async ({ next }) => {
 // server functions).
 // src/server.ts applies the same headers again to every outgoing response,
 // including thrown errors and its own fallback 500/499 responses.
-const securityHeadersMiddleware = createMiddleware().server(async ({ next, request }) => {
-  const result = await next();
-  return { ...result, response: applySecurityHeadersForRequest(result.response, request) };
-});
+// A fresh nonce per request reaches the router through the global start
+// context (getRouter reads it as ssr.nonce) and the CSP header of HTML pages.
+const securityHeadersMiddleware = createMiddleware().server(
+  async ({ next, request }) => {
+    const cspNonce = createCspNonce();
+    const result = await next({ context: { cspNonce } });
+    return {
+      ...result,
+      response: applySecurityHeadersForRequest(
+        result.response,
+        request,
+        cspNonce,
+      ),
+    };
+  },
+);
 
 // Start installs this automatically when src/start.ts is absent; defining the
 // file opts out, so re-add it explicitly to keep server functions protected
@@ -49,5 +64,9 @@ const csrfMiddleware = createCsrfMiddleware({
 
 export const startInstance = createStart(() => ({
   functionMiddleware: [attachSupabaseAuth],
-  requestMiddleware: [securityHeadersMiddleware, errorMiddleware, csrfMiddleware],
+  requestMiddleware: [
+    securityHeadersMiddleware,
+    errorMiddleware,
+    csrfMiddleware,
+  ],
 }));

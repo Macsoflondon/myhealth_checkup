@@ -25,7 +25,8 @@ export const CSP_REPORT_PATH = "/api/public/csp-report";
  * public.csp_reports, which SOC Watch, soc-cluster (CSP burst detection) and
  * siem-export read. Reports sent to CSP_REPORT_PATH only reached server logs.
  */
-export const CSP_REPORT_URL = "https://clvuioagsgfadynuvodj.supabase.co/functions/v1/csp-report";
+export const CSP_REPORT_URL =
+  "https://clvuioagsgfadynuvodj.supabase.co/functions/v1/csp-report";
 
 /** Hosts that always get the strict production policy, whatever headers say. */
 const PRODUCTION_HOSTS = new Set([
@@ -34,7 +35,8 @@ const PRODUCTION_HOSTS = new Set([
   "myhealthcheckup.lovable.app",
 ]);
 
-const bareHost = (host: string): string => (host.toLowerCase().split(":")[0] ?? "").trim();
+const bareHost = (host: string): string =>
+  (host.toLowerCase().split(":")[0] ?? "").trim();
 
 /**
  * Picks the host the security policy is built for. The request URL host is
@@ -42,8 +44,16 @@ const bareHost = (host: string): string => (host.toLowerCase().split(":")[0] ?? 
  * preview policy is only used when every candidate host is a preview host,
  * so a spoofed header can never relax the policy on a production host.
  */
-export const resolvePolicyHost = (urlHost: string, forwardedHost: string | null): string => {
-  const candidates = [urlHost, ...(forwardedHost ? forwardedHost.split(",") : [])].map(bareHost).filter(Boolean);
+export const resolvePolicyHost = (
+  urlHost: string,
+  forwardedHost: string | null,
+): string => {
+  const candidates = [
+    urlHost,
+    ...(forwardedHost ? forwardedHost.split(",") : []),
+  ]
+    .map(bareHost)
+    .filter(Boolean);
   const production = candidates.find((h) => PRODUCTION_HOSTS.has(h));
   if (production) return production;
   const nonPreview = candidates.find((h) => !isEditorPreviewHost(h));
@@ -52,13 +62,17 @@ export const resolvePolicyHost = (urlHost: string, forwardedHost: string | null)
 
 const SUPABASE = "https://clvuioagsgfadynuvodj.supabase.co";
 const SUPABASE_WS = "wss://clvuioagsgfadynuvodj.supabase.co";
-const COOKIEBOT = ["https://consent.cookiebot.com", "https://consentcdn.cookiebot.com"];
+const COOKIEBOT = [
+  "https://consent.cookiebot.com",
+  "https://consentcdn.cookiebot.com",
+];
 
 /**
  * Admin surfaces: sign-in, break-glass recovery and Crux Control. They load
  * no third-party script and get the admin policy below.
  */
-export const isAdminSurfacePath = (pathname: string): boolean => /^\/(admin|control)(\/|$)/i.test(pathname);
+export const isAdminSurfacePath = (pathname: string): boolean =>
+  /^\/(admin|control)(\/|$)/i.test(pathname);
 
 /**
  * Every host the site displays images from, so img-src no longer allows any
@@ -98,7 +112,11 @@ const ADMIN_IMAGE_SOURCES = [
 ];
 
 /** Hosts that render the Lovable editor preview inside an iframe. */
-const EDITOR_FRAME_ANCESTORS = ["https://lovable.dev", "https://*.lovable.dev", "https://*.lovable.app"];
+const EDITOR_FRAME_ANCESTORS = [
+  "https://lovable.dev",
+  "https://*.lovable.dev",
+  "https://*.lovable.app",
+];
 
 export const isEditorPreviewHost = (host: string): boolean => {
   const h = bareHost(host);
@@ -117,18 +135,44 @@ export const isEditorPreviewHost = (host: string): boolean => {
 export const cspReportEndpoint = (host: string): string =>
   isEditorPreviewHost(host) ? CSP_REPORT_PATH : CSP_REPORT_URL;
 
-export const buildContentSecurityPolicy = (host: string, pathname = "/"): string => {
+/** 128-bit random value, base64, for one HTML response. */
+export const createCspNonce = (): string => {
+  const bytes = new Uint8Array(16);
+  crypto.getRandomValues(bytes);
+  let bin = "";
+  for (const b of bytes) bin += String.fromCharCode(b);
+  return btoa(bin);
+};
+
+const NONCE_RE = /^[A-Za-z0-9+/]{22}==$/;
+
+export const buildContentSecurityPolicy = (
+  host: string,
+  pathname = "/",
+  nonce?: string,
+): string => {
   const preview = isEditorPreviewHost(host);
   const admin = isAdminSurfacePath(pathname);
   // Cookiebot is the only third-party script on the public site. Admin
   // surfaces do not load it (see RootShell), so their policy omits it.
   const thirdParty = admin ? [] : COOKIEBOT;
-  const frameAncestors = preview ? ["'self'", ...EDITOR_FRAME_ANCESTORS] : ["'none'"];
+  const frameAncestors = preview
+    ? ["'self'", ...EDITOR_FRAME_ANCESTORS]
+    : ["'none'"];
   const directives: Record<string, string[]> = {
     "default-src": ["'self'"],
-    // TanStack Start streams inline hydration scripts and JSON-LD; no nonce
-    // support is available on this hosting, so inline scripts stay allowed.
-    "script-src": ["'self'", "'unsafe-inline'", ...thirdParty, ...(preview ? ["https://cdn.gpteng.co"] : [])],
+    // No 'unsafe-inline'. HTML responses get a per-request nonce that the
+    // router puts on every inline and module script it renders (ssr.nonce);
+    // 'strict-dynamic' then trusts scripts those load (Cookiebot, chunks).
+    // Responses without a nonce allow no inline script at all.
+    "script-src": [
+      "'self'",
+      ...(nonce && NONCE_RE.test(nonce)
+        ? [`'nonce-${nonce}'`, "'strict-dynamic'"]
+        : []),
+      ...thirdParty,
+      ...(preview ? ["https://cdn.gpteng.co"] : []),
+    ],
     "style-src": ["'self'", "'unsafe-inline'", ...thirdParty],
     "font-src": ["'self'", "data:"],
     "img-src": [
@@ -159,7 +203,9 @@ export const buildContentSecurityPolicy = (host: string, pathname = "/"): string
     "report-uri": [cspReportEndpoint(host)],
     "report-to": ["csp-endpoint"],
   };
-  const parts = Object.entries(directives).map(([k, v]) => `${k} ${v.join(" ")}`);
+  const parts = Object.entries(directives).map(
+    ([k, v]) => `${k} ${v.join(" ")}`,
+  );
   if (!preview) parts.push("upgrade-insecure-requests");
   return parts.join("; ");
 };
@@ -185,9 +231,17 @@ export const PERMISSIONS_POLICY = [
   "browsing-topics=()",
 ].join(", ");
 
-export const buildSecurityHeaders = (host: string, pathname = "/"): Record<string, string> => {
+export const buildSecurityHeaders = (
+  host: string,
+  pathname = "/",
+  nonce?: string,
+): Record<string, string> => {
   const headers: Record<string, string> = {
-    "Content-Security-Policy": buildContentSecurityPolicy(host, pathname),
+    "Content-Security-Policy": buildContentSecurityPolicy(
+      host,
+      pathname,
+      nonce,
+    ),
     "Permissions-Policy": PERMISSIONS_POLICY,
     "X-Content-Type-Options": "nosniff",
     "Referrer-Policy": "strict-origin-when-cross-origin",
@@ -202,13 +256,31 @@ export const buildSecurityHeaders = (host: string, pathname = "/"): Record<strin
 };
 
 /** Returns the response with security headers set, copying it if immutable. */
-export const applySecurityHeaders = (response: Response, host: string, pathname = "/"): Response => {
-  const headers = buildSecurityHeaders(host, pathname);
+export const applySecurityHeaders = (
+  response: Response,
+  host: string,
+  pathname = "/",
+  nonce?: string,
+): Response => {
+  const headers = buildSecurityHeaders(host, pathname, nonce);
   const set = (target: Response): Response => {
-    for (const [k, v] of Object.entries(headers)) target.headers.set(k, v);
+    // A policy already carrying this response's nonce (set by the request
+    // middleware) is kept when the outer server entry re-applies headers.
+    const keepNonced =
+      !nonce &&
+      /'nonce-/.test(target.headers.get("Content-Security-Policy") ?? "");
+    for (const [k, v] of Object.entries(headers)) {
+      if (keepNonced && k === "Content-Security-Policy") continue;
+      target.headers.set(k, v);
+    }
+    // A nonce is single-use per visitor: never let a shared cache reuse it.
+    if (/'nonce-/.test(target.headers.get("Content-Security-Policy") ?? "")) {
+      target.headers.set("Cache-Control", "private, no-cache, max-age=0");
+    }
     // The policy depends on the host, so shared caches must key on it.
     const vary = target.headers.get("Vary") ?? "";
-    if (!/x-forwarded-host/i.test(vary)) target.headers.append("Vary", "Host, X-Forwarded-Host");
+    if (!/x-forwarded-host/i.test(vary))
+      target.headers.append("Vary", "Host, X-Forwarded-Host");
     return target;
   };
   try {
@@ -219,11 +291,19 @@ export const applySecurityHeaders = (response: Response, host: string, pathname 
 };
 
 /** Applies security headers using the trusted host resolution for a request. */
-export const applySecurityHeadersForRequest = (response: Response, request: Request): Response => {
+export const applySecurityHeadersForRequest = (
+  response: Response,
+  request: Request,
+  nonce?: string,
+): Response => {
   const url = new URL(request.url);
+  const isHtml = (response.headers.get("content-type") ?? "").includes(
+    "text/html",
+  );
   return applySecurityHeaders(
     response,
     resolvePolicyHost(url.host, request.headers.get("x-forwarded-host")),
     url.pathname,
+    isHtml ? nonce : undefined,
   );
 };
