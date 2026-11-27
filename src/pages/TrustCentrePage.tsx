@@ -93,9 +93,8 @@ const TrustCentrePage = () => {
                 <CardContent className="text-sm text-muted-foreground">
                   We collect the minimum data needed to run the comparison
                   service: name, email, phone number (optional), and saved
-                  tests/providers. We do not store raw medical results or
-                  identifiable diagnostic data on behalf of users browsing the
-                  site.
+                  tests/providers. Your account does not store test results,
+                  biomarker readings or health scores yet.
                 </CardContent>
               </Card>
 

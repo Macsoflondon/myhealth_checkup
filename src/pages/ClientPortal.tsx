@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "@/lib/router-compat";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/context/AuthContext";
@@ -20,6 +20,8 @@ import {
 import { toast } from "sonner";
 import { Helmet } from "react-helmet-async";
 import { logger } from "@/lib/logger";
+import { PERSONAL_HEALTH_RECORDS_ENABLED } from "@/lib/personal-health-records";
+import { StageOneHealthRecords } from "@/components/dashboard/StageOneHealthRecords";
 
 interface UserProfile {
   first_name: string | null;
@@ -54,33 +56,28 @@ export default function ClientPortal() {
   const [insights, setInsights] = useState<HealthInsight[]>([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    if (!user) {
-      navigate("/auth");
-      return;
-    }
-
-    fetchPortalData();
-  }, [user, navigate]);
-
-  const fetchPortalData = async () => {
+  const fetchPortalData = useCallback(async () => {
     try {
       setLoading(true);
 
       // Fetch all data in parallel for 3-4x faster loading
       const [profileData, resultsData, insightsData] = await Promise.all([
         usersApi.getUserProfile(user!.id),
-        supabase
-          .from("test_results")
-          .select("*")
-          .eq("user_id", user?.id ?? "")
-          .order("result_date", { ascending: false }),
-        supabase
-          .from("health_insights")
-          .select("*")
-          .eq("user_id", user?.id ?? "")
-          .order("created_at", { ascending: false })
-          .limit(5),
+        PERSONAL_HEALTH_RECORDS_ENABLED
+          ? supabase
+              .from("test_results")
+              .select("*")
+              .eq("user_id", user?.id ?? "")
+              .order("result_date", { ascending: false })
+          : Promise.resolve({ data: [], error: null }),
+        PERSONAL_HEALTH_RECORDS_ENABLED
+          ? supabase
+              .from("health_insights")
+              .select("*")
+              .eq("user_id", user?.id ?? "")
+              .order("created_at", { ascending: false })
+              .limit(5)
+          : Promise.resolve({ data: [], error: null }),
       ]);
 
       if (profileData.error) throw profileData.error;
@@ -94,7 +91,16 @@ export default function ClientPortal() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [user]);
+
+  useEffect(() => {
+    if (!user) {
+      navigate("/auth");
+      return;
+    }
+
+    void fetchPortalData();
+  }, [user, navigate, fetchPortalData]);
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -138,6 +144,64 @@ export default function ClientPortal() {
         </div>
         <Footer />
       </div>
+    );
+  }
+
+  if (!PERSONAL_HEALTH_RECORDS_ENABLED) {
+    return (
+      <>
+        <Helmet>
+          <title>Your account | myhealth checkup</title>
+          <meta
+            name="description"
+            content="Manage your account and previously stored records"
+          />
+          <meta name="robots" content="noindex, follow" />
+        </Helmet>
+        <div className="min-h-screen bg-background">
+          <Header />
+          <main className="container mx-auto max-w-4xl px-4 py-12 space-y-8">
+            <div>
+              <h1 className="type-page-title mb-2">
+                Welcome back, {profile?.first_name || "User"}
+              </h1>
+              <p className="text-muted-foreground">
+                Manage your account details and saved preferences.
+              </p>
+            </div>
+            <StageOneHealthRecords />
+            <Card className="p-6">
+              <h2 className="type-card-title mb-4 flex items-center gap-2">
+                <User className="h-5 w-5" />
+                Your profile
+              </h2>
+              <dl className="space-y-3">
+                <div>
+                  <dt className="text-sm text-muted-foreground">Name</dt>
+                  <dd>
+                    {profile?.first_name} {profile?.last_name}
+                  </dd>
+                </div>
+                <div>
+                  <dt className="text-sm text-muted-foreground">
+                    Date of birth
+                  </dt>
+                  <dd>{profile?.date_of_birth || "Not set"}</dd>
+                </div>
+                <div>
+                  <dt className="text-sm text-muted-foreground">Gender</dt>
+                  <dd>{profile?.gender || "Not set"}</dd>
+                </div>
+                <div>
+                  <dt className="text-sm text-muted-foreground">Phone</dt>
+                  <dd>{profile?.phone_number || "Not set"}</dd>
+                </div>
+              </dl>
+            </Card>
+          </main>
+          <Footer />
+        </div>
+      </>
     );
   }
 

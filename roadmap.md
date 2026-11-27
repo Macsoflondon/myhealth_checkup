@@ -1,5 +1,12 @@
 # Roadmap
 
+## 27 November screening, part 14
+- [x] Add matching site and Edge stage 1 constants; gate account health-record features while preserving View/Delete for existing records and keeping stage 2 code.
+- [x] Stop health-query writes/history reads in RecommendationEngine, BloodTestAnalysisPage and the three named Edge functions; deploy those functions.
+- [x] Add the fixed rolling 24-hour global paid-AI ceiling with keyword-scoring fallback and a once-per-window warning.
+- [x] Correct public, FAQ, privacy and account storage/tracking copy without dates or NHS integration claims.
+- [x] Add focused dashboard, stage-gate and global-ceiling tests; 1,368 unit tests, 21 deployed-function Deno tests and changed-file lint pass. Public browser checks show no history/save prompts or page errors; automatic build is OK. Signed-in browser verification is unavailable for the user-managed backend; component tests cover existing-file View/Delete. Commit without publishing or migrations.
+
 ## 22 November screening, part 9
 - [x] Verify own-domain Shopify product handles against one complete paginated live catalogue per store; retain per-page checks elsewhere, provider pools, 429 handling and the time budget.
 - [x] Preserve incomplete-catalogue state and log provider methods. 16 Deno / 1,355 unit tests and lint/automatic compilation pass. Deployed v198; final scheduled-auth check returned 202 in 788ms, then completed all 748 links in 156.1s: 748 OK, zero broken/rate-limited/inconclusive/not-reached. Fixed Unicode-handle mismatch found during initial live check and acknowledged only its temporary false alert. Per-provider counts in docs/SCREENING_PART_9.md.

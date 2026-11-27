@@ -26,6 +26,7 @@ import {
   type UniversalTestData,
 } from "@/components/cards/UniversalTestCard";
 import { useResolvedRecommendations } from "@/hooks/queries/useResolvedRecommendations";
+import { PERSONAL_HEALTH_RECORDS_ENABLED } from "@/lib/personal-health-records";
 
 interface QueryHistoryItem {
   id?: string;
@@ -278,7 +279,7 @@ const RecommendationEngine = ({
     if (resultsOnly) return;
     supabase.auth.getUser().then(({ data: { user } }) => {
       setUser(user);
-      if (user) {
+      if (PERSONAL_HEALTH_RECORDS_ENABLED && user) {
         loadQueryHistory(user.id);
       }
     });
@@ -287,7 +288,7 @@ const RecommendationEngine = ({
       data: { subscription },
     } = supabase.auth.onAuthStateChange((event, session) => {
       setUser(session?.user ?? null);
-      if (session?.user) {
+      if (PERSONAL_HEALTH_RECORDS_ENABLED && session?.user) {
         loadQueryHistory(session.user.id);
       } else {
         setQueryHistory([]);
@@ -303,6 +304,7 @@ const RecommendationEngine = ({
   }, [initialResult]);
 
   const loadQueryHistory = async (userId: string) => {
+    if (!PERSONAL_HEALTH_RECORDS_ENABLED) return;
     try {
       const { data, error } = await supabase
         .from("health_queries")
@@ -370,7 +372,7 @@ const RecommendationEngine = ({
           : 0,
         authenticated,
       });
-      if (user) {
+      if (PERSONAL_HEALTH_RECORDS_ENABLED && user) {
         toast.success("Recommendation saved to your account");
         loadQueryHistory(user.id);
       }
@@ -452,7 +454,7 @@ const RecommendationEngine = ({
         </p>
       </div>
 
-      {user && (
+      {PERSONAL_HEALTH_RECORDS_ENABLED && user && (
         <Alert className="mb-6 border-primary/20 bg-primary/5">
           <Shield className="h-4 w-4 text-primary" />
           <AlertDescription>
@@ -472,7 +474,7 @@ const RecommendationEngine = ({
         </AlertDescription>
       </Alert>
 
-      {!user && (
+      {PERSONAL_HEALTH_RECORDS_ENABLED && !user && (
         <Alert className="mb-6 border-primary/20 bg-primary/5">
           <Shield className="h-4 w-4 text-primary" />
           <AlertDescription className="text-foreground">
@@ -489,7 +491,7 @@ const RecommendationEngine = ({
         </Alert>
       )}
 
-      {user && queryHistory.length > 0 && (
+      {PERSONAL_HEALTH_RECORDS_ENABLED && user && queryHistory.length > 0 && (
         <Card className="p-4 mb-6">
           <div className="flex items-center justify-between mb-4">
             <h3 className="font-semibold flex items-center gap-2">

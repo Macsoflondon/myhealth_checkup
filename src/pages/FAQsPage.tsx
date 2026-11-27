@@ -305,11 +305,11 @@ const faqCategories = [
       },
       {
         q: "Who has access to my test results?",
-        a: "Only you and qualified healthcare professionals reviewing your results. Your data is never shared without explicit consent.",
+        a: "Your provider controls access to your results and explains who can view them. myhealth checkup does not receive or store your test results.",
       },
       {
-        q: "Are my results stored securely?",
-        a: "Yes, all results are stored on encrypted, secure servers in compliance with UK data protection regulations and NHS data security standards.",
+        q: "Does myhealth checkup store my results?",
+        a: "No. Your account does not store test results, biomarker readings or health scores yet. Your provider supplies your results through its own service and explains its storage and security arrangements.",
       },
       {
         q: "Can I request my data be deleted?",

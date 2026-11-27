@@ -1,6 +1,6 @@
-import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.0";
+import { canUsePersonalHealthRecordHistory } from "../_shared/personal-health-records.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -33,7 +33,29 @@ const HEALTH_CATEGORIES = [
   "Diabetes Risk",
 ];
 
-serve(async (req) => {
+interface AvailableTest {
+  test_name: string;
+  provider_id: string;
+  price: number | null;
+  category: string | null;
+}
+
+interface GapRecommendation {
+  testName?: string;
+  price?: number | null;
+}
+
+interface Gap {
+  recommendedTests?: GapRecommendation[];
+}
+
+interface GapResult {
+  medicalDisclaimer?: string;
+  coverageScore: number;
+  gaps?: Gap[];
+}
+
+Deno.serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
   }
@@ -144,7 +166,7 @@ serve(async (req) => {
         string,
         Array<{ name: string; provider: string; price: number | null }>
       >
-    >((acc, test: any) => {
+    >((acc, test: AvailableTest) => {
       const cat = test.category ?? "General";
       if (!acc[cat]) acc[cat] = [];
       const providerNames: Record<string, string> = {
@@ -162,7 +184,7 @@ serve(async (req) => {
 
     const availableTestsForPrompt = (availableTests ?? [])
       .slice(0, 80)
-      .map((t: any) => {
+      .map((t: AvailableTest) => {
         const providerNames: Record<string, string> = {
           medichecks: "Medichecks",
           "lola-health": "Lola Health",
@@ -281,9 +303,9 @@ Rules:
     const aiResponse = await response.json();
     const content = aiResponse.choices[0].message.content;
 
-    let result;
+    let result: GapResult;
     try {
-      result = JSON.parse(content);
+      result = JSON.parse(content) as GapResult;
     } catch (parseError) {
       console.error("Failed to parse AI response:", content);
       throw new Error("Failed to parse AI response");
@@ -307,14 +329,17 @@ Rules:
 
     // Enrich with actual prices from DB where possible
     if (Array.isArray(result.gaps)) {
-      result.gaps = result.gaps.map((gap: any) => ({
+      result.gaps = result.gaps.map((gap) => ({
         ...gap,
-        recommendedTests: (gap.recommendedTests ?? []).map((rec: any) => {
-          const dbTest = (availableTests ?? []).find((t: any) =>
-            t.test_name
-              ?.toLowerCase()
-              .includes(rec.testName?.toLowerCase()?.substring(0, 20)),
-          ) as any;
+        recommendedTests: (gap.recommendedTests ?? []).map((rec) => {
+          const recommendationName = rec.testName
+            ?.toLowerCase()
+            .substring(0, 20);
+          const dbTest = recommendationName
+            ? (availableTests ?? []).find((t: AvailableTest) =>
+                t.test_name.toLowerCase().includes(recommendationName),
+              )
+            : undefined;
           return {
             ...rec,
             price: dbTest?.price ?? rec.price ?? null,
@@ -323,8 +348,8 @@ Rules:
       }));
     }
 
-    // Store result only for the authenticated user (never a client-supplied id).
-    if (verifiedUserId) {
+    // Stage 2 only: stage 1 answers are stateless and write no health query.
+    if (canUsePersonalHealthRecordHistory(verifiedUserId)) {
       try {
         await supabase.from("health_queries").insert({
           user_id: verifiedUserId,

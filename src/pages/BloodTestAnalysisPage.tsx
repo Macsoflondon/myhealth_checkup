@@ -19,6 +19,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { PERSONAL_HEALTH_RECORDS_ENABLED } from "@/lib/personal-health-records";
 import {
   FlaskConical,
   History,
@@ -54,7 +55,7 @@ export default function BloodTestAnalysisPage() {
       } = await supabase.auth.getUser();
       setUser(user);
 
-      if (user) {
+      if (PERSONAL_HEALTH_RECORDS_ENABLED && user) {
         loadPreviousQueries();
       }
     };
@@ -65,7 +66,7 @@ export default function BloodTestAnalysisPage() {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_, session) => {
       setUser(session?.user || null);
-      if (session?.user) {
+      if (PERSONAL_HEALTH_RECORDS_ENABLED && session?.user) {
         loadPreviousQueries();
       }
     });
@@ -74,6 +75,7 @@ export default function BloodTestAnalysisPage() {
   }, []);
 
   const loadPreviousQueries = async () => {
+    if (!PERSONAL_HEALTH_RECORDS_ENABLED) return;
     const { data, error } = await supabase
       .from("health_queries")
       .select("*")
@@ -126,7 +128,7 @@ export default function BloodTestAnalysisPage() {
 
       setAnalysisResult(data);
       setActiveTab("results");
-      loadPreviousQueries();
+      if (PERSONAL_HEALTH_RECORDS_ENABLED) loadPreviousQueries();
 
       toast({
         title: "Analysis complete",
@@ -171,8 +173,8 @@ export default function BloodTestAnalysisPage() {
             </h1>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-8">
               Enter your biomarker readings and receive instant, AI-powered
-              explanations of what they mean for your health. Track trends over
-              time and get personalised recommendations.
+              explanations of what they mean. Your readings are used for this
+              analysis and are not saved to your account.
             </p>
 
             {/* Medical Disclaimer Banner */}
@@ -201,8 +203,8 @@ export default function BloodTestAnalysisPage() {
                 <CardContent className="text-center space-y-4">
                   <p className="text-muted-foreground">
                     Please sign in to use the AI blood test analysis feature.
-                    Your data is stored securely and only you can access your
-                    results.
+                    Your readings are used for this analysis and are not saved
+                    to your account.
                   </p>
                   <Button onClick={() => navigate("/auth")}>
                     Sign in to continue
@@ -212,7 +214,9 @@ export default function BloodTestAnalysisPage() {
             ) : (
               <div className="max-w-4xl mx-auto">
                 <Tabs value={activeTab} onValueChange={setActiveTab}>
-                  <TabsList className="grid w-full grid-cols-3 mb-8">
+                  <TabsList
+                    className={`grid w-full ${PERSONAL_HEALTH_RECORDS_ENABLED ? "grid-cols-3" : "grid-cols-2"} mb-8`}
+                  >
                     <TabsTrigger
                       value="input"
                       className="flex items-center gap-2"
@@ -228,13 +232,15 @@ export default function BloodTestAnalysisPage() {
                       <Sparkles className="h-4 w-4" />
                       Analysis
                     </TabsTrigger>
-                    <TabsTrigger
-                      value="history"
-                      className="flex items-center gap-2"
-                    >
-                      <History className="h-4 w-4" />
-                      History
-                    </TabsTrigger>
+                    {PERSONAL_HEALTH_RECORDS_ENABLED && (
+                      <TabsTrigger
+                        value="history"
+                        className="flex items-center gap-2"
+                      >
+                        <History className="h-4 w-4" />
+                        History
+                      </TabsTrigger>
+                    )}
                   </TabsList>
 
                   {/* Input Tab */}
@@ -259,37 +265,38 @@ export default function BloodTestAnalysisPage() {
                         <BiomarkerAnalysisResult result={analysisResult} />
 
                         {/* Trend Charts for biomarkers with history */}
-                        {analysisResult.biomarkerAnalysis.some(
-                          (b) =>
-                            b.previousValues && b.previousValues.length > 1,
-                        ) && (
-                          <Card>
-                            <CardHeader>
-                              <CardTitle className="flex items-center gap-2">
-                                <TrendingUp className="h-5 w-5 text-primary" />
-                                Your Biomarker Trends
-                              </CardTitle>
-                            </CardHeader>
-                            <CardContent className="grid gap-4 md:grid-cols-2">
-                              {analysisResult.biomarkerAnalysis
-                                .filter(
-                                  (b) =>
-                                    b.previousValues &&
-                                    b.previousValues.length > 1,
-                                )
-                                .slice(0, 4)
-                                .map((biomarker, index) => (
-                                  <BiomarkerTrendChart
-                                    key={index}
-                                    biomarkerName={biomarker.name}
-                                    data={biomarker.previousValues || []}
-                                    unit={biomarker.unit}
-                                    currentValue={biomarker.value}
-                                  />
-                                ))}
-                            </CardContent>
-                          </Card>
-                        )}
+                        {PERSONAL_HEALTH_RECORDS_ENABLED &&
+                          analysisResult.biomarkerAnalysis.some(
+                            (b) =>
+                              b.previousValues && b.previousValues.length > 1,
+                          ) && (
+                            <Card>
+                              <CardHeader>
+                                <CardTitle className="flex items-center gap-2">
+                                  <TrendingUp className="h-5 w-5 text-primary" />
+                                  Your Biomarker Trends
+                                </CardTitle>
+                              </CardHeader>
+                              <CardContent className="grid gap-4 md:grid-cols-2">
+                                {analysisResult.biomarkerAnalysis
+                                  .filter(
+                                    (b) =>
+                                      b.previousValues &&
+                                      b.previousValues.length > 1,
+                                  )
+                                  .slice(0, 4)
+                                  .map((biomarker, index) => (
+                                    <BiomarkerTrendChart
+                                      key={index}
+                                      biomarkerName={biomarker.name}
+                                      data={biomarker.previousValues || []}
+                                      unit={biomarker.unit}
+                                      currentValue={biomarker.value}
+                                    />
+                                  ))}
+                              </CardContent>
+                            </Card>
+                          )}
 
                         <div className="flex justify-center">
                           <Button
@@ -319,58 +326,60 @@ export default function BloodTestAnalysisPage() {
                   </TabsContent>
 
                   {/* History Tab */}
-                  <TabsContent value="history">
-                    <Card>
-                      <CardHeader>
-                        <CardTitle className="flex items-center gap-2">
-                          <History className="h-5 w-5 text-primary" />
-                          Previous Analyses
-                        </CardTitle>
-                      </CardHeader>
-                      <CardContent>
-                        {previousQueries.length === 0 ? (
-                          <p className="text-muted-foreground text-center py-8">
-                            No previous analyses found. Your analysis history
-                            will appear here.
-                          </p>
-                        ) : (
-                          <div className="space-y-3">
-                            {previousQueries.map((query) => (
-                              <button
-                                key={query.id}
-                                onClick={() => loadPreviousAnalysis(query)}
-                                className="w-full text-left p-4 rounded-lg border hover:bg-accent transition-colors"
-                              >
-                                <div className="flex justify-between items-start">
-                                  <div>
-                                    <p className="font-medium text-sm">
-                                      {query.ai_response?.biomarkerAnalysis
-                                        ?.length || 0}{" "}
-                                      biomarkers analysed
-                                    </p>
-                                    <p className="text-xs text-muted-foreground mt-1">
-                                      {new Date(
-                                        query.created_at,
-                                      ).toLocaleDateString("en-GB", {
-                                        day: "numeric",
-                                        month: "long",
-                                        year: "numeric",
-                                        hour: "2-digit",
-                                        minute: "2-digit",
-                                      })}
-                                    </p>
+                  {PERSONAL_HEALTH_RECORDS_ENABLED && (
+                    <TabsContent value="history">
+                      <Card>
+                        <CardHeader>
+                          <CardTitle className="flex items-center gap-2">
+                            <History className="h-5 w-5 text-primary" />
+                            Previous Analyses
+                          </CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                          {previousQueries.length === 0 ? (
+                            <p className="text-muted-foreground text-center py-8">
+                              No previous analyses found. Your analysis history
+                              will appear here.
+                            </p>
+                          ) : (
+                            <div className="space-y-3">
+                              {previousQueries.map((query) => (
+                                <button
+                                  key={query.id}
+                                  onClick={() => loadPreviousAnalysis(query)}
+                                  className="w-full text-left p-4 rounded-lg border hover:bg-accent transition-colors"
+                                >
+                                  <div className="flex justify-between items-start">
+                                    <div>
+                                      <p className="font-medium text-sm">
+                                        {query.ai_response?.biomarkerAnalysis
+                                          ?.length || 0}{" "}
+                                        biomarkers analysed
+                                      </p>
+                                      <p className="text-xs text-muted-foreground mt-1">
+                                        {new Date(
+                                          query.created_at,
+                                        ).toLocaleDateString("en-GB", {
+                                          day: "numeric",
+                                          month: "long",
+                                          year: "numeric",
+                                          hour: "2-digit",
+                                          minute: "2-digit",
+                                        })}
+                                      </p>
+                                    </div>
+                                    <Button variant="ghost" size="sm">
+                                      View
+                                    </Button>
                                   </div>
-                                  <Button variant="ghost" size="sm">
-                                    View
-                                  </Button>
-                                </div>
-                              </button>
-                            ))}
-                          </div>
-                        )}
-                      </CardContent>
-                    </Card>
-                  </TabsContent>
+                                </button>
+                              ))}
+                            </div>
+                          )}
+                        </CardContent>
+                      </Card>
+                    </TabsContent>
+                  )}
                 </Tabs>
               </div>
             )}

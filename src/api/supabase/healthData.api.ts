@@ -22,6 +22,15 @@ export interface UploadedTestResult {
   updated_at: string | null;
 }
 
+export interface LegacyTestResult {
+  id: string;
+  user_id: string;
+  result_date: string;
+  provider_id: string | null;
+  pdf_url: string | null;
+  test_master_id: string | null;
+}
+
 export interface BiomarkerReading {
   id: string;
   uploaded_test_result_id?: string;
@@ -122,6 +131,28 @@ class HealthDataApi {
     return { data: resultsWithSignedUrls, error, count };
   }
 
+  async getLegacyTestResults(
+    userId: string,
+  ): Promise<ApiResponse<LegacyTestResult[]>> {
+    const { data, error, count } = await supabase
+      .from("test_results")
+      .select("id, user_id, result_date, provider_id, pdf_url, test_master_id")
+      .eq("user_id", userId)
+      .order("result_date", { ascending: false });
+
+    if (error || !data) return { data, error, count };
+
+    const resultsWithSignedUrls = await Promise.all(
+      data.map(async (result) => ({
+        ...result,
+        pdf_url: result.pdf_url
+          ? await this.getSecureFileUrl(result.pdf_url)
+          : null,
+      })),
+    );
+    return { data: resultsWithSignedUrls, error, count };
+  }
+
   async uploadTestResult(
     result: Omit<
       UploadedTestResult,
@@ -168,6 +199,26 @@ class HealthDataApi {
     return { data: null, error };
   }
 
+  async deleteLegacyTestResult(id: string): Promise<ApiResponse<null>> {
+    const { data: row, error: readError } = await supabase
+      .from("test_results")
+      .select("pdf_url")
+      .eq("id", id)
+      .maybeSingle();
+    if (readError) return { data: null, error: readError };
+
+    const path = row?.pdf_url;
+    if (path && !path.startsWith("http://") && !path.startsWith("https://")) {
+      const { error: storageError } = await supabase.storage
+        .from(TEST_RESULTS_BUCKET)
+        .remove([path]);
+      if (storageError) return { data: null, error: storageError };
+    }
+
+    const { error } = await supabase.from("test_results").delete().eq("id", id);
+    return { data: null, error };
+  }
+
   // Biomarker Readings
   async getBiomarkerReadings(
     userId: string,
@@ -202,6 +253,14 @@ class HealthDataApi {
       .single();
 
     return { data: data as BiomarkerReading | null, error };
+  }
+
+  async deleteBiomarkerReading(id: string): Promise<ApiResponse<null>> {
+    const { error } = await supabase
+      .from("biomarker_readings")
+      .delete()
+      .eq("id", id);
+    return { data: null, error };
   }
 
   async getBiomarkerTrend(
@@ -249,6 +308,14 @@ class HealthDataApi {
     return { data, error };
   }
 
+  async deleteHealthScore(id: string): Promise<ApiResponse<null>> {
+    const { error } = await supabase
+      .from("user_health_scores")
+      .delete()
+      .eq("id", id);
+    return { data: null, error };
+  }
+
   // User Health Data (wearables, manual entries)
   async getUserHealthData(
     userId: string,
@@ -268,6 +335,14 @@ class HealthDataApi {
 
     const { data, error, count } = await query;
     return { data, error, count };
+  }
+
+  async deleteHealthData(id: string): Promise<ApiResponse<null>> {
+    const { error } = await supabase
+      .from("user_health_data")
+      .delete()
+      .eq("id", id);
+    return { data: null, error };
   }
 
   async addHealthData(

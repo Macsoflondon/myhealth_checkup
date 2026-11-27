@@ -164,12 +164,11 @@ const AboutUsPage = () => {
                 Goodbody Clinic, with further integrations in progress.
               </p>
               <p>
-                Stage 2 of the platform introduces a centralised, secure health
-                data hub where your private results can be stored and shared,
-                with your consent, directly with NHS GPs and specialists. This
-                addresses one of the most persistent failures in UK healthcare:
-                private diagnostic results sitting in silos, never informing the
-                NHS pathway that follows.
+                myhealth checkup currently helps you compare private tests and
+                save your preferences. Your account does not store test results,
+                biomarker readings or health scores yet. Any future personal
+                health-record features would require explicit consent and the
+                necessary governance before they become available.
               </p>
               <p>
                 We are backed by a team combining clinical expertise, technology

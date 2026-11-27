@@ -38,13 +38,19 @@ import { useDashboardData } from "@/hooks/queries/useDashboardData";
 import { useDraggable } from "@/hooks";
 import { cn } from "@/lib/utils";
 import { ProviderLogo } from "@/components/providers/ProviderLogo";
+import { PERSONAL_HEALTH_RECORDS_ENABLED } from "@/lib/personal-health-records";
+import { StageOneHealthRecords } from "./StageOneHealthRecords";
 
 export const HealthDataHub = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const [activeTab, setActiveTab] = useState(
-    searchParams.get("tab") || "overview",
-  );
+  const [activeTab, setActiveTab] = useState(() => {
+    const requestedTab = searchParams.get("tab") || "overview";
+    return !PERSONAL_HEALTH_RECORDS_ENABLED &&
+      ["results", "upload"].includes(requestedTab)
+      ? "overview"
+      : requestedTab;
+  });
   const [refreshKey, setRefreshKey] = useState(0);
 
   const {
@@ -80,55 +86,58 @@ export const HealthDataHub = () => {
       <div className="text-left">
         <PageHeading title="Health" accent="Dashboard" centered={false} />
         <p className="text-muted-foreground mt-2">
-          Your test results, saved tests, providers, orders and profile in one
-          place
+          {PERSONAL_HEALTH_RECORDS_ENABLED
+            ? "Your test results, saved tests, providers, orders and profile in one place"
+            : "Your saved tests, providers, orders and profile in one place"}
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <Card className="p-6 border-2">
-          <div className="flex items-center gap-4">
-            <div className="w-12 h-12 bg-brand-pink/10 rounded-full flex items-center justify-center">
-              <Activity className="w-6 h-6 text-brand-pink" />
+      {PERSONAL_HEALTH_RECORDS_ENABLED && (
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <Card className="p-6 border-2">
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 bg-brand-pink/10 rounded-full flex items-center justify-center">
+                <Activity className="w-6 h-6 text-brand-pink" />
+              </div>
+              <div>
+                <p className="text-2xl font-bold text-brand-navy">--</p>
+                <p className="text-sm text-muted-foreground">Health Score</p>
+              </div>
             </div>
-            <div>
-              <p className="text-2xl font-bold text-brand-navy">--</p>
-              <p className="text-sm text-muted-foreground">Health Score</p>
-            </div>
-          </div>
-        </Card>
+          </Card>
 
-        <Card className="p-6 border-2">
-          <div className="flex items-center gap-4">
-            <div className="w-12 h-12 bg-brand-turquoise/10 rounded-full flex items-center justify-center">
-              <FileText className="w-6 h-6 text-brand-turquoise" />
+          <Card className="p-6 border-2">
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 bg-brand-turquoise/10 rounded-full flex items-center justify-center">
+                <FileText className="w-6 h-6 text-brand-turquoise" />
+              </div>
+              <div>
+                <p
+                  className="text-2xl font-bold text-brand-navy"
+                  key={refreshKey}
+                >
+                  0
+                </p>
+                <p className="text-sm text-muted-foreground">Test results</p>
+              </div>
             </div>
-            <div>
-              <p
-                className="text-2xl font-bold text-brand-navy"
-                key={refreshKey}
-              >
-                0
-              </p>
-              <p className="text-sm text-muted-foreground">Test results</p>
-            </div>
-          </div>
-        </Card>
+          </Card>
 
-        <Card className="p-6 border-2">
-          <div className="flex items-center gap-4">
-            <div className="w-12 h-12 bg-brand-navy/10 rounded-full flex items-center justify-center">
-              <TrendingUp className="w-6 h-6 text-brand-navy" />
+          <Card className="p-6 border-2">
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 bg-brand-navy/10 rounded-full flex items-center justify-center">
+                <TrendingUp className="w-6 h-6 text-brand-navy" />
+              </div>
+              <div>
+                <p className="text-2xl font-bold text-brand-navy">--</p>
+                <p className="text-sm text-muted-foreground">
+                  Biomarkers Tracked
+                </p>
+              </div>
             </div>
-            <div>
-              <p className="text-2xl font-bold text-brand-navy">--</p>
-              <p className="text-sm text-muted-foreground">
-                Biomarkers Tracked
-              </p>
-            </div>
-          </div>
-        </Card>
-      </div>
+          </Card>
+        </div>
+      )}
 
       <Tabs
         value={activeTab}
@@ -140,14 +149,18 @@ export const HealthDataHub = () => {
             <Activity className="h-4 w-4" />
             Overview
           </TabsTrigger>
-          <TabsTrigger value="results" className="flex items-center gap-2">
-            <FileText className="h-4 w-4" />
-            Test results
-          </TabsTrigger>
-          <TabsTrigger value="upload" className="flex items-center gap-2">
-            <Upload className="h-4 w-4" />
-            Upload
-          </TabsTrigger>
+          {PERSONAL_HEALTH_RECORDS_ENABLED && (
+            <>
+              <TabsTrigger value="results" className="flex items-center gap-2">
+                <FileText className="h-4 w-4" />
+                Test results
+              </TabsTrigger>
+              <TabsTrigger value="upload" className="flex items-center gap-2">
+                <Upload className="h-4 w-4" />
+                Upload
+              </TabsTrigger>
+            </>
+          )}
           <TabsTrigger value="favorites" className="flex items-center gap-2">
             <Heart className="h-4 w-4" />
             Saved Tests
@@ -167,34 +180,37 @@ export const HealthDataHub = () => {
         </TabsList>
 
         <TabsContent value="overview" className="space-y-6">
-          <Card className="p-6 border-2 border-brand-pink/30 bg-gradient-to-br from-brand-pink/5 to-transparent">
-            <div className="flex flex-col md:flex-row md:items-center gap-6">
-              <div className="flex-shrink-0">
-                <div className="w-16 h-16 bg-brand-pink/10 rounded-2xl flex items-center justify-center">
-                  <Sparkles className="w-8 h-8 text-brand-pink" />
+          {!PERSONAL_HEALTH_RECORDS_ENABLED && <StageOneHealthRecords />}
+          {PERSONAL_HEALTH_RECORDS_ENABLED && (
+            <Card className="p-6 border-2 border-brand-pink/30 bg-gradient-to-br from-brand-pink/5 to-transparent">
+              <div className="flex flex-col md:flex-row md:items-center gap-6">
+                <div className="flex-shrink-0">
+                  <div className="w-16 h-16 bg-brand-pink/10 rounded-2xl flex items-center justify-center">
+                    <Sparkles className="w-8 h-8 text-brand-pink" />
+                  </div>
+                </div>
+                <div className="flex-1">
+                  <h3 className="type-card-title text-brand-navy mb-2">
+                    AI blood test analysis
+                  </h3>
+                  <p className="text-muted-foreground mb-4">
+                    Get instant AI-powered explanations of your biomarker
+                    readings. Understand what your results mean, track trends
+                    over time, and receive personalised health recommendations.
+                  </p>
+                  <Button
+                    asChild
+                    className="bg-brand-pink hover:bg-brand-pink/90"
+                  >
+                    <Link to="/blood-test-analysis">
+                      Analyse Your Results
+                      <ArrowRight className="ml-2 h-4 w-4" />
+                    </Link>
+                  </Button>
                 </div>
               </div>
-              <div className="flex-1">
-                <h3 className="type-card-title text-brand-navy mb-2">
-                  AI blood test analysis
-                </h3>
-                <p className="text-muted-foreground mb-4">
-                  Get instant AI-powered explanations of your biomarker
-                  readings. Understand what your results mean, track trends over
-                  time, and receive personalised health recommendations.
-                </p>
-                <Button
-                  asChild
-                  className="bg-brand-pink hover:bg-brand-pink/90"
-                >
-                  <Link to="/blood-test-analysis">
-                    Analyse Your Results
-                    <ArrowRight className="ml-2 h-4 w-4" />
-                  </Link>
-                </Button>
-              </div>
-            </div>
-          </Card>
+            </Card>
+          )}
 
           <Card className="p-6 border-2 border-brand-turquoise/30 bg-gradient-to-br from-brand-turquoise/5 to-transparent">
             <div className="flex flex-col md:flex-row md:items-center gap-6">
@@ -225,67 +241,77 @@ export const HealthDataHub = () => {
             </div>
           </Card>
 
-          <HealthScoreCard />
-          <StoredBiomarkerAnalysis />
+          {PERSONAL_HEALTH_RECORDS_ENABLED && (
+            <>
+              <HealthScoreCard />
+              <StoredBiomarkerAnalysis />
+            </>
+          )}
 
-          <Card className="p-6 border-2">
-            <h3 className="type-card-title mb-4 text-brand-navy">
-              Getting started
-            </h3>
-            <div className="space-y-4">
-              <div className="flex items-start gap-4 p-4 bg-muted/50 rounded-lg">
-                <div className="w-8 h-8 bg-brand-pink rounded-full flex items-center justify-center text-white font-semibold flex-shrink-0">
-                  1
+          {PERSONAL_HEALTH_RECORDS_ENABLED && (
+            <Card className="p-6 border-2">
+              <h3 className="type-card-title mb-4 text-brand-navy">
+                Getting started
+              </h3>
+              <div className="space-y-4">
+                <div className="flex items-start gap-4 p-4 bg-muted/50 rounded-lg">
+                  <div className="w-8 h-8 bg-brand-pink rounded-full flex items-center justify-center text-white font-semibold flex-shrink-0">
+                    1
+                  </div>
+                  <div>
+                    <h4 className="font-semibold mb-1 text-brand-navy">
+                      Upload your test results
+                    </h4>
+                    <p className="text-sm text-muted-foreground">
+                      Start by uploading previous blood test results or health
+                      reports. We accept PDFs and images.
+                    </p>
+                  </div>
                 </div>
-                <div>
-                  <h4 className="font-semibold mb-1 text-brand-navy">
-                    Upload your test results
-                  </h4>
-                  <p className="text-sm text-muted-foreground">
-                    Start by uploading previous blood test results or health
-                    reports. We accept PDFs and images.
-                  </p>
+                <div className="flex items-start gap-4 p-4 bg-muted/50 rounded-lg">
+                  <div className="w-8 h-8 bg-brand-turquoise rounded-full flex items-center justify-center text-white font-semibold flex-shrink-0">
+                    2
+                  </div>
+                  <div>
+                    <h4 className="font-semibold mb-1 text-brand-navy">
+                      Track your biomarkers
+                    </h4>
+                    <p className="text-sm text-muted-foreground">
+                      View trends for key health markers like cholesterol,
+                      vitamin D, and thyroid function over time.
+                    </p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-4 p-4 bg-muted/50 rounded-lg">
+                  <div className="w-8 h-8 bg-brand-navy rounded-full flex items-center justify-center text-white font-semibold flex-shrink-0">
+                    3
+                  </div>
+                  <div>
+                    <h4 className="font-semibold mb-1 text-brand-navy">
+                      Get AI-powered insights
+                    </h4>
+                    <p className="text-sm text-muted-foreground">
+                      Use our AI analysis tool to understand your results and
+                      receive personalised recommendations.
+                    </p>
+                  </div>
                 </div>
               </div>
-              <div className="flex items-start gap-4 p-4 bg-muted/50 rounded-lg">
-                <div className="w-8 h-8 bg-brand-turquoise rounded-full flex items-center justify-center text-white font-semibold flex-shrink-0">
-                  2
-                </div>
-                <div>
-                  <h4 className="font-semibold mb-1 text-brand-navy">
-                    Track your biomarkers
-                  </h4>
-                  <p className="text-sm text-muted-foreground">
-                    View trends for key health markers like cholesterol, vitamin
-                    D, and thyroid function over time.
-                  </p>
-                </div>
-              </div>
-              <div className="flex items-start gap-4 p-4 bg-muted/50 rounded-lg">
-                <div className="w-8 h-8 bg-brand-navy rounded-full flex items-center justify-center text-white font-semibold flex-shrink-0">
-                  3
-                </div>
-                <div>
-                  <h4 className="font-semibold mb-1 text-brand-navy">
-                    Get AI-powered insights
-                  </h4>
-                  <p className="text-sm text-muted-foreground">
-                    Use our AI analysis tool to understand your results and
-                    receive personalised recommendations.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </Card>
+            </Card>
+          )}
         </TabsContent>
 
-        <TabsContent value="results" key={refreshKey}>
-          <TestResultsTimeline />
-        </TabsContent>
+        {PERSONAL_HEALTH_RECORDS_ENABLED && (
+          <>
+            <TabsContent value="results" key={refreshKey}>
+              <TestResultsTimeline />
+            </TabsContent>
 
-        <TabsContent value="upload">
-          <TestResultUploader onUploadComplete={handleUploadComplete} />
-        </TabsContent>
+            <TabsContent value="upload">
+              <TestResultUploader onUploadComplete={handleUploadComplete} />
+            </TabsContent>
+          </>
+        )}
 
         <TabsContent value="favorites">
           <h2 className="type-section-title mb-3 sm:mb-4">
@@ -374,9 +400,7 @@ export const HealthDataHub = () => {
         </TabsContent>
 
         <TabsContent value="providers">
-          <h2 className="type-section-title mb-3 sm:mb-4">
-            Saved providers
-          </h2>
+          <h2 className="type-section-title mb-3 sm:mb-4">Saved providers</h2>
           {isLoading ? (
             <div className="flex justify-center p-8">
               <Loader2 className="h-6 w-6 animate-spin text-primary" />
@@ -464,7 +488,9 @@ export const HealthDataHub = () => {
 
         <TabsContent value="orders">
           <h2 className="type-section-title mb-3 sm:mb-4">
-            My orders & results
+            {PERSONAL_HEALTH_RECORDS_ENABLED
+              ? "My orders & results"
+              : "My orders"}
           </h2>
           {isLoading ? (
             <div className="flex justify-center p-8">

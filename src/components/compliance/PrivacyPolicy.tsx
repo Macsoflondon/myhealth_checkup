@@ -75,6 +75,15 @@ const PrivacyPolicy = () => {
             </p>
           </div>
           <div>
+            <h3 className="font-medium mb-2">Test results and readings:</h3>
+            <p className="text-brand-navy text-sm">
+              Your account does not store test results, biomarker readings or
+              health scores yet. Wellness finder answers and readings entered
+              for AI analysis are used to produce the response and are not saved
+              to your account.
+            </p>
+          </div>
+          <div>
             <h3 className="font-medium mb-2">Marketing data:</h3>
             <p className="text-brand-navy text-sm">
               Your communication preferences and interactions with our emails or

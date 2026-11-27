@@ -66,8 +66,9 @@ const HowItWorksPage = () => {
                     Are my results confidential?
                   </h3>
                   <p className="text-muted-foreground">
-                    Yes. All results are securely stored and only accessible by
-                    you through your personal dashboard.
+                    Your provider gives you access to your results through its
+                    own secure service. Your myhealth checkup account does not
+                    store test results yet.
                   </p>
                 </div>
               </div>

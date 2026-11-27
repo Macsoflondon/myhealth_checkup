@@ -34,7 +34,7 @@ const HealthDashboardPage = () => {
         <title>My dashboard | myhealth checkup</title>
         <meta
           name="description"
-          content="Manage your saved tests, providers, orders, profile and health data in one place on myhealth checkup."
+          content="Manage your saved tests, providers, orders and profile in one place on myhealth checkup."
         />
         <link
           rel="canonical"

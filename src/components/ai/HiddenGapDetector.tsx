@@ -26,6 +26,7 @@ import { Separator } from "@/components/ui/separator";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { logger } from "@/lib/logger";
+import { PERSONAL_HEALTH_RECORDS_ENABLED } from "@/lib/personal-health-records";
 
 interface RecommendedTest {
   testName: string;
@@ -626,7 +627,10 @@ const HiddenGapDetector = () => {
         </p>
         <div className="flex items-center justify-center gap-4 text-xs text-muted-foreground">
           <span className="flex items-center gap-1">
-            <Shield className="h-3 w-3" /> No data stored without consent
+            <Shield className="h-3 w-3" />{" "}
+            {PERSONAL_HEALTH_RECORDS_ENABLED
+              ? "No data stored without consent"
+              : "Your answers are not stored"}
           </span>
           <span className="flex items-center gap-1">
             <AlertTriangle className="h-3 w-3" /> Not medical advice

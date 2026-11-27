@@ -1,5 +1,5 @@
-import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.51.0";
+import { canUsePersonalHealthRecordHistory } from "../_shared/personal-health-records.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -40,7 +40,7 @@ interface HistoricalReading {
   status: string | null;
 }
 
-serve(async (req) => {
+Deno.serve(async (req) => {
   // Handle CORS preflight
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
@@ -107,7 +107,7 @@ serve(async (req) => {
       .map((r) =>
         r.biomarkerName
           .toLowerCase()
-          .replace(/[^\p{L}\p{N} \-]/gu, " ")
+          .replace(/[^\p{L}\p{N} -]/gu, " ")
           .replace(/\s+/g, " ")
           .trim(),
       )
@@ -129,17 +129,21 @@ serve(async (req) => {
       }
     }
 
-    // Fetch historical readings for this user
-    const { data: historicalData } = await supabase
-      .from("biomarker_readings")
-      .select("biomarker_name, value, recorded_at, unit, status")
-      .eq("user_id", user.id)
-      .in(
-        "biomarker_name",
-        sanitizedReadings.map((r) => r.biomarkerName),
-      )
-      .order("recorded_at", { ascending: false })
-      .limit(100);
+    // Stage 1 keeps previousValues empty and never reads stored health history.
+    const historicalData = canUsePersonalHealthRecordHistory(user.id)
+      ? (
+          await supabase
+            .from("biomarker_readings")
+            .select("biomarker_name, value, recorded_at, unit, status")
+            .eq("user_id", user.id)
+            .in(
+              "biomarker_name",
+              sanitizedReadings.map((r) => r.biomarkerName),
+            )
+            .order("recorded_at", { ascending: false })
+            .limit(100)
+        ).data
+      : [];
 
     // Group historical data by biomarker
     const historyMap: Record<string, HistoricalReading[]> = {};
@@ -375,18 +379,16 @@ Please provide your analysis using the suggest_analysis function with structured
       }
     }
 
-    // Store the analysis in health_queries for history
-    await supabase.from("health_queries").insert({
-      user_id: user.id,
-      query_text: `Blood test analysis: ${sanitizedReadings.map((r) => r.biomarkerName).join(", ")}`,
-      ai_response: analysisResult,
-      age: age || null,
-      gender: gender || null,
-    });
-
-    console.log(
-      `Blood test analysis completed for user ${user.id} with ${sanitizedReadings.length} biomarkers`,
-    );
+    // Stage 2 only: stage 1 answers are stateless and write no health query.
+    if (canUsePersonalHealthRecordHistory(user.id)) {
+      await supabase.from("health_queries").insert({
+        user_id: user.id,
+        query_text: `Blood test analysis: ${sanitizedReadings.map((r) => r.biomarkerName).join(", ")}`,
+        ai_response: analysisResult,
+        age: age || null,
+        gender: gender || null,
+      });
+    }
 
     return new Response(JSON.stringify(analysisResult), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
