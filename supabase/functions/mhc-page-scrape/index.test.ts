@@ -52,7 +52,8 @@ Deno.test(
     try {
       const response = await handler(
         new Request(
-          "https://test.local?provider=medical-diagnosis&secret=test-sync-secret&dry=1&offset=1&limit=1",
+          "https://test.local?provider=medical-diagnosis&dry=1&offset=1&limit=1",
+          { headers: { "x-mhc-sync-secret": "test-sync-secret" } },
         ),
       );
       const body = (await response.json()) as {
@@ -77,7 +78,8 @@ Deno.test(
       assertEquals(fetched, ["/exam/profiles/b-stable"]);
       const urlsResponse = await handler(
         new Request(
-          "https://test.local?provider=medical-diagnosis&secret=test-sync-secret&urls_only=1&offset=30&limit=30",
+          "https://test.local?provider=medical-diagnosis&urls_only=1&offset=30&limit=30",
+          { headers: { "x-mhc-sync-secret": "test-sync-secret" } },
         ),
       );
       const urlsBody = (await urlsResponse.json()) as {
@@ -304,7 +306,8 @@ Deno.test(
       for (const offset of [0, 30, 60, 90, 120]) {
         const response = await handler(
           new Request(
-            `https://test.local?provider=medical-diagnosis&secret=test-sync-secret&offset=${offset}&limit=30`,
+            `https://test.local?provider=medical-diagnosis&offset=${offset}&limit=30`,
+          { headers: { "x-mhc-sync-secret": "test-sync-secret" } },
           ),
         );
         assertEquals(response.status, 200);

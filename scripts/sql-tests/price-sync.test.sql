@@ -40,7 +40,9 @@ select pg_temp.check((:'r1'::jsonb -> 'queued' -> 0 ->> 'provider_id') = 'randox
 select pg_temp.check((:'r1'::jsonb ->> 'feeds_refreshing')::boolean = false, 'randox does not refresh Shopify feeds');
 select pg_temp.check((select count(*) = 1 and bool_and(sent_at is not null and request_id is not null and error is null) from pg_temp.jobs('randox')), 'randox job sent at once');
 select pg_temp.check((select url from net.requests order by id desc limit 1)
-  = 'https://clvuioagsgfadynuvodj.supabase.co/functions/v1/mhc-randox-scrape?secret=test-secret&limit=40', 'randox request is the scheduled one, secret read in the database');
+  = 'https://clvuioagsgfadynuvodj.supabase.co/functions/v1/mhc-randox-scrape?limit=40', 'randox request is the scheduled one, no secret in the URL');
+select pg_temp.check((select headers ->> 'x-mhc-sync-secret' from net.requests order by id desc limit 1)
+  = 'test-secret', 'randox request carries the secret read in the database, in the header');
 select pg_temp.check((select requested_by from pg_temp.jobs('randox')) = '00000000-0000-4000-8000-000000000001', 'request records who asked');
 
 -- Asking again within 15 minutes is refused with the time to retry.
@@ -61,7 +63,9 @@ select pg_temp.check(public.mhc_process_manual_runs() = 0, 'processor sends noth
 update public.mhc_manual_runs set run_after = now() - interval '1 second'
   where provider_id = 'medical-diagnosis' and sent_at is null;
 select pg_temp.check(public.mhc_process_manual_runs() = 4, 'processor sends the four due batches');
-select pg_temp.check((select count(*) from net.requests where url like '%mhc-page-scrape?secret=test-secret&provider=medical-diagnosis&offset=%') = 5, 'all five medical diagnosis batch requests sent');
+select pg_temp.check((select count(*) from net.requests where url like '%mhc-page-scrape?provider=medical-diagnosis&offset=%' and headers ->> 'x-mhc-sync-secret' = 'test-secret') = 5, 'all five medical diagnosis batch requests sent');
+
+select pg_temp.check(not exists (select 1 from net.requests where url like '%secret=%'), 'no request puts a secret in its URL');
 
 -- Medichecks with no feed copy: feeds fetched first, pages two minutes apart after that.
 select public.admin_request_price_sync('medichecks') as r5 \gset

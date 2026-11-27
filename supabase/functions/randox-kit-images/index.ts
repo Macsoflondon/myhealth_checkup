@@ -8,7 +8,7 @@
 // Randox product never sits on the platform without an image unnoticed.
 // Boxes are copied from Randox's own image store into
 // provider-test-images/randox/kit/. mhc-randox-scrape never writes image_url.
-// Auth: x-mhc-sync-secret header (?secret= during transition) against Vault mhc_sync_secret.
+// Auth: x-mhc-sync-secret header only, against Vault mhc_sync_secret; a ?secret= URL is refused (401).
 import { createClient } from "npm:@supabase/supabase-js@2";
 import { checkMhcSyncSecret } from "../_shared/mhc-auth.ts";
 

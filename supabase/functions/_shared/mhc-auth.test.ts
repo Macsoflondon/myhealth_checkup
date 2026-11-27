@@ -58,33 +58,43 @@ Deno.test("constantTimeEqual", () => {
 Deno.test("header with the Vault value is accepted", async () => {
   const { db, calls } = fakeDb({ data: SECRET, error: null });
   const check = createMhcSyncSecretCheck();
-  assertEquals(await check(hdr(SECRET), db, "t"), { ok: true, source: "vault", via: "header" });
+  assertEquals(await check(hdr(SECRET), db, "t"), { ok: true, source: "vault" });
   assertEquals(calls, ["mhc_sync_secret"]);
 });
 
-Deno.test("wrong header is refused, and a correct query cannot rescue it", async () => {
+Deno.test("wrong header is refused", async () => {
   const { db } = fakeDb({ data: SECRET, error: null });
   const check = createMhcSyncSecretCheck();
   const mismatch = { ok: false, reason: "mismatch" } as const;
   assertEquals(await check(hdr(SECRET + "x"), db, "t"), mismatch);
   assertEquals(await check(hdr(""), db, "t"), mismatch);
   assertEquals(await check(hdr("x".repeat(5000)), db, "t"), mismatch);
-  const both = new Request(`${BASE}?secret=${SECRET}`, { headers: { "x-mhc-sync-secret": "wrong" } });
-  assertEquals(await check(both, db, "t"), mismatch);
 });
 
 Deno.test("missing secret is refused", async () => {
   const { db } = fakeDb({ data: SECRET, error: null });
   const check = createMhcSyncSecretCheck();
   assertEquals(await check(qry(), db, "t"), { ok: false, reason: "mismatch" });
-  assertEquals(await check(qry(""), db, "t"), { ok: false, reason: "mismatch" });
 });
 
-Deno.test("transition: query value is still accepted when no header is sent", async () => {
+Deno.test("query value is refused, warning names the caller and not the value", async () => {
+  const { db, calls } = fakeDb({ data: SECRET, error: null });
+  const { lines, log } = capture();
+  const check = createMhcSyncSecretCheck({ log });
+  const refused = { ok: false, reason: "secret_in_url" } as const;
+  assertEquals(await check(qry(SECRET), db, "mhc-caller"), refused);
+  assertEquals(await check(qry(""), db, "mhc-caller"), refused);
+  assertEquals(calls.length, 0);
+  assert(lines.length === 2 && lines.every((l) => l.includes("mhc-caller") && !l.includes(SECRET)));
+});
+
+Deno.test("query value plus a correct header is refused", async () => {
   const { db } = fakeDb({ data: SECRET, error: null });
-  const check = createMhcSyncSecretCheck();
-  assertEquals(await check(qry(SECRET), db, "t"), { ok: true, source: "vault", via: "query" });
-  assertEquals((await check(qry(SECRET + "x"), db, "t")).ok, false);
+  const { lines, log } = capture();
+  const check = createMhcSyncSecretCheck({ log });
+  const both = new Request(`${BASE}?secret=${SECRET}`, { headers: { "x-mhc-sync-secret": SECRET } });
+  assertEquals(await check(both, db, "t"), { ok: false, reason: "secret_in_url" });
+  assert(lines.every((l) => !l.includes(SECRET)));
 });
 
 Deno.test("Vault failure refuses (no env fallback), logging no secret", async () => {
@@ -99,7 +109,6 @@ Deno.test("Vault failure refuses (no env fallback), logging no secret", async ()
     const { lines, log } = capture();
     const check = createMhcSyncSecretCheck({ log });
     assertEquals(await check(hdr(SECRET), db, "t"), { ok: false, reason: "not_configured" });
-    assertEquals(await check(qry(SECRET), db, "t"), { ok: false, reason: "not_configured" });
     assert(lines.every((l) => !l.includes(SECRET)));
   }
   assertEquals(Deno.env.get("MHC_SYNC_SECRET"), prev);

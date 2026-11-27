@@ -22,6 +22,9 @@ grant execute on function public.has_role(uuid, public.app_role) to authenticate
 create schema vault;
 create table vault.decrypted_secrets (name text primary key, decrypted_secret text);
 insert into vault.decrypted_secrets values ('mhc_sync_secret', 'test-secret');
+create function public.mhc_sync_secret() returns text language sql stable as $$
+  select decrypted_secret from vault.decrypted_secrets where name = 'mhc_sync_secret'
+$$;
 
 create schema net;
 create sequence net.req_seq;

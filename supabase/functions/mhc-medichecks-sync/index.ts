@@ -13,8 +13,8 @@
 // v6 (2026-09-21): this file was previously deployed straight from the Supabase dashboard and
 // not tracked in this repo at all — pulled in here for reviewability as part of a platform
 // audit.
-// Auth: ../_shared/mhc-auth.ts checks the x-mhc-sync-secret header (?secret= still
-// accepted during the 27/11/2026 transition) against Vault mhc_sync_secret only.
+// Auth: ../_shared/mhc-auth.ts accepts only the x-mhc-sync-secret header, compared
+// in constant time against Vault mhc_sync_secret; a ?secret= URL is refused (401).
 // No secret is committed here.
 // v8 (2026-10-14): collection-method add-ons are skipped and deactivated, like clinic visits.
 import { createClient } from "npm:@supabase/supabase-js@2";

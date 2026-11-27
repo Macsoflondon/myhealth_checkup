@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 # Replays the manual price sync migration (twice, to prove it re-runs cleanly)
 # on a throwaway database with stubbed pg_net, pg_cron, Vault and has_role,
-# loads the 14 real mhc-* cron jobs from the reconciliation migration, then
+# loads the 14 real mhc-* cron jobs, moves them to the header form
+# (20261127031202), then
 # runs the scenario checks in price-sync.test.sql.
 #
 # Needs a disposable PostgreSQL 14+ server you can create databases on.
@@ -33,6 +34,9 @@ grep "^SELECT cron.schedule('mhc-" supabase/migrations/20260927190000_reconcile_
 run supabase/migrations/20261014120000_mhc_shopify_feed_prefetch.sql
 run supabase/migrations/20261018130000_mhc_manual_price_sync.sql
 run supabase/migrations/20261018130000_mhc_manual_price_sync.sql
+# 27/11/2026: the jobs send the secret in the x-mhc-sync-secret header, never the URL.
+grep -v "randox-kit-images" supabase/migrations/20261127031202_mhc_sync_secret_in_header.sql \
+  | PGOPTIONS="-c client_min_messages=warning" psql -d "${DB}" -q -v ON_ERROR_STOP=1 >/dev/null
 PGOPTIONS="-c client_min_messages=notice" \
   psql -d "${DB}" -q -v ON_ERROR_STOP=1 -f "${HERE}/price-sync.test.sql" 2>&1 \
   | grep -E "ok:|FAIL|ERROR|ALL PASSED"

@@ -7,12 +7,15 @@
  * On failure it records a `scraper_alerts` row.
  *
  * Called by Apify, so it is not JWT-protected: authorisation is a shared
- * secret in the x-apify-ingest-secret header. TRANSITION (27/11/2026):
- * ?secret= is still accepted when no header is sent; it is removed in step 3.
+ * secret in the x-apify-ingest-secret header only, compared in constant time
+ * against Vault through public.apify_ingest_secret() (503 when Vault has no
+ * value, 401 on a mismatch). Since 27/11/2026 there is no ?secret=, no
+ * x-cron-secret and no SCRAPER_CRON_SECRET or service-role-key fallback.
  */
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.51.0";
 import { internalErrorResponse } from "../_shared/errors.ts";
+import { checkApifyIngestSecret } from "../_shared/apify-ingest-secret.ts";
 import {
   applyProviderRows,
   type ProviderDatasetRow,
@@ -27,22 +30,6 @@ const corsHeaders = {
 const PROVIDER_ID_RE = /^[a-z0-9][a-z0-9-]{1,63}$/;
 const APIFY_ID_RE = /^[A-Za-z0-9_-]{1,64}$/;
 
-function timingSafeEqual(a: string, b: string): boolean {
-  if (a.length !== b.length) return false;
-  let diff = 0;
-  for (let i = 0; i < a.length; i++) diff |= a.charCodeAt(i) ^ b.charCodeAt(i);
-  return diff === 0;
-}
-
-export function presentedIngestSecret(req: Request): string {
-  return (
-    req.headers.get("x-apify-ingest-secret") ??
-    req.headers.get("x-cron-secret") ??
-    new URL(req.url).searchParams.get("secret") ??
-    ""
-  );
-}
-
 if (import.meta.main) serve(async (req) => {
   if (req.method === "OPTIONS")
     return new Response(null, { headers: corsHeaders });
@@ -54,13 +41,13 @@ if (import.meta.main) serve(async (req) => {
     });
 
   const serviceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "";
-  const expectedSecret = Deno.env.get("SCRAPER_CRON_SECRET") || serviceKey;
-  const presented = presentedIngestSecret(req);
-  if (!expectedSecret || !timingSafeEqual(presented, expectedSecret)) {
-    return json({ error: "Unauthorized" }, 401);
-  }
-
   const supabase = createClient(Deno.env.get("SUPABASE_URL")!, serviceKey);
+
+  const auth = await checkApifyIngestSecret(req, supabase);
+  if (!auth.ok) {
+    if (auth.status === 503) console.error("[apify-ingest] apify_ingest_secret is empty or unreadable");
+    return json({ error: auth.status === 503 ? "Not configured" : "Unauthorized" }, auth.status);
+  }
 
   try {
     const body = await req.json().catch(() => ({}));

@@ -10,6 +10,10 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.51.0";
 import { internalErrorResponse } from "../_shared/errors.ts";
+import {
+  apifyWebhookHeadersTemplate,
+  readApifyIngestSecret,
+} from "../_shared/apify-ingest-secret.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -67,6 +71,14 @@ serve(async (req) => {
   const serviceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
   const supabase = createClient(supabaseUrl, serviceKey);
 
+  // Dedicated webhook secret from Vault; never the service role key. Without
+  // it no run starts, so Apify is never handed a fallback credential.
+  const ingestSecret = await readApifyIngestSecret(supabase);
+  if (ingestSecret === null) {
+    console.error("[apify-scrape-provider] apify_ingest_secret is empty or unreadable");
+    return json({ error: "Webhook secret not configured" }, 503);
+  }
+
   try {
     const body = await req.json().catch(() => ({}));
     const providerId: string = String(
@@ -113,10 +125,9 @@ serve(async (req) => {
       );
     const scrapeRunId: string = runRow.id;
 
-    const ingestSecret = Deno.env.get("SCRAPER_CRON_SECRET") ?? serviceKey;
-    // The secret travels in a header, never the URL, so it stays out of logs.
+    // The secret travels only in a header, never the URL, so it stays out of logs.
     const webhookUrl = `${supabaseUrl}/functions/v1/apify-ingest`;
-    const headersTemplate = JSON.stringify({ "x-apify-ingest-secret": ingestSecret });
+    const headersTemplate = apifyWebhookHeadersTemplate(ingestSecret);
 
     const payloadTemplate = JSON.stringify({
       eventType: "{{eventType}}",

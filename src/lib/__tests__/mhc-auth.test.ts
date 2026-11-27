@@ -39,7 +39,7 @@ describe("mhc-auth (loads without a Deno global)", () => {
     const origError = console.error;
     console.error = () => {};
     try {
-      expect(await checkMhcSyncSecret(url(SECRET), client, "t")).toEqual({
+      expect(await checkMhcSyncSecret(hdr(SECRET), client, "t")).toEqual({
         ok: false,
         reason: "not_configured",
       });
@@ -54,22 +54,28 @@ describe("mhc-auth (loads without a Deno global)", () => {
     expect(constantTimeEqual("", "x")).toBe(false);
   });
 
-  it("reads the header, falls back to ?secret= only without one", async () => {
+  it("accepts only the header and refuses wrong or missing secrets", async () => {
     const check = createMhcSyncSecretCheck({ log: quiet });
     const { client } = db({ data: SECRET, error: null });
-    expect(await check(hdr(SECRET), client, "t")).toEqual({
-      ok: true,
-      source: "vault",
-      via: "header",
+    expect(await check(hdr(SECRET), client, "t")).toEqual({ ok: true, source: "vault" });
+    expect(await check(hdr("wrong"), client, "t")).toEqual({ ok: false, reason: "mismatch" });
+    expect(await check(url(), client, "t")).toEqual({ ok: false, reason: "mismatch" });
+  });
+
+  it("refuses a query value, with or without a correct header, logging no value", async () => {
+    const warns: string[] = [];
+    const check = createMhcSyncSecretCheck({
+      log: { warn: (m: string) => warns.push(m), error: () => {} },
     });
-    expect(await check(url(SECRET), client, "t")).toEqual({
-      ok: true,
-      source: "vault",
-      via: "query",
+    const { client } = db({ data: SECRET, error: null });
+    const refused = { ok: false, reason: "secret_in_url" };
+    expect(await check(url(SECRET), client, "caller-x")).toEqual(refused);
+    const both = new Request(`https://x.supabase.co/functions/v1/mhc-test?secret=${SECRET}`, {
+      headers: { "x-mhc-sync-secret": SECRET },
     });
-    expect((await check(hdr("wrong"), client, "t")).ok).toBe(false);
-    expect((await check(url(), client, "t")).ok).toBe(false);
-    expect((await check(url(""), client, "t")).ok).toBe(false);
+    expect(await check(both, client, "caller-x")).toEqual(refused);
+    expect(warns).toHaveLength(2);
+    expect(warns.every((w) => w.includes("caller-x") && !w.includes(SECRET))).toBe(true);
   });
 
   it("a Vault failure refuses with no env fallback", async () => {

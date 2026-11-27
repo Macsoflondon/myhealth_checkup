@@ -2,9 +2,10 @@
 //
 // Callers send the secret in the x-mhc-sync-secret request header. Supabase's
 // edge logs keep the full URL but not custom headers, so a header keeps the
-// secret out of function_edge_logs. TRANSITION (step 1 of 3, 27/11/2026): a
-// ?secret= query value is still accepted when the header is absent, until
-// the cron jobs send the header; step 3 removes that fallback.
+// secret out of function_edge_logs. Since 27/11/2026 (step 3 of 3) the
+// header is the only accepted channel: any request whose URL carries a
+// secret query parameter is refused, even with a correct header, because
+// that URL has already been logged.
 //
 // The expected value is the Vault entry mhc_sync_secret, read through
 // public.mhc_sync_secret() (SECURITY DEFINER, service_role only). There is
@@ -23,8 +24,8 @@ export type MhcRpcClient = {
 };
 
 export type MhcAuthResult =
-  | { ok: true; source: "vault"; via: "header" | "query" }
-  | { ok: false; reason: "not_configured" | "mismatch" };
+  | { ok: true; source: "vault" }
+  | { ok: false; reason: "not_configured" | "mismatch" | "secret_in_url" };
 
 export type MhcAuthDeps = {
   /** Milliseconds since the epoch. Defaults to Date.now. */
@@ -107,8 +108,9 @@ export function createMhcSyncSecretCheck(deps: MhcAuthDeps = {}) {
   }
 
   /**
-   * Checks the x-mhc-sync-secret header (or, during the transition only,
-   * ?secret= when the header is absent). Resolves the expected value first,
+   * Checks the x-mhc-sync-secret header only. A URL carrying a secret
+   * query parameter is refused outright (401) and a warning names the
+   * caller, never the value. Otherwise the expected value is resolved first,
    * so a caller can answer 503 for "not configured" and 401 for a mismatch.
    */
   return async function checkMhcSyncSecret(
@@ -116,15 +118,16 @@ export function createMhcSyncSecretCheck(deps: MhcAuthDeps = {}) {
     db: MhcRpcClient,
     caller: string,
   ): Promise<MhcAuthResult> {
+    if (new URL(req.url).searchParams.has("secret")) {
+      log.warn(`[${caller}] refused: request URL carries a secret query parameter (value not logged)`);
+      return { ok: false, reason: "secret_in_url" };
+    }
     const exp = await expected(db, caller);
     if (exp === null) {
       log.error(`[${caller}] no sync secret: Vault ${MHC_SECRET_RPC} is empty or unreadable`);
       return { ok: false, reason: "not_configured" };
     }
-    const header = req.headers.get(MHC_SECRET_HEADER);
-    const via: "header" | "query" = header !== null ? "header" : "query";
-    const presented =
-      header !== null ? header : new URL(req.url).searchParams.get("secret");
+    const presented = req.headers.get(MHC_SECRET_HEADER);
     if (
       presented === null ||
       presented === "" ||
@@ -133,7 +136,7 @@ export function createMhcSyncSecretCheck(deps: MhcAuthDeps = {}) {
     ) {
       return { ok: false, reason: "mismatch" };
     }
-    return { ok: true, source: "vault", via };
+    return { ok: true, source: "vault" };
   };
 }
 
