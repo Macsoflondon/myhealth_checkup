@@ -20,7 +20,7 @@
 - Public catalogue DTO reads use a bounded five-minute isolate-local memo, never authenticated or clinical data; HTML cache headers remain unchanged until hosting behaviour is verified. Why: repeated public reads should avoid redundant queries without sharing user responses.
 - Product-image sizing uses allowlisted public Storage/Shopify transforms and explicit bundled variants; marquees use measured compositor animation gated by viewport, visibility and reduced motion. Why: source artwork and motion speed must stay unchanged while bandwidth and idle work fall.
 
-- EDGE keeps the sports-blood-tests catalogue ID; exact product prices refresh through the shared provider upsert in a six-hourly GitHub workflow, while biomarker articles join the existing daily source aggregator. Why: stable IDs preserve links and the provider's £35 navigation offer must never replace product prices.
+- EDGE sync uses external mhc-edge-sync, byte-exact docs source and app/Deno parity. Why: GitHub 403.
 
 - Navigation: the brand-bar drawer is the full nav at every width; DesktopCategoryToolbar renders below it in the homepage hero and MainLayout's inner-page header. Why: public desktop pages need consistent category access without duplicating the homepage toolbar.
 

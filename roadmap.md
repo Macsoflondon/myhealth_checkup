@@ -9,11 +9,11 @@
 - [x] 1,368 unit, nine auth Deno, seven scraper Deno and 45 isolated SQL scenarios passed; changed-code lint and automatic compilation passed. Seven functions deployed together; 28 live auth checks passed, and direct manual Clinilabs sync returned 200 with a persisted success row (139 updated). Full Deno run: 212 passed, five unrelated live-auth expectation failures; details in docs/SYNC_SECRET_STEP_3.md.
 - [ ] Real admin manual queue verification blocked by unavailable admin MFA session; direct manual sync and isolated queue tests passed. Post-deploy scheduled run verification waits for the 28/11/2026 00:00–00:34 UTC cycle; no work runs after this turn ends.
 
-## 27 November screening, part 15
-- Blocker: Lovable refused creation of supabase/functions/mhc-edge-sync/sync.ts because new Supabase Edge functions are prohibited in this TanStack project; no attempted function changes were applied. Claude must add the function source before Lovable can edit/deploy it. Existing workflow/script remain pending replacement deployment; no publication, migrations or cron changes.
-- [ ] Replace GitHub EDGE scraping with header-authenticated mhc-edge-sync and a parity-tested Deno parser; preserve safe removal and source-backed writes.
-- [ ] Deploy and verify live source prices, authentication, run logs and catalogue readback without publishing, migrations or cron changes.
-- [ ] Remove the old workflow/script, correct references, run unit/Deno/lint checks and inspect automatic production build; commit.
+## 27 November screening, part 17 (completes part 15)
+- [x] Owner deployed mhc-edge-sync v1 and applied 20261127213546; reported 21:36 UTC success (12 updated, zero errors). No deployment, database or cron changes in this task.
+- [x] Copy supplied applied migration, shared Deno parser and outside-repo entry point byte for byte; remove retired GitHub workflow/script and correct documentation.
+- [x] Three supplied MD5s match; app/Deno source and behaviour parity pass; 1,376 unit tests, parser typecheck and changed-code lint pass. Automatic compilation reports build OK. Full configured Deno suite: 212 passed, five existing live-auth expectation failures (quiz-recommendations and security-alert-notify), unchanged from step 3; no access controls weakened. Commit the repository handoff.
+- [ ] Separate production-build verification is blocked by the sandbox prohibition on manual builds. Full Deno-green acceptance is blocked by unrelated deployed-endpoint tests that expect anonymous/public-key requests to be accepted but receive 401; see docs/SCREENING_PART_17.md.
 
 ## 27 November screening, part 14
 - [x] Add matching site and Edge stage 1 constants; gate account health-record features while preserving View/Delete for existing records and keeping stage 2 code.
