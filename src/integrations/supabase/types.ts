@@ -865,6 +865,27 @@ export type Database = {
         }
         Relationships: []
       }
+      biomarker_category_map_backup_20261127: {
+        Row: {
+          clinical_category: string | null
+          consumer_category: string | null
+          created_at: string | null
+          id: string | null
+        }
+        Insert: {
+          clinical_category?: string | null
+          consumer_category?: string | null
+          created_at?: string | null
+          id?: string | null
+        }
+        Update: {
+          clinical_category?: string | null
+          consumer_category?: string | null
+          created_at?: string | null
+          id?: string | null
+        }
+        Relationships: []
+      }
       biomarker_hub: {
         Row: {
           abbreviation: string | null
@@ -1075,6 +1096,153 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      biomarker_hub_backup_20261127: {
+        Row: {
+          abbreviation: string | null
+          alternate_units: Json | null
+          biomarker_code: string | null
+          biomaterial: string | null
+          body_system: string | null
+          canonical_id: string | null
+          category: string | null
+          category_clinical: string | null
+          category_consumer: string | null
+          clinical_description: string | null
+          clinical_significance: string | null
+          clinical_tips: string[] | null
+          created_at: string | null
+          description_what: string | null
+          description_why: string | null
+          embedding: string | null
+          entity_type: string | null
+          icon: string | null
+          id: string | null
+          interpretation_guide: Json | null
+          last_reviewed_at: string | null
+          last_updated: string | null
+          legacy_codes: string[] | null
+          legacy_description: string | null
+          legacy_embedding: string | null
+          lifestyle_factors: string[] | null
+          loinc_code: string | null
+          name: string | null
+          normal_range_female: string | null
+          normal_range_male: string | null
+          reference_ranges: Json | null
+          related_articles: Json | null
+          related_conditions: string[] | null
+          related_tests: string[] | null
+          reviewed_by: string | null
+          snomed_code: string | null
+          source_systems: string[] | null
+          status: string | null
+          symptoms_linked: string[] | null
+          synonyms: string[] | null
+          unit: string | null
+          variant_content: Json | null
+          what_affects_it: string | null
+          what_it_measures: string | null
+          when_to_retest: string | null
+          why_it_matters: string | null
+        }
+        Insert: {
+          abbreviation?: string | null
+          alternate_units?: Json | null
+          biomarker_code?: string | null
+          biomaterial?: string | null
+          body_system?: string | null
+          canonical_id?: string | null
+          category?: string | null
+          category_clinical?: string | null
+          category_consumer?: string | null
+          clinical_description?: string | null
+          clinical_significance?: string | null
+          clinical_tips?: string[] | null
+          created_at?: string | null
+          description_what?: string | null
+          description_why?: string | null
+          embedding?: string | null
+          entity_type?: string | null
+          icon?: string | null
+          id?: string | null
+          interpretation_guide?: Json | null
+          last_reviewed_at?: string | null
+          last_updated?: string | null
+          legacy_codes?: string[] | null
+          legacy_description?: string | null
+          legacy_embedding?: string | null
+          lifestyle_factors?: string[] | null
+          loinc_code?: string | null
+          name?: string | null
+          normal_range_female?: string | null
+          normal_range_male?: string | null
+          reference_ranges?: Json | null
+          related_articles?: Json | null
+          related_conditions?: string[] | null
+          related_tests?: string[] | null
+          reviewed_by?: string | null
+          snomed_code?: string | null
+          source_systems?: string[] | null
+          status?: string | null
+          symptoms_linked?: string[] | null
+          synonyms?: string[] | null
+          unit?: string | null
+          variant_content?: Json | null
+          what_affects_it?: string | null
+          what_it_measures?: string | null
+          when_to_retest?: string | null
+          why_it_matters?: string | null
+        }
+        Update: {
+          abbreviation?: string | null
+          alternate_units?: Json | null
+          biomarker_code?: string | null
+          biomaterial?: string | null
+          body_system?: string | null
+          canonical_id?: string | null
+          category?: string | null
+          category_clinical?: string | null
+          category_consumer?: string | null
+          clinical_description?: string | null
+          clinical_significance?: string | null
+          clinical_tips?: string[] | null
+          created_at?: string | null
+          description_what?: string | null
+          description_why?: string | null
+          embedding?: string | null
+          entity_type?: string | null
+          icon?: string | null
+          id?: string | null
+          interpretation_guide?: Json | null
+          last_reviewed_at?: string | null
+          last_updated?: string | null
+          legacy_codes?: string[] | null
+          legacy_description?: string | null
+          legacy_embedding?: string | null
+          lifestyle_factors?: string[] | null
+          loinc_code?: string | null
+          name?: string | null
+          normal_range_female?: string | null
+          normal_range_male?: string | null
+          reference_ranges?: Json | null
+          related_articles?: Json | null
+          related_conditions?: string[] | null
+          related_tests?: string[] | null
+          reviewed_by?: string | null
+          snomed_code?: string | null
+          source_systems?: string[] | null
+          status?: string | null
+          symptoms_linked?: string[] | null
+          synonyms?: string[] | null
+          unit?: string | null
+          variant_content?: Json | null
+          what_affects_it?: string | null
+          what_it_measures?: string | null
+          when_to_retest?: string | null
+          why_it_matters?: string | null
+        }
+        Relationships: []
       }
       biomarker_lock_state: {
         Row: {
@@ -1780,6 +1948,84 @@ export type Database = {
           },
         ]
       }
+      clinical_loinc_mappings_backup_20261127: {
+        Row: {
+          biomarker_code: string | null
+          biomarker_id: string | null
+          code_source: string | null
+          common_units: string[] | null
+          component: string | null
+          created_at: string | null
+          id: string | null
+          is_active: boolean | null
+          is_primary: boolean | null
+          loinc_code: string | null
+          long_name: string | null
+          method_type: string | null
+          notes: string | null
+          property: string | null
+          release_version: string | null
+          scale_type: string | null
+          short_name: string | null
+          system: string | null
+          time_aspect: string | null
+          updated_at: string | null
+          verification_status: string | null
+          verified_at: string | null
+          verified_by: string | null
+        }
+        Insert: {
+          biomarker_code?: string | null
+          biomarker_id?: string | null
+          code_source?: string | null
+          common_units?: string[] | null
+          component?: string | null
+          created_at?: string | null
+          id?: string | null
+          is_active?: boolean | null
+          is_primary?: boolean | null
+          loinc_code?: string | null
+          long_name?: string | null
+          method_type?: string | null
+          notes?: string | null
+          property?: string | null
+          release_version?: string | null
+          scale_type?: string | null
+          short_name?: string | null
+          system?: string | null
+          time_aspect?: string | null
+          updated_at?: string | null
+          verification_status?: string | null
+          verified_at?: string | null
+          verified_by?: string | null
+        }
+        Update: {
+          biomarker_code?: string | null
+          biomarker_id?: string | null
+          code_source?: string | null
+          common_units?: string[] | null
+          component?: string | null
+          created_at?: string | null
+          id?: string | null
+          is_active?: boolean | null
+          is_primary?: boolean | null
+          loinc_code?: string | null
+          long_name?: string | null
+          method_type?: string | null
+          notes?: string | null
+          property?: string | null
+          release_version?: string | null
+          scale_type?: string | null
+          short_name?: string | null
+          system?: string | null
+          time_aspect?: string | null
+          updated_at?: string | null
+          verification_status?: string | null
+          verified_at?: string | null
+          verified_by?: string | null
+        }
+        Relationships: []
+      }
       clinical_patient_uploads: {
         Row: {
           consent_record_id: string | null
@@ -2073,6 +2319,66 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      clinical_snomed_mappings_backup_20261127: {
+        Row: {
+          biomarker_code: string | null
+          biomarker_id: string | null
+          biomarker_name: string | null
+          category: string | null
+          code_source: string | null
+          created_at: string | null
+          id: string | null
+          is_active: boolean | null
+          is_primary: boolean | null
+          notes: string | null
+          preferred_term: string | null
+          release_version: string | null
+          snomed_concept_id: string | null
+          updated_at: string | null
+          verification_status: string | null
+          verified_at: string | null
+          verified_by: string | null
+        }
+        Insert: {
+          biomarker_code?: string | null
+          biomarker_id?: string | null
+          biomarker_name?: string | null
+          category?: string | null
+          code_source?: string | null
+          created_at?: string | null
+          id?: string | null
+          is_active?: boolean | null
+          is_primary?: boolean | null
+          notes?: string | null
+          preferred_term?: string | null
+          release_version?: string | null
+          snomed_concept_id?: string | null
+          updated_at?: string | null
+          verification_status?: string | null
+          verified_at?: string | null
+          verified_by?: string | null
+        }
+        Update: {
+          biomarker_code?: string | null
+          biomarker_id?: string | null
+          biomarker_name?: string | null
+          category?: string | null
+          code_source?: string | null
+          created_at?: string | null
+          id?: string | null
+          is_active?: boolean | null
+          is_primary?: boolean | null
+          notes?: string | null
+          preferred_term?: string | null
+          release_version?: string | null
+          snomed_concept_id?: string | null
+          updated_at?: string | null
+          verification_status?: string | null
+          verified_at?: string | null
+          verified_by?: string | null
+        }
+        Relationships: []
       }
       cron_run_log: {
         Row: {
@@ -3349,6 +3655,24 @@ export type Database = {
           added_at?: string
           label?: string
           reason?: string
+        }
+        Relationships: []
+      }
+      known_scrape_junk_labels_backup_20261127: {
+        Row: {
+          added_at: string | null
+          label: string | null
+          reason: string | null
+        }
+        Insert: {
+          added_at?: string | null
+          label?: string | null
+          reason?: string | null
+        }
+        Update: {
+          added_at?: string | null
+          label?: string | null
+          reason?: string | null
         }
         Relationships: []
       }
@@ -5319,6 +5643,33 @@ export type Database = {
           },
         ]
       }
+      provider_test_biomarkers_backup_20261127: {
+        Row: {
+          biomarker_id: string | null
+          created_at: string | null
+          id: string | null
+          match_method: string | null
+          provider_test_id: string | null
+          raw_label: string | null
+        }
+        Insert: {
+          biomarker_id?: string | null
+          created_at?: string | null
+          id?: string | null
+          match_method?: string | null
+          provider_test_id?: string | null
+          raw_label?: string | null
+        }
+        Update: {
+          biomarker_id?: string | null
+          created_at?: string | null
+          id?: string | null
+          match_method?: string | null
+          provider_test_id?: string | null
+          raw_label?: string | null
+        }
+        Relationships: []
+      }
       provider_test_exclusions: {
         Row: {
           created_at: string
@@ -5960,6 +6311,30 @@ export type Database = {
           was_price?: number | null
           what_is_tested?: string | null
           who_should_test?: string | null
+        }
+        Relationships: []
+      }
+      provider_tests_junk_backup_20261127: {
+        Row: {
+          biomarker_count: number | null
+          biomarkers_list: Json | null
+          id: string | null
+          provider_id: string | null
+          test_name: string | null
+        }
+        Insert: {
+          biomarker_count?: number | null
+          biomarkers_list?: Json | null
+          id?: string | null
+          provider_id?: string | null
+          test_name?: string | null
+        }
+        Update: {
+          biomarker_count?: number | null
+          biomarkers_list?: Json | null
+          id?: string | null
+          provider_id?: string | null
+          test_name?: string | null
         }
         Relationships: []
       }
@@ -8948,6 +9323,7 @@ export type Database = {
         Args: { p_from: string; p_provider?: string; p_to: string }
         Returns: Json
       }
+      apify_ingest_secret: { Args: never; Returns: string }
       apply_audit_retention: {
         Args: never
         Returns: {
@@ -9143,6 +9519,7 @@ export type Database = {
         Args: { p_rows: Json; p_source: string }
         Returns: Json
       }
+      personal_health_records_enabled: { Args: never; Returns: boolean }
       provider_test_product_path: { Args: { u: string }; Returns: string }
       reconcile_delisted_provider_tests: { Args: never; Returns: Json }
       refresh_provider_test_biomarkers: { Args: never; Returns: Json }
