@@ -44,7 +44,7 @@ export const HERO_COPY: HeroCopy = {
   headline: "Compare private blood tests.",
   headlineLines: ["Compare private", "blood tests."],
   supportingCopy:
-    "Compare UK private blood tests by price, biomarkers and typical turnaround time.",
+    "Compare nine UK providers by price, collection fees, biomarkers and typical result times.",
   align: "right",
   copyWidthTablet: "56%",
   copyWidthDesktop: "40%",

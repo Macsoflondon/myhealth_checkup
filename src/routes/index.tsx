@@ -32,9 +32,9 @@ export const Route = createFileRoute("/")({
   },
   head: () => {
     const base = buildRouteHead({
-      title: "Private blood test comparison UK | myhealth checkup",
+      title: "Compare UK private blood test prices | myhealth checkup",
       description:
-        "Compare private blood tests from UK providers. Check prices, biomarkers, collection fees and typical result times, then book with your chosen provider.",
+        "Compare private blood tests from nine UK providers: price with collection fees, biomarkers covered and typical result times. Free to use, then book directly.",
       path: "/",
     });
 

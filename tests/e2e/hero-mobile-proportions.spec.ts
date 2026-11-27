@@ -68,7 +68,7 @@ for (const bp of BREAKPOINTS) {
       page,
     }) => {
       const supportingCopy = page.getByText(
-        "Compare UK private blood tests by price, biomarkers and typical turnaround time.",
+        "Compare nine UK providers by price, collection fees, biomarkers and typical result times.",
       );
       await expect(supportingCopy).toBeVisible();
       const fs = px(
