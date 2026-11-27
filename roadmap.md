@@ -1,5 +1,11 @@
 # Roadmap
 
+## 27 November screening, part 15
+- Blocker: Lovable refused creation of supabase/functions/mhc-edge-sync/sync.ts because new Supabase Edge functions are prohibited in this TanStack project; no attempted function changes were applied. Claude must add the function source before Lovable can edit/deploy it. Existing workflow/script remain pending replacement deployment; no publication, migrations or cron changes.
+- [ ] Replace GitHub EDGE scraping with header-authenticated mhc-edge-sync and a parity-tested Deno parser; preserve safe removal and source-backed writes.
+- [ ] Deploy and verify live source prices, authentication, run logs and catalogue readback without publishing, migrations or cron changes.
+- [ ] Remove the old workflow/script, correct references, run unit/Deno/lint checks and inspect automatic production build; commit.
+
 ## 27 November screening, part 14
 - [x] Add matching site and Edge stage 1 constants; gate account health-record features while preserving View/Delete for existing records and keeping stage 2 code.
 - [x] Stop health-query writes/history reads in RecommendationEngine, BloodTestAnalysisPage and the three named Edge functions; deploy those functions.
