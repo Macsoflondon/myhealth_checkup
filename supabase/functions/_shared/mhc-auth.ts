@@ -25,7 +25,7 @@ export type MhcRpcClient = {
 
 export type MhcAuthResult =
   | { ok: true; source: "vault" }
-  | { ok: false; reason: "not_configured" | "mismatch" | "secret_in_url" };
+  | { ok: false; reason: "not_configured" | "mismatch" };
 
 export type MhcAuthDeps = {
   /** Milliseconds since the epoch. Defaults to Date.now. */
@@ -111,7 +111,7 @@ export function createMhcSyncSecretCheck(deps: MhcAuthDeps = {}) {
 
   /**
    * Checks the x-mhc-sync-secret header only. A URL carrying a secret
-   * query parameter is refused outright (401) and a warning names the
+   * query parameter is refused as a mismatch (401) and a warning names the
    * caller, never the value. Otherwise the expected value is resolved first,
    * so a caller can answer 503 for "not configured" and 401 for a mismatch.
    */
@@ -124,7 +124,7 @@ export function createMhcSyncSecretCheck(deps: MhcAuthDeps = {}) {
       log.warn(
         `[${caller}] refused: request URL carries a secret query parameter (value not logged)`,
       );
-      return { ok: false, reason: "secret_in_url" };
+      return { ok: false, reason: "mismatch" };
     }
     const exp = await expected(db, caller);
     if (exp === null) {

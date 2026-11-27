@@ -77,7 +77,7 @@ describe("mhc-auth (loads without a Deno global)", () => {
       log: { warn: (m: string) => warns.push(m), error: () => {} },
     });
     const { client } = db({ data: SECRET, error: null });
-    const refused = { ok: false, reason: "secret_in_url" };
+    const refused = { ok: false, reason: "mismatch" };
     expect(await check(url(SECRET), client, "caller-x")).toEqual(refused);
     const both = new Request(
       `https://x.supabase.co/functions/v1/mhc-test?secret=${SECRET}`,

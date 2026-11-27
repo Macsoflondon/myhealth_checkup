@@ -21,7 +21,8 @@ function fakeDb(...replies: Reply[]) {
   const db: MhcRpcClient = {
     rpc(fn: string) {
       calls.push(fn);
-      const r = replies.length > 1 ? replies.shift()! : replies[0];
+      const r = replies.length > 1 ? replies.shift() : replies[0];
+      if (!r) throw new Error("Missing fake Vault reply");
       return r instanceof Error ? Promise.reject(r) : Promise.resolve(r);
     },
   };
@@ -86,7 +87,7 @@ Deno.test(
     const { db, calls } = fakeDb({ data: SECRET, error: null });
     const { lines, log } = capture();
     const check = createMhcSyncSecretCheck({ log });
-    const refused = { ok: false, reason: "secret_in_url" } as const;
+    const refused = { ok: false, reason: "mismatch" } as const;
     assertEquals(await check(qry(SECRET), db, "mhc-caller"), refused);
     assertEquals(await check(qry(""), db, "mhc-caller"), refused);
     assertEquals(calls.length, 0);
@@ -106,7 +107,7 @@ Deno.test("query value plus a correct header is refused", async () => {
   });
   assertEquals(await check(both, db, "t"), {
     ok: false,
-    reason: "secret_in_url",
+    reason: "mismatch",
   });
   assert(lines.every((l) => !l.includes(SECRET)));
 });

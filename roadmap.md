@@ -1,5 +1,10 @@
 # Roadmap
 
+## 27 November sync-secret transition, step 3
+- [x] Existing header-only auth/comments/callers/SQL assertions verified; query-only requests return mismatch and any URL secret remains refused. No Apify, cron or production database definition changes.
+- [x] 1,368 unit, nine auth Deno, seven scraper Deno and 45 isolated SQL scenarios passed; changed-code lint and automatic compilation passed. Seven functions deployed together; 28 live auth checks passed, and direct manual Clinilabs sync returned 200 with a persisted success row (139 updated). Full Deno run: 212 passed, five unrelated live-auth expectation failures; details in docs/SYNC_SECRET_STEP_3.md.
+- [ ] Real admin manual queue verification blocked by unavailable admin MFA session; direct manual sync and isolated queue tests passed. Post-deploy scheduled run verification waits for the 28/11/2026 00:00–00:34 UTC cycle; no work runs after this turn ends.
+
 ## 27 November screening, part 15
 - Blocker: Lovable refused creation of supabase/functions/mhc-edge-sync/sync.ts because new Supabase Edge functions are prohibited in this TanStack project; no attempted function changes were applied. Claude must add the function source before Lovable can edit/deploy it. Existing workflow/script remain pending replacement deployment; no publication, migrations or cron changes.
 - [ ] Replace GitHub EDGE scraping with header-authenticated mhc-edge-sync and a parity-tested Deno parser; preserve safe removal and source-backed writes.
