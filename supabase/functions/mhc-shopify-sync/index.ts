@@ -14,9 +14,9 @@
 // 2026-09-21: this file was previously deployed straight from the Supabase dashboard and
 // not tracked in this repo at all — pulled in here for reviewability as part of a platform
 // audit.
-// 2026-10-13: ?secret= is checked by ../_shared/mhc-auth.ts against the Vault entry
-// mhc_sync_secret, the value the cron jobs send, read through public.mhc_sync_secret().
-// MHC_SYNC_SECRET is only a fallback for when that read fails. No secret is committed here.
+// Auth: ../_shared/mhc-auth.ts checks the x-mhc-sync-secret header (?secret= still
+// accepted during the 27/11/2026 transition) against Vault mhc_sync_secret only.
+// No secret is committed here.
 import { createClient } from "npm:@supabase/supabase-js@2";
 import { internalErrorResponse } from "../_shared/errors.ts";
 import { htmlToText } from "../_shared/scrape/html.ts";
@@ -76,7 +76,7 @@ Deno.serve(async (req: Request) => {
     Deno.env.get("SUPABASE_URL")!,
     Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
   );
-  const auth = await checkMhcSyncSecret(url, supabase, "mhc-shopify-sync");
+  const auth = await checkMhcSyncSecret(req, supabase, "mhc-shopify-sync");
   if (!auth.ok) {
     return new Response(JSON.stringify({ error: "unauthorised" }), {
       status: 401,

@@ -8,7 +8,7 @@
 // Randox product never sits on the platform without an image unnoticed.
 // Boxes are copied from Randox's own image store into
 // provider-test-images/randox/kit/. mhc-randox-scrape never writes image_url.
-// Auth: ?secret= against Vault mhc_sync_secret.
+// Auth: x-mhc-sync-secret header (?secret= during transition) against Vault mhc_sync_secret.
 import { createClient } from "npm:@supabase/supabase-js@2";
 import { checkMhcSyncSecret } from "../_shared/mhc-auth.ts";
 
@@ -135,7 +135,7 @@ Deno.serve(async (req) => {
     Deno.env.get("SUPABASE_URL")!,
     Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
   );
-  const auth = await checkMhcSyncSecret(u, supabase, "randox-kit-images");
+  const auth = await checkMhcSyncSecret(req, supabase, "randox-kit-images");
   if (!auth.ok) return new Response("unauthorized", { status: 401 });
 
   const { data: rows, error: readErr } = await supabase

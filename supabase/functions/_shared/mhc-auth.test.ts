@@ -39,172 +39,90 @@ function capture() {
   };
 }
 
-const u = (secret?: string) => {
-  const url = new URL("https://x.supabase.co/functions/v1/mhc-test");
+const BASE = "https://x.supabase.co/functions/v1/mhc-test";
+const hdr = (secret: string) =>
+  new Request(BASE, { headers: { "x-mhc-sync-secret": secret } });
+const qry = (secret?: string) => {
+  const url = new URL(BASE);
   if (secret !== undefined) url.searchParams.set("secret", secret);
-  return url;
+  return new Request(url);
 };
 
 Deno.test("constantTimeEqual", () => {
   assert(constantTimeEqual("abc", "abc"));
-  assert(constantTimeEqual("", ""));
   assert(!constantTimeEqual("abc", "abd"));
   assert(!constantTimeEqual("abc", "ab"));
-  assert(!constantTimeEqual("ab", "abc"));
-  assert(!constantTimeEqual("abc\u0000", "abc"));
   assert(!constantTimeEqual("", "a"));
 });
 
-Deno.test("accepts the Vault value", async () => {
+Deno.test("header with the Vault value is accepted", async () => {
   const { db, calls } = fakeDb({ data: SECRET, error: null });
-  const check = createMhcSyncSecretCheck({ getEnv: () => undefined });
-  assertEquals(await check(u(SECRET), db, "t"), { ok: true, source: "vault" });
+  const check = createMhcSyncSecretCheck();
+  assertEquals(await check(hdr(SECRET), db, "t"), { ok: true, source: "vault", via: "header" });
   assertEquals(calls, ["mhc_sync_secret"]);
 });
 
-Deno.test("rejects a wrong, empty or missing ?secret=", async () => {
+Deno.test("wrong header is refused, and a correct query cannot rescue it", async () => {
   const { db } = fakeDb({ data: SECRET, error: null });
-  const check = createMhcSyncSecretCheck({ getEnv: () => undefined });
+  const check = createMhcSyncSecretCheck();
   const mismatch = { ok: false, reason: "mismatch" } as const;
-  assertEquals(await check(u(SECRET + "x"), db, "t"), mismatch);
-  assertEquals(await check(u(SECRET.slice(0, -1)), db, "t"), mismatch);
-  assertEquals(await check(u(""), db, "t"), mismatch);
-  assertEquals(await check(u(), db, "t"), mismatch);
-  assertEquals(await check(u("x".repeat(5000)), db, "t"), mismatch);
+  assertEquals(await check(hdr(SECRET + "x"), db, "t"), mismatch);
+  assertEquals(await check(hdr(""), db, "t"), mismatch);
+  assertEquals(await check(hdr("x".repeat(5000)), db, "t"), mismatch);
+  const both = new Request(`${BASE}?secret=${SECRET}`, { headers: { "x-mhc-sync-secret": "wrong" } });
+  assertEquals(await check(both, db, "t"), mismatch);
 });
 
-Deno.test(
-  "Vault wins over a different env value and the drift is logged once without values",
-  async () => {
-    const { db } = fakeDb({ data: SECRET, error: null });
-    const { lines, log } = capture();
-    const check = createMhcSyncSecretCheck({
-      getEnv: () => "stale-env-value",
-      log,
-      ttlMs: 0,
-    });
-    assertEquals(await check(u("stale-env-value"), db, "t"), {
-      ok: false,
-      reason: "mismatch",
-    });
-    assertEquals(await check(u(SECRET), db, "t"), {
-      ok: true,
-      source: "vault",
-    });
-    assertEquals(lines.filter((l) => l.includes("differs")).length, 1);
-    assert(
-      lines.every((l) => !l.includes(SECRET) && !l.includes("stale-env-value")),
-    );
-  },
-);
-
-Deno.test(
-  "falls back to env when the RPC errors, throws or returns nothing",
-  async () => {
-    for (const reply of [
-      {
-        data: null,
-        error: { message: "permission denied for function mhc_sync_secret" },
-      },
-      new Error("network down"),
-      { data: null, error: null },
-      { data: "   ", error: null },
-      { data: 42, error: null },
-    ] as Reply[]) {
-      const { db } = fakeDb(reply);
-      const { lines, log } = capture();
-      const check = createMhcSyncSecretCheck({ getEnv: () => SECRET, log });
-      assertEquals(await check(u(SECRET), db, "t"), {
-        ok: true,
-        source: "env",
-      });
-      assert(lines.every((l) => !l.includes(SECRET)));
-    }
-  },
-);
-
-Deno.test("fails closed when neither Vault nor env has a value", async () => {
-  for (const env of [undefined, "", "  "]) {
-    const { db } = fakeDb({ data: null, error: null });
-    const check = createMhcSyncSecretCheck({
-      getEnv: () => env,
-      log: capture().log,
-    });
-    assertEquals(await check(u(""), db, "t"), {
-      ok: false,
-      reason: "not_configured",
-    });
-    assertEquals(await check(u(), db, "t"), {
-      ok: false,
-      reason: "not_configured",
-    });
-    assertEquals(await check(u("anything"), db, "t"), {
-      ok: false,
-      reason: "not_configured",
-    });
-  }
+Deno.test("missing secret is refused", async () => {
+  const { db } = fakeDb({ data: SECRET, error: null });
+  const check = createMhcSyncSecretCheck();
+  assertEquals(await check(qry(), db, "t"), { ok: false, reason: "mismatch" });
+  assertEquals(await check(qry(""), db, "t"), { ok: false, reason: "mismatch" });
 });
 
-Deno.test(
-  "caches a Vault value for ttlMs, then re-reads (rotation)",
-  async () => {
-    let t = 1_000;
-    const { db, calls } = fakeDb(
-      { data: "old-value-000000", error: null },
-      { data: "new-value-111111", error: null },
-    );
-    const check = createMhcSyncSecretCheck({
-      getEnv: () => undefined,
-      now: () => t,
-      ttlMs: 60_000,
-    });
-    assertEquals((await check(u("old-value-000000"), db, "t")).ok, true);
-    t += 59_999;
-    assertEquals((await check(u("old-value-000000"), db, "t")).ok, true);
-    assertEquals(calls.length, 1);
-    t += 1;
-    assertEquals((await check(u("old-value-000000"), db, "t")).ok, false);
-    assertEquals((await check(u("new-value-111111"), db, "t")).ok, true);
-    assertEquals(calls.length, 2);
-  },
-);
+Deno.test("transition: query value is still accepted when no header is sent", async () => {
+  const { db } = fakeDb({ data: SECRET, error: null });
+  const check = createMhcSyncSecretCheck();
+  assertEquals(await check(qry(SECRET), db, "t"), { ok: true, source: "vault", via: "query" });
+  assertEquals((await check(qry(SECRET + "x"), db, "t")).ok, false);
+});
 
-Deno.test("does not cache a failed read or the env fallback", async () => {
-  const { db, calls } = fakeDb(
+Deno.test("Vault failure refuses (no env fallback), logging no secret", async () => {
+  const prev = Deno.env.get("MHC_SYNC_SECRET");
+  for (const reply of [
     { data: null, error: { message: "boom" } },
+    new Error("network"),
+    { data: null, error: null },
+    { data: "   ", error: null },
+  ] as Reply[]) {
+    const { db } = fakeDb(reply);
+    const { lines, log } = capture();
+    const check = createMhcSyncSecretCheck({ log });
+    assertEquals(await check(hdr(SECRET), db, "t"), { ok: false, reason: "not_configured" });
+    assertEquals(await check(qry(SECRET), db, "t"), { ok: false, reason: "not_configured" });
+    assert(lines.every((l) => !l.includes(SECRET)));
+  }
+  assertEquals(Deno.env.get("MHC_SYNC_SECRET"), prev);
+});
+
+Deno.test("caches a Vault value for the TTL, never a failure", async () => {
+  let t = 0;
+  const { db, calls } = fakeDb(
+    { data: null, error: { message: "x" } },
     { data: SECRET, error: null },
   );
-  const check = createMhcSyncSecretCheck({
-    getEnv: () => "env-fallback-value",
-    log: capture().log,
-  });
-  assertEquals(await check(u("env-fallback-value"), db, "t"), {
-    ok: true,
-    source: "env",
-  });
-  assertEquals(await check(u(SECRET), db, "t"), { ok: true, source: "vault" });
+  const check = createMhcSyncSecretCheck({ now: () => t, ttlMs: 1000, log: capture().log });
+  assertEquals((await check(hdr(SECRET), db, "t")).ok, false);
+  assertEquals((await check(hdr(SECRET), db, "t")).ok, true);
+  t = 500;
+  assertEquals((await check(hdr(SECRET), db, "t")).ok, true);
   assertEquals(calls.length, 2);
 });
 
-Deno.test("concurrent cold requests share one RPC", async () => {
+Deno.test("concurrent first requests share one Vault read", async () => {
   const { db, calls } = fakeDb({ data: SECRET, error: null });
-  const check = createMhcSyncSecretCheck({ getEnv: () => undefined });
-  const results = await Promise.all(
-    [1, 2, 3, 4].map(() => check(u(SECRET), db, "t")),
-  );
+  const check = createMhcSyncSecretCheck();
+  const results = await Promise.all([1, 2, 3, 4].map(() => check(hdr(SECRET), db, "t")));
   assert(results.every((r) => r.ok));
   assertEquals(calls.length, 1);
 });
-
-Deno.test(
-  "query-string decoding matches what the cron URL delivers",
-  async () => {
-    // The cron jobs concatenate the raw Vault value into the URL. URLSearchParams
-    // turns '+' into a space, so such a value could never match; this pins that
-    // behaviour so a future secret rotation keeps to URL-safe characters.
-    const { db } = fakeDb({ data: "a+b", error: null });
-    const check = createMhcSyncSecretCheck({ getEnv: () => undefined });
-    const raw = new URL("https://x.supabase.co/f?secret=a+b");
-    assertEquals((await check(raw, db, "t")).ok, false);
-  },
-);

@@ -114,7 +114,9 @@ serve(async (req) => {
     const scrapeRunId: string = runRow.id;
 
     const ingestSecret = Deno.env.get("SCRAPER_CRON_SECRET") ?? serviceKey;
-    const webhookUrl = `${supabaseUrl}/functions/v1/apify-ingest?secret=${encodeURIComponent(ingestSecret)}`;
+    // The secret travels in a header, never the URL, so it stays out of logs.
+    const webhookUrl = `${supabaseUrl}/functions/v1/apify-ingest`;
+    const headersTemplate = JSON.stringify({ "x-apify-ingest-secret": ingestSecret });
 
     const payloadTemplate = JSON.stringify({
       eventType: "{{eventType}}",
@@ -157,6 +159,7 @@ serve(async (req) => {
         ],
         requestUrl: webhookUrl,
         payloadTemplate,
+        headersTemplate,
       },
     ];
     const webhooksParam = btoa(JSON.stringify(webhooks));

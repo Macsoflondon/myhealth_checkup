@@ -7,7 +7,8 @@
  * On failure it records a `scraper_alerts` row.
  *
  * Called by Apify, so it is not JWT-protected: authorisation is a shared
- * secret supplied on the webhook URL.
+ * secret in the x-apify-ingest-secret header. TRANSITION (27/11/2026):
+ * ?secret= is still accepted when no header is sent; it is removed in step 3.
  */
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.51.0";
@@ -33,7 +34,16 @@ function timingSafeEqual(a: string, b: string): boolean {
   return diff === 0;
 }
 
-serve(async (req) => {
+export function presentedIngestSecret(req: Request): string {
+  return (
+    req.headers.get("x-apify-ingest-secret") ??
+    req.headers.get("x-cron-secret") ??
+    new URL(req.url).searchParams.get("secret") ??
+    ""
+  );
+}
+
+if (import.meta.main) serve(async (req) => {
   if (req.method === "OPTIONS")
     return new Response(null, { headers: corsHeaders });
 
@@ -45,10 +55,7 @@ serve(async (req) => {
 
   const serviceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "";
   const expectedSecret = Deno.env.get("SCRAPER_CRON_SECRET") || serviceKey;
-  const presented =
-    new URL(req.url).searchParams.get("secret") ??
-    req.headers.get("x-cron-secret") ??
-    "";
+  const presented = presentedIngestSecret(req);
   if (!expectedSecret || !timingSafeEqual(presented, expectedSecret)) {
     return json({ error: "Unauthorized" }, 401);
   }

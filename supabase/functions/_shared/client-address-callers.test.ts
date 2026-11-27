@@ -58,7 +58,7 @@ for (const caller of callers) {
         });
       };
       try {
-        for (const headers of [
+        for (const headers of <Record<string, string>[]>[
           {
             "cf-connecting-ip": "192.0.2.1",
             "x-forwarded-for": "203.0.113.77",

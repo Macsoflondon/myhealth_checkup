@@ -11,8 +11,12 @@ const quiet = { warn: () => {}, error: () => {} };
 const url = (s?: string) => {
   const u = new URL("https://x.supabase.co/functions/v1/mhc-test");
   if (s !== undefined) u.searchParams.set("secret", s);
-  return u;
+  return new Request(u);
 };
+const hdr = (s: string) =>
+  new Request("https://x.supabase.co/functions/v1/mhc-test", {
+    headers: { "x-mhc-sync-secret": s },
+  });
 function db(
   reply: { data: unknown; error: { message: string } | null } | Error,
 ) {
@@ -50,39 +54,19 @@ describe("mhc-auth (loads without a Deno global)", () => {
     expect(constantTimeEqual("", "x")).toBe(false);
   });
 
-  it("Vault wins; env is only a fallback", async () => {
-    const check = createMhcSyncSecretCheck({
-      getEnv: () => "other-env",
-      log: quiet,
-    });
+  it("reads the header, falls back to ?secret= only without one", async () => {
+    const check = createMhcSyncSecretCheck({ log: quiet });
     const { client } = db({ data: SECRET, error: null });
-    expect(await check(url(SECRET), client, "t")).toEqual({
-      ok: true,
-      source: "vault",
-    });
-    expect(await check(url("other-env"), client, "t")).toEqual({
-      ok: false,
-      reason: "mismatch",
-    });
-
-    const fallback = createMhcSyncSecretCheck({
-      getEnv: () => "env-value-1234",
-      log: quiet,
-    });
-    const failing = db({ data: null, error: { message: "permission denied" } });
-    expect(await fallback(url("env-value-1234"), failing.client, "t")).toEqual({
-      ok: true,
-      source: "env",
-    });
-  });
-
-  it("missing or empty ?secret= never matches", async () => {
-    const check = createMhcSyncSecretCheck({
-      getEnv: () => undefined,
-      log: quiet,
-    });
-    const { client } = db({ data: SECRET, error: null });
+    expect(await check(hdr(SECRET), client, "t")).toEqual({ ok: true, source: "vault", via: "header" });
+    expect(await check(url(SECRET), client, "t")).toEqual({ ok: true, source: "vault", via: "query" });
+    expect((await check(hdr("wrong"), client, "t")).ok).toBe(false);
     expect((await check(url(), client, "t")).ok).toBe(false);
     expect((await check(url(""), client, "t")).ok).toBe(false);
+  });
+
+  it("a Vault failure refuses with no env fallback", async () => {
+    const check = createMhcSyncSecretCheck({ log: quiet });
+    const failing = db({ data: null, error: { message: "permission denied" } });
+    expect(await check(hdr(SECRET), failing.client, "t")).toEqual({ ok: false, reason: "not_configured" });
   });
 });
