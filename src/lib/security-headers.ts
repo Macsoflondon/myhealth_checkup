@@ -163,13 +163,12 @@ export const buildContentSecurityPolicy = (
     "default-src": ["'self'"],
     // No 'unsafe-inline'. HTML responses get a per-request nonce that the
     // router puts on every inline and module script it renders (ssr.nonce);
-    // 'strict-dynamic' then trusts scripts those load (Cookiebot, chunks).
+    // Source allowlists also permit hosting-injected same-origin scripts
+    // that arrive after rendering without a nonce, plus Cookiebot and chunks.
     // Responses without a nonce allow no inline script at all.
     "script-src": [
       "'self'",
-      ...(nonce && NONCE_RE.test(nonce)
-        ? [`'nonce-${nonce}'`, "'strict-dynamic'"]
-        : []),
+      ...(nonce && NONCE_RE.test(nonce) ? [`'nonce-${nonce}'`] : []),
       ...thirdParty,
       ...(preview ? ["https://cdn.gpteng.co"] : []),
     ],

@@ -111,7 +111,7 @@ describe("third-party script isolation and image allowlist", () => {
       .split("; ")
       .find((d) => d.startsWith("img-src "));
     expect(imgSrc).toBeDefined();
-    expect(imgSrc!.split(" ")).not.toContain("https:");
+    expect(imgSrc?.split(" ")).not.toContain("https:");
     expect(imgSrc).toContain("https://clvuioagsgfadynuvodj.supabase.co");
     // Shared hosts are limited to the provider's own path.
     expect(imgSrc).toContain(
@@ -154,7 +154,7 @@ describe("per-request script nonce", () => {
     expect(a).not.toBe(b);
   });
 
-  it("puts the nonce and strict-dynamic in script-src, never unsafe-inline", async () => {
+  it("keeps nonce and source allowlists without strict-dynamic or unsafe-inline", async () => {
     const { buildContentSecurityPolicy } = await import("./security-headers");
     const nonce = "AAAAAAAAAAAAAAAAAAAAAA==";
     const scriptSrc = buildContentSecurityPolicy(
@@ -165,18 +165,48 @@ describe("per-request script nonce", () => {
       .split("; ")
       .find((d) => d.startsWith("script-src "));
     expect(scriptSrc).toBe(
-      `script-src 'self' 'nonce-${nonce}' 'strict-dynamic' https://consent.cookiebot.com https://consentcdn.cookiebot.com`,
+      `script-src 'self' 'nonce-${nonce}' https://consent.cookiebot.com https://consentcdn.cookiebot.com`,
     );
-    for (const host of ["myhealthcheckup.co.uk", "localhost:8080"]) {
-      for (const path of ["/", "/control"]) {
-        const csp = buildContentSecurityPolicy(host, path, nonce);
-        expect(
-          csp.split("; ").find((d) => d.startsWith("script-src ")),
-        ).not.toContain("unsafe-inline");
-        expect(csp).toContain("report-uri ");
-        expect(csp).toContain("report-to csp-endpoint");
+    for (const host of [
+      "myhealthcheckup.co.uk",
+      "www.myhealthcheckup.co.uk",
+      "localhost:8080",
+      "id-preview--abc.lovable.app",
+    ]) {
+      for (const path of [
+        "/",
+        "/compare",
+        "/cookies",
+        "/tests/heart",
+        "/control",
+      ]) {
+        for (const value of [nonce, undefined]) {
+          const csp = buildContentSecurityPolicy(host, path, value);
+          const directive = csp
+            .split("; ")
+            .find((d) => d.startsWith("script-src "));
+          expect(directive).toBeDefined();
+          expect(directive).not.toContain("unsafe-inline");
+          expect(directive).not.toContain("strict-dynamic");
+          expect(directive).toContain("'self'");
+          expect(csp).toContain("report-uri ");
+          expect(csp).toContain("report-to csp-endpoint");
+        }
       }
     }
+  });
+
+  it("retains the preview script host and excludes Cookiebot on admin pages", async () => {
+    const { buildContentSecurityPolicy } = await import("./security-headers");
+    const nonce = "AAAAAAAAAAAAAAAAAAAAAA==";
+    expect(
+      buildContentSecurityPolicy("id-preview--abc.lovable.app", "/", nonce),
+    ).toContain(
+      `script-src 'self' 'nonce-${nonce}' https://consent.cookiebot.com https://consentcdn.cookiebot.com https://cdn.gpteng.co`,
+    );
+    expect(
+      buildContentSecurityPolicy("myhealthcheckup.co.uk", "/control", nonce),
+    ).toContain(`script-src 'self' 'nonce-${nonce}';`);
   });
 
   it("ignores a malformed nonce rather than injecting it", async () => {

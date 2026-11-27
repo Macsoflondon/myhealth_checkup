@@ -1,5 +1,9 @@
 # Roadmap
 
+## 27 November screening, part 16
+- [x] Removed strict-dynamic from script-src only; nonce, sources, Cookiebot nonce, private HTML caching and all other directives preserved.
+- [x] 1,369 unit tests, changed-file lint and automatic compilation passed. Four browser routes returned 200 with zero CSP/page errors; filtering and nonce-free same-origin script execution verified. No publication/migrations. Separate production build unavailable because manual builds are prohibited; details in docs/SCREENING_PART_16.md.
+
 ## 27 November sync-secret transition, step 3
 - [x] Existing header-only auth/comments/callers/SQL assertions verified; query-only requests return mismatch and any URL secret remains refused. No Apify, cron or production database definition changes.
 - [x] 1,368 unit, nine auth Deno, seven scraper Deno and 45 isolated SQL scenarios passed; changed-code lint and automatic compilation passed. Seven functions deployed together; 28 live auth checks passed, and direct manual Clinilabs sync returned 200 with a persisted success row (139 updated). Full Deno run: 212 passed, five unrelated live-auth expectation failures; details in docs/SYNC_SECRET_STEP_3.md.
