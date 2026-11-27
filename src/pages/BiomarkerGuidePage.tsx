@@ -101,11 +101,17 @@ const BiomarkerGuidePage = () => {
 
       <article className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 lg:py-16 text-[#081129]">
         <nav className="text-sm text-slate-600 mb-6" aria-label="Breadcrumb">
-          <Link to="/" className="hover:text-[#081129]">
+          <Link
+            to="/"
+            className="inline-flex min-h-6 items-center hover:text-[#081129]"
+          >
             Home
           </Link>
           <span className="mx-2">/</span>
-          <Link to="/guides" className="hover:text-[#081129]">
+          <Link
+            to="/guides"
+            className="inline-flex min-h-6 items-center hover:text-[#081129]"
+          >
             Guides
           </Link>
           <span className="mx-2">/</span>
@@ -223,8 +229,12 @@ const BiomarkerGuidePage = () => {
                   to={`/guides/${r.slug}`}
                   className="block rounded-xl border border-slate-200 bg-slate-50 p-4 hover:bg-slate-100 transition"
                 >
-                  <div className="text-sm text-slate-600 mb-1">{r.category}</div>
-                  <div className="font-semibold text-[#081129]">{r.keyword}</div>
+                  <div className="text-sm text-slate-600 mb-1">
+                    {r.category}
+                  </div>
+                  <div className="font-semibold text-[#081129]">
+                    {r.keyword}
+                  </div>
                 </Link>
               ))}
             </div>

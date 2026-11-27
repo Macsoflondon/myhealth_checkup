@@ -14,7 +14,7 @@ permissions:
 
 jobs:
   audit:
-    name: npm audit (fail on high/critical)
+    name: bun audit (fail on high/critical)
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -24,30 +24,20 @@ jobs:
         uses: actions/setup-node@v7
         with:
           node-version: "20"
+      - uses: oven-sh/setup-bun@v2
+        with: { bun-version: "1.4.4" }
 
-      # Audit the committed lockfile exactly as deploy.yml installs it (npm ci).
-      # The previous `npm install --package-lock-only` rewrote the lock in CI,
-      # so the scan checked a file nobody ships, and it never refreshed stale
-      # nested entries because they still satisfied their ranges.
+      # Audit bun.lock, the only lockfile, exactly as deploy.yml installs it.
       - name: Install dependencies from the committed lockfile
-        run: npm ci --ignore-scripts --no-audit --fund=false --legacy-peer-deps
+        run: bun install --frozen-lockfile --ignore-scripts
 
-      # Lovable patches package-lock.json entry by entry, which can strand an
-      # old nested copy (the cause of the zod GHSA-mrhx-c7xc-m3w5 failures).
-      # This names any such copy and how to remove it, so a new advisory
-      # against an old copy is caught as a lockfile fault, not a mystery.
-      - name: Check lockfile for stale nested copies
-        run: |
-          NPM_SEMVER="$(dirname "$(dirname "$(realpath "$(command -v npm)")")")/node_modules/semver"
-          NPM_SEMVER="$NPM_SEMVER" node scripts/check-lockfile-stale-copies.mjs
-
-      - name: Run npm audit (high & critical)
+      - name: Run bun audit (high & critical)
         if: always()
-        run: npm audit --audit-level=high
+        run: bun audit --audit-level=high
 
       - name: Generate JSON report
         if: always()
-        run: npm audit --json > npm-audit-report.json || true
+        run: bun audit --json > npm-audit-report.json || true
 
       - name: Upload audit report
         if: always()

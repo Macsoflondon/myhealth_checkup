@@ -188,9 +188,9 @@
 - [x] 06/11/2026 open items: acronym normaliser at render time (IgG etc.), font weights trimmed, article images to WebP + img dimensions, Cookiebot no-shift guard, comparison tray lazy + 16 unused packages removed, 44px touch targets in shared components, chat button hides on scroll-down (<640px), drawer scroll-position fix, deep scan reviewed, e2e 69/69 per project. Not published; no database changes.
 
 ## Part 11 (queued after part 10)
-- [ ] Hero: still image only below md / reduced motion / Save-Data; update e2e
-- [ ] Homepage fingerprick + clinic images 320/640 WebP; dedupe PSA and Goodbody widths
-- [ ] 24px tap targets: guides breadcrumbs, cancer-screening-compare names, conditions "View tests"
+- [x] Hero: still image only below md / reduced motion / Save-Data; update e2e
+- [x] Homepage fingerprick + clinic images 320/640 WebP; dedupe PSA and Goodbody widths
+- [x] 24px tap targets: guides breadcrumbs, cancer-screening-compare names, conditions "View tests"
 - [ ] Health-data removal — ON HOLD: conflicts with 29/10/2026 owner rule withdrawing the prohibition; needs confirmation
-- [ ] bun.lock only: workflows to setup-bun, delete package-lock.json, docs
-- [ ] Delete blog-aggregate.yml; update CLAUDE.md and EDGE_FUNCTIONS_OUTSIDE_REPO.md
+- [x] bun.lock only: workflows to setup-bun, delete package-lock.json, docs
+- [x] Delete blog-aggregate.yml; update CLAUDE.md and EDGE_FUNCTIONS_OUTSIDE_REPO.md

@@ -15,7 +15,7 @@ permissions:
   contents: read
 
 jobs:
-  # Same deterministic gate as unit-tests.yml (npm ci + vitest). If the
+  # Same deterministic gate as unit-tests.yml (bun install --frozen-lockfile
   # lockfile drifts from package.json or a test fails, nothing is deployed.
   test:
     uses: ./.github/workflows/unit-tests.yml
@@ -34,12 +34,13 @@ jobs:
         uses: actions/setup-node@v7
         with:
           node-version: 20
+      - uses: oven-sh/setup-bun@v2
+        with: { bun-version: "1.4.4" }
 
-      # npm ci (not npm install): installs exactly what the lockfile pins and
-      # fails if it is out of sync with package.json, instead of silently
-      # re-resolving and shipping versions CI never tested.
+      # bun.lock is the only lockfile; --frozen-lockfile fails if it is out of
+      # sync with package.json instead of re-resolving untested versions.
       - name: Install Dependencies
-        run: npm ci --no-audit --fund=false
+        run: bun install --frozen-lockfile
 
       - name: Build
         run: npm run build

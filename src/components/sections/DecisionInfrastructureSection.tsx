@@ -1,6 +1,8 @@
 import { Check } from "lucide-react";
 import { Link } from "@/lib/router-compat";
 import clinicBloodDraw from "@/assets/clinic-blood-draw.jpg.asset.json";
+import clinicBloodDraw320 from "@/assets/card-variants/clinic-blood-draw-320.webp.asset.json";
+import clinicBloodDraw640 from "@/assets/card-variants/clinic-blood-draw-640.webp.asset.json";
 
 const POINTS: readonly string[] = [
   "No pay-to-rank. Providers cannot buy prominence.",
@@ -15,8 +17,12 @@ export const DecisionInfrastructureSection = () => (
     <div className="grid grid-cols-1 lg:grid-cols-2">
       {/* Photograph */}
       <div className="relative min-h-[260px] sm:min-h-[340px] lg:min-h-[520px] overflow-hidden">
-        <img width={1200} height={800}
+        <img
+          width={1200}
+          height={800}
           src={clinicBloodDraw.url}
+          srcSet={`${clinicBloodDraw320.url} 320w, ${clinicBloodDraw640.url} 640w, ${clinicBloodDraw.url} 1015w`}
+          sizes="(min-width: 1024px) 50vw, 100vw"
           alt="A nurse taking a blood sample from a patient's arm"
           loading="lazy"
           decoding="async"
@@ -46,9 +52,9 @@ export const DecisionInfrastructureSection = () => (
         </h2>
 
         <p className="mt-5 max-w-2xl text-sm sm:text-base leading-relaxed text-white/80">
-          Some providers pay us a commission when you book through our links.
-          It never changes the price you pay or the order of results. You get
-          the full picture before you spend a pound on your health.
+          Some providers pay us a commission when you book through our links. It
+          never changes the price you pay or the order of results. You get the
+          full picture before you spend a pound on your health.
         </p>
 
         <ul className="mt-7 space-y-3">

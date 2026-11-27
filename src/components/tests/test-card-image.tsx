@@ -17,6 +17,20 @@ interface TestCardImageProps {
 const FRAME_WIDTH = 400;
 const FRAME_HEIGHT = 400;
 
+/**
+ * Card-sized pictures (display width up to 400px) share one candidate ladder
+ * whatever their slot, so a homepage that shows the same kit in two sections
+ * downloads it once: phones at 2-3x pick the 800px file in every slot.
+ */
+const CARD_IMAGE_WIDTHS: readonly number[] = [320, 800];
+const CARD_MAX_DISPLAY_WIDTH = 400;
+
+function imageCandidates(displayWidth: number): readonly number[] {
+  return displayWidth <= CARD_MAX_DISPLAY_WIDTH
+    ? CARD_IMAGE_WIDTHS
+    : [displayWidth, displayWidth * 2];
+}
+
 export function TestCardImage({
   imageUrl,
   testName,
@@ -42,10 +56,15 @@ export function TestCardImage({
     >
       {showImage ? (
         <img
-          src={productImageUrl(source, displayWidth)}
+          src={productImageUrl(
+            source,
+            displayWidth <= CARD_MAX_DISPLAY_WIDTH
+              ? CARD_MAX_DISPLAY_WIDTH
+              : displayWidth,
+          )}
           srcSet={
             displayWidth
-              ? productImageSrcSet(source, [displayWidth, displayWidth * 2])
+              ? productImageSrcSet(source, imageCandidates(displayWidth))
               : undefined
           }
           sizes={sizes}

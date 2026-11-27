@@ -57,8 +57,16 @@ describe("mhc-auth (loads without a Deno global)", () => {
   it("reads the header, falls back to ?secret= only without one", async () => {
     const check = createMhcSyncSecretCheck({ log: quiet });
     const { client } = db({ data: SECRET, error: null });
-    expect(await check(hdr(SECRET), client, "t")).toEqual({ ok: true, source: "vault", via: "header" });
-    expect(await check(url(SECRET), client, "t")).toEqual({ ok: true, source: "vault", via: "query" });
+    expect(await check(hdr(SECRET), client, "t")).toEqual({
+      ok: true,
+      source: "vault",
+      via: "header",
+    });
+    expect(await check(url(SECRET), client, "t")).toEqual({
+      ok: true,
+      source: "vault",
+      via: "query",
+    });
     expect((await check(hdr("wrong"), client, "t")).ok).toBe(false);
     expect((await check(url(), client, "t")).ok).toBe(false);
     expect((await check(url(""), client, "t")).ok).toBe(false);
@@ -67,6 +75,9 @@ describe("mhc-auth (loads without a Deno global)", () => {
   it("a Vault failure refuses with no env fallback", async () => {
     const check = createMhcSyncSecretCheck({ log: quiet });
     const failing = db({ data: null, error: { message: "permission denied" } });
-    expect(await check(hdr(SECRET), failing.client, "t")).toEqual({ ok: false, reason: "not_configured" });
+    expect(await check(hdr(SECRET), failing.client, "t")).toEqual({
+      ok: false,
+      reason: "not_configured",
+    });
   });
 });

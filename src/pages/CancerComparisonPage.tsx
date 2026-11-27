@@ -286,10 +286,10 @@ export default function CancerComparisonPage() {
                                 : "POA"}
                             </Badge>
                           </div>
-                          <CardTitle className="text-base line-clamp-2">
+                          <CardTitle className="text-base">
                             <Link
                               to={getTestDetailUrl(test.providerId, test.id)}
-                              className="hover:underline"
+                              className="line-clamp-2 min-h-6 hover:underline"
                             >
                               {test.testName}
                             </Link>

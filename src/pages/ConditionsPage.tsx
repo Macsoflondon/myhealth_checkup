@@ -154,14 +154,13 @@ const ConditionsPage = () => {
                           <CardDescription className="text-sm text-muted-foreground mb-4">
                             {condition.description}
                           </CardDescription>
-                          <Link to={condition.path}>
-                            <Button
-                              className="w-full text-white transition-colors"
-                              style={{ backgroundColor: condition.colorHex }}
-                            >
-                              View tests
-                            </Button>
-                          </Link>
+                          <Button
+                            asChild
+                            className="w-full text-white transition-colors"
+                            style={{ backgroundColor: condition.colorHex }}
+                          >
+                            <Link to={condition.path}>View tests</Link>
+                          </Button>
                         </CardContent>
                       </Card>
                     );

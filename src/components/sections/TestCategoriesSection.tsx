@@ -1,6 +1,8 @@
 import { Link } from "@/lib/router-compat";
 import { SectionHeading } from "@/components/ui/section-heading";
 import fingerprickAsset from "@/assets/at-home-fingerprick.jpg.asset.json";
+import fingerprick320 from "@/assets/card-variants/at-home-fingerprick-320.webp.asset.json";
+import fingerprick640 from "@/assets/card-variants/at-home-fingerprick-640.webp.asset.json";
 
 const categories = [
   {
@@ -50,6 +52,8 @@ const categories = [
     link: "/at-home-tests",
     linkLabel: "Explore Kits",
     image: fingerprickAsset.url,
+    // Hosted 320/640 WebPs; the 1280px original stays for large screens.
+    srcSet: `${fingerprick320.url} 320w, ${fingerprick640.url} 640w, ${fingerprickAsset.url} 1280w`,
   },
 ];
 
@@ -90,14 +94,16 @@ const TestCategoriesSection = () => {
                 height={400}
                 src={cat.image}
                 srcSet={
-                  cat.image.startsWith("https://images.unsplash.com/")
-                    ? [480, 800, 1200]
-                        .map(
-                          (width) =>
-                            `${cat.image.replace("w=480", `w=${width}`)} ${width}w`,
-                        )
-                        .join(", ")
-                    : undefined
+                  "srcSet" in cat && cat.srcSet
+                    ? cat.srcSet
+                    : cat.image.startsWith("https://images.unsplash.com/")
+                      ? [480, 800, 1200]
+                          .map(
+                            (width) =>
+                              `${cat.image.replace("w=480", `w=${width}`)} ${width}w`,
+                          )
+                          .join(", ")
+                      : undefined
                 }
                 sizes="(min-width: 1024px) calc((100vw - 132px) / 2), (min-width: 640px) calc((100vw - 100px) / 2), calc(100vw - 32px)"
                 alt=""
