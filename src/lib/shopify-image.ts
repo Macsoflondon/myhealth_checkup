@@ -16,7 +16,7 @@ function parseShopifyImage(src: string): URL | null {
   return isShopify ? url : null;
 }
 
-/** Only public objects on this project's storage origin support this transform. */
+/** Recognises public Storage images, including legacy transformation URLs. */
 function parseStorageImage(src: string): URL | null {
   try {
     const url = new URL(src);
@@ -35,6 +35,23 @@ export function productImageUrl(
   displayWidth: number,
   density = 2,
 ): string {
+  const storage = parseStorageImage(src);
+  if (storage) {
+    storage.pathname = storage.pathname.replace(
+      "/storage/v1/render/image/public/",
+      "/storage/v1/object/public/",
+    );
+    for (const parameter of [
+      "width",
+      "height",
+      "quality",
+      "resize",
+      "format",
+    ]) {
+      storage.searchParams.delete(parameter);
+    }
+    return storage.toString();
+  }
   if (
     !Number.isFinite(displayWidth) ||
     displayWidth <= 0 ||
@@ -44,16 +61,7 @@ export function productImageUrl(
     return src;
   const bundled = bundledProductImageUrl(src, displayWidth * density);
   if (bundled) return bundled;
-  const storage = parseStorageImage(src);
-  if (!storage) return shopifyImageUrl(src, displayWidth, density);
-  storage.pathname = storage.pathname.replace(
-    "/storage/v1/object/public/",
-    "/storage/v1/render/image/public/",
-  );
-  storage.searchParams.set("width", String(Math.round(displayWidth * density)));
-  storage.searchParams.set("quality", "75");
-  storage.searchParams.set("resize", "contain");
-  return storage.toString();
+  return shopifyImageUrl(src, displayWidth, density);
 }
 
 export function productImageSrcSet(
@@ -62,7 +70,7 @@ export function productImageSrcSet(
 ): string | undefined {
   const bundled = bundledProductImageSrcSet(src);
   if (bundled) return bundled;
-  if (!parseStorageImage(src) && !parseShopifyImage(src)) return undefined;
+  if (parseStorageImage(src) || !parseShopifyImage(src)) return undefined;
   const validWidths = [
     ...new Set(
       widths

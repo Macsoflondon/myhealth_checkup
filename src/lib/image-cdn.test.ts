@@ -4,27 +4,35 @@ import { productImageSrcSet, productImageUrl } from "./shopify-image";
 const source =
   "https://clvuioagsgfadynuvodj.supabase.co/storage/v1/object/public/provider-test-images/kit.png?v=17";
 describe("public product image CDN", () => {
-  it("requests a contain transform at quality 75 and 2x width without losing versions", () => {
+  it("uses the plain public object without losing versions", () => {
     const url = new URL(productImageUrl(source, 270));
     expect(url.pathname).toBe(
-      "/storage/v1/render/image/public/provider-test-images/kit.png",
+      "/storage/v1/object/public/provider-test-images/kit.png",
     );
     expect(Object.fromEntries(url.searchParams)).toEqual({
       v: "17",
-      width: "540",
-      quality: "75",
-      resize: "contain",
     });
   });
-  it("supplies width descriptors at one and two times the displayed width", () => {
-    const candidates = productImageSrcSet(source, [270, 540])?.split(", ");
-    expect(candidates).toHaveLength(2);
-    expect(candidates?.[0]).toContain(
-      "width=270&quality=75&resize=contain 270w",
-    );
-    expect(candidates?.[1]).toContain(
-      "width=540&quality=75&resize=contain 540w",
-    );
+  it.each(["object", "render/image"])(
+    "removes all transform parameters from public %s URLs and supplies no variants",
+    (path) => {
+      const src =
+        source.replace("/object/", `/${path}/`) +
+        "&width=540&height=320&quality=75&resize=contain&format=webp&width=270";
+      expect(productImageUrl(src, 270)).toBe(source);
+      expect(productImageSrcSet(src, [270, 540])).toBeUndefined();
+    },
+  );
+  it("normalises legacy render URLs even with invalid sizing arguments", () => {
+    const src = source.replace("/object/", "/render/image/") + "&width=540";
+    for (const [width, density] of [
+      [0, 2],
+      [270, 0],
+      [NaN, 2],
+      [270, Infinity],
+    ]) {
+      expect(productImageUrl(src, width ?? 0, density ?? 0)).toBe(source);
+    }
   });
   it("does not transform signed/private objects or other origins", () => {
     for (const src of [
@@ -36,12 +44,15 @@ describe("public product image CDN", () => {
       expect(productImageSrcSet(src, [270, 540])).toBeUndefined();
     }
   });
-  it("keeps Shopify resizing and avoids repeated render prefixes", () => {
+  it("keeps Shopify resizing and public object URLs stable", () => {
     expect(productImageUrl("https://cdn.shopify.com/kit.png", 270)).toContain(
       "width=540&format=webp",
     );
-    expect(productImageUrl(productImageUrl(source, 270), 160)).toContain(
-      "render/image/public/provider-test-images/kit.png?v=17&width=320",
+    expect(productImageUrl(productImageUrl(source, 270), 160)).toBe(source);
+    expect(
+      productImageSrcSet("https://cdn.shopify.com/kit.png", [270, 540]),
+    ).toBe(
+      "https://cdn.shopify.com/kit.png?width=270&format=webp 270w, https://cdn.shopify.com/kit.png?width=540&format=webp 540w",
     );
   });
 });
