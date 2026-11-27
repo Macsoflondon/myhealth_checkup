@@ -7567,6 +7567,27 @@ export type Database = {
           },
         ]
       }
+      storage_cleanup_log_20261128: {
+        Row: {
+          created_at: string | null
+          name: string | null
+          reason: string | null
+          sz: number | null
+        }
+        Insert: {
+          created_at?: string | null
+          name?: string | null
+          reason?: string | null
+          sz?: number | null
+        }
+        Update: {
+          created_at?: string | null
+          name?: string | null
+          reason?: string | null
+          sz?: number | null
+        }
+        Relationships: []
+      }
       sync_heartbeat: {
         Row: {
           created_at: string | null
